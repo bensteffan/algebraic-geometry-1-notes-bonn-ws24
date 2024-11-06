@@ -1,0 +1,202 @@
+\documentclass[wip, algebra]{bsteffan-lecturenotes}
+
+\newcommand{\cO}{\mathcal{O}}
+\newcommand{\cC}{\mathcal{C}}
+\newcommand{\A}{\mathbb{A}}
+
+\DefineCategory{Sh}
+\DefineCategory{Sch}
+\DefineCategory{AffSch}
+\DefineCategory{LocRingSpc}
+\DefineCategory{RingSpc}
+
+\NewDocumentCommand{\defineterm}{om}{
+	\emph{#2}\index{\IfNoValueTF{#1}{#2}{#1}}
+}
+
+\course{Algebraic Geometry \uppercase\expandafter{\romannumeral 1\relax}}
+\lecturer{Prof. Dr. Daniel Huybrechts}
+\assistant{Dr. Giacomo Mezzedini}
+\author{Ben Steffan}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section*{About These Notes}
+
+\section{Sheaves}
+\section{Schemes}
+\begin{definition}
+	A \defineterm{ringed space} is a pair $(X, \cO_X)$ where $X$ is a space and $\cO_X\in \Sh_{\CRing}(X)$ a sheaf of rings on $X$.
+	A \emph{morphism of ringed spaces} $(f, f^\sharp)\colon (X, \cO_X) \to (Y, \cO_Y)$ is a pair $(f, f^\sharp)$ where $f\colon X \to Y$ is a continuous function and $f^\sharp\colon \cO_Y \to f_* \cO_X$ a map of sheaves of rings.
+\end{definition}
+\begin{remark}
+	Given morphisms of ringed space $(f, f^\sharp)\colon (X, \cO_X) \to (Y, \cO_Y)$ and $(g, g^\sharp)\colon (Y, \cO_Y) \to (Z, \cO_Z)$, their composite is the morphism $(g \circ f, g^\sharp \circ f^\sharp)\colon (X, \cO_X) \to (Z, \cO_Z)$ where $g^\sharp \circ f^\sharp\colon \cO_Z \to (g \circ f)_* \cO_X$ is given by 
+	\begin{equation*}
+		\cO_Z \xto{g^\sharp} g_* \cO_Y \xto{g_*(f^\sharp)} g_* (f_* \cO_X) = (g \circ f)_* \cO_X
+	\end{equation*}
+	using functoriality of pushforwards with respect to morphisms of sheaves.
+\end{remark}
+Note that an isomorphism of ringed spaces is a map $(f, f^\sharp)\colon (X, \cO_X) \to (Y, \cO_Y)$ of ringed spaces such that $f$ is a homeomorphism and $f^\sharp$ an isomorphism of sheaves.
+
+In many cases (though not always) $f^\sharp$ will be naturally \enquote{induced} by $f$.
+\begin{example}
+	\leavevmode
+	\begin{enumerate}
+		\item If $X$ is a space and $\cO_X = \cC_X$ its sheaf of continuous functions, then $(X, \cO_X)$ is a ringed space.
+			Given a continuous map $f\colon X \to Y$, we obtain a morphism $(f, f^\sharp)\colon (X, \cO_X) \to (Y, \cO_Y)$ by 
+			\begin{align*}
+				f^\sharp|_U\colon \cO_Y(U) &\to (f_* \cO_X)(U) = \cO_X(f^{-1}(U)) \\
+					\big(\phi\colon U \to \R\big) &\mapsto \big(f^{-1}(U) \xto{f} U \xto{\phi} \R\big)
+			\end{align*}
+			for all $U \subseteq X$ open.
+		\item If $X$ is a smooth manifold and $\cO_X = \cC_X^\infty$ its sheaf of smooth functions, then $(X, \cO_X)$ is a ringed space.
+			Given a smooth map $f\colon X \to Y$, we define a map of sheaves $f^\sharp\colon \cO_Y \to f_* \cO_X$ by composition with $f$ as above and therefore obtain a morphism $(f, f^\sharp)\colon (X, \cO_X) \to (Y, \cO_Y)$ of ringed spaces.
+		\item If $X$ is a complex manifold and $\cO_X$ its sheaf of holomorphic functions, then $(X, \cO_X)$ is a ringed space and any holomorphic map $f\colon X \to Y$ induces a map of ringed spaces as above.
+		\item Let $k$ be an algebraically closed field.
+			A subset $X \subseteq k^n$ is an \defineterm{affine algebraic set} if $X = V(\ideal{a}) = \{(t_1, \ldots, t_n) \in k^n \mid f(t_1, \ldots, t_n)\} = 0 \text{ for all } f \in \ideal{a}\}$ where $\ideal{a} \subseteq k[x_1, \ldots, x_n]$ is an ideal.
+			The set $X$ then becomes a space by equipping it with the subspace topology of the Zariski topology on $k^n \isom \MaxSpec k[x_1, \ldots, x_n] \subset \Spec k[x_1, \ldots, x_n]$.
+
+			We call a function $h\colon U \to k$ defined on an open subset $U \subseteq X$ \defineterm[regular function]{regular} if for each $x \in U$ there exists an open neighborhood $V_x \subseteq U$ of $x$ and polynomials $g_1, g_2 \in k[x_1, \ldots, x_n]$ such that for all $y \in V_x$, we can express $h$ as $h(y) = g_1(y) / g_2(y)$ (in particular $g_2$ does not vanish on $V_x$).
+
+			We then obtain a ringed space $(X, \cO_X)$ by letting $\cO_X$ be the \defineterm{sheaf of regular functions} on $X$, i.e.
+			\begin{equation*}
+				\cO_X(U) \coloneq \{h\colon U \to k \mid h \text{ regular}\}
+			\end{equation*}
+			together with the obvious restriction maps.
+			We call this ringed space the \defineterm[ringed space!associated with an affine algebraic set]{ringed space associated with the affine algebraic set $X$}.
+	\end{enumerate}
+\end{example}
+Note that in examples 2 and 3, we cannot expect a general continuous map to induce a morphism of ringed spaces in the same way, since composing a smooth/holomorphic map with a continuous function may not yield a smooth/holomorphic map again, respectively.
+\begin{remark}
+	A regular function $h\colon U \to k$ is continuous with respect to the Zariski topologies on its domain and codomain; this follows from the fact that polynomials are continuous.
+
+	We should thus ask whether any continuous map $f\colon X \to Y$ between affine algebraic sets induces a $f^\sharp\colon \cO_Y \to f_* \cO_X$ via composition as in example 1.
+	The answer is no in general, but if it does, we call it a \defineterm{regular function}.
+\end{remark}
+\begin{example}
+	Consider the ringed spaces $(\R^n, \cC_{\R^n})$ and $(\R^n, \cC^\infty_{\R^n})$ and define a morphism $(f, f^\sharp)\colon (\R^n, \cC_{\R^n}) \to (\R^n, \cC_{\R^n})$ by $f = \id_{\R^n}$ and taking $f^\sharp\colon \cC^\infty_{\R^n} \to (\id_{\R^n})_* \cC_{\R^n} = \cC_{\R^n}$ to be the inclusion.
+	Note in particular that $f$ is a homeomorphism but $(f, f^\sharp)$ is not an isomorphism.
+
+	Similarly, we obtain a map $(\C^n, \cO^\mathrm{hol}_{\C^n}) \to (\C^n_{\mathrm{Zar}}, \cO^\mathrm{reg}_{\C^n})$ from the ringed space of homolomorphic functions on $\C^n$ to the ringed space of regular functions on $\C^n$ equipped with the Zariski topology.
+\end{example}
+\begin{definition}
+	A \defineterm{locally ringed space} is a ringed space $(X, \cO_X)$ such that the stalks $\cO_{X, x}$ are local rings for all $x \in X$.
+\end{definition}
+\begin{example}
+	Let $(X, \cO_X)$ be as in example 1 above.
+	Then $(X, \cO_X)$ is a locally ringed space.
+	To see this, note that the stalk of $\cO_X$ at any point $x \in X$ is given by
+	\begin{equation*}
+		\cO_{X, x} = \{(h\colon U \to \R) \mid x \in U \subseteq X \text{ open},\ h \in \cO_X(U)\} / {{\sim}}
+	\end{equation*}
+	where $(h\colon U \to \R) \sim (h'\colon V \to \R)$ if $h|_W = h'|_W$ for some open $x \in W \subseteq U \cap V$.
+	Let $\ideal{m}_x \coloneq \{[h\colon U \to \R] \in \cO_{X, x} \mid h(x) = 0\}$ be the set of germs vanishing at $x$.
+	Obviously $\ideal{m}_x$ is a proper ideal, and it is in fact the unique maximal ideal of $\cO_{X, x}$:
+	To see this, it suffices to show that every element $g \in \cO_{X, x} \setminus \ideal{m}_x$ is invertible. 
+	But a continuous function that does not vanish at $x$ does not vanish on a full neighborhood of $x$ and is therefore invertible on such a neighborhood.
+
+	Analogous reasoning shows that the ringed spaces from examples 2 through 4 above are also locally ringed.
+\end{example}
+\begin{definition}
+	A \defineterm[locally ringed space!morphism of]{morphism of locally ringed spaces} is a morphism of ringed spaces $(f, f^\sharp)\colon (X, \cO_X) \to (Y, \cO_Y)$ if the induced map on stalks $f^\sharp_x\colon \cO_{Y, f(x)} \to (f_* \cO_X)_{f(x)} \to \cO_{X, x}$ is a \defineterm[local ring!morphism of]{morphism of local rings}, i.e. $\big(f^\sharp_x\big)^{-1}(\ideal{m}_x) = \ideal{m}_{f(x)}$.
+
+	Composition of morphisms of locally ringed spaces is given by composition of morphisms of ringed spaces.
+\end{definition}
+\begin{remark}\label{rmk:sch:nonlocal}
+	Note that being a morphism of local rings is a condition over being a morphism of rings which are local.
+	If $\phi\colon A \to B$ is a ring map where $A$ and $B$ are local, then $\phi^{-1}(\ideal{m}_B) \subseteq \ideal{m}_A$ will always hold, but the reverse inclusion might not:
+	Take for example $A = \Z_{(p)}$ and $B = Q(A) = \Q$ together with the canonical map.
+\end{remark}
+\begin{remark}
+	If $\phi\colon A \to B$ is a ring homomorphism and $\ideal{q} \subset B$ a prime ideal, then $\ideal{p} \coloneq \phi^{-1}(\ideal{q})$ is a prime ideal of $A$.
+	Moreover, $\phi$ induces a ring homomorphism $A_{\ideal{p}} \to B_{\ideal{q}}$.
+\end{remark}
+\begin{example}
+	% TODO link to definition of structure sheaf
+	Let $A$ be a ring and $\cO_{\Spec A}$ its structure sheaf.
+	Then the pair $(\Spec A, \cO_{\Spec A})$ is a ringed space, and in fact a locally ringed space:
+	% TODO link
+	We have shown that $\cO_{\Spec A, \ideal{p}} \isom A_{\ideal{p}}$.
+	By the previous remark, any ring homomorphism $\phi\colon A \to B$ then induces a morphism of locally ringed spaces $(f, f^\sharp)\colon (\Spec A, \cO_{\Spec A}) \to (\Spec B, \cO_{\Spec B})$.
+\end{example}
+\begin{definition}
+	An \defineterm[scheme!affine]{affine scheme} is a locally ringed space $(X, \cO_X)$ which is isomorphic to $(\Spec A, \cO_{\Spec A})$ for some ring $A$.
+\end{definition}
+\begin{example}
+	The following are important examples of affine schemes:
+	\begin{enumerate}
+		\item $(\Spec \Z, \cO_{\Spec \Z})$.
+			For $D(a)$ a basic open set, we have $\cO_{\Spec \Z}(D(a)) \isom \Z_a$.
+		\item $(\Spec k, \cO_{\Spec k})$ for $k$ a field.
+			In this case $\Spec k$ consists of a single point and $\cO_{\Spec k}(\Spec(k)) = k$.
+		\item $\A^n_A \coloneq (\Spec A[x_1, \ldots, x_n], \cO_{\Spec A[x_1, \ldots, x_n]})$ for $A$ any ring.
+		\item $(\Spec A, \cO_{\Spec A})$ for $A$ a discrete valuation ring.
+			In this case $\Spec A = \{(0), \ideal{m}\}$ where $\ideal{m}$ is the unique maximal ideal with the open sets being the empty set, $\Spec A$ itself, and $\{(0)\}$.
+			We then have $\cO_{\Spec A}(\Spec A) = A$ and $\cO_{\Spec A}(\{(0)\}) = \cO_{\Spec A, (0)} = Q(A)$.
+		\item $(\Spec k[x]/(x^2), \cO_{\Spec k[x]/(x^2)})$ where $k$ is a field ($k[x] / (x^2)$ is known as the \defineterm[dual numbers]{ring of dual numbers} over $k$).
+			In this case $\Spec k[x]/(x^2)$ again consists of a single point, namely $(x)$.
+	\end{enumerate}
+\end{example}
+Note that $(\Spec k, \cO_{\Spec k})$ and $(\Spec k[x]/(x^2), \cO_{\Spec k[x]/(x^2)})$ consist both of one point, yet are different: $\cO_{\Spec k}(\Spec k) = k$ while $\cO_{\Spec k[x]/(x^2)}(\Spec k[x]/(x^2)) = k[x] / (x^2)$.
+\begin{example}
+	Consider the locally ringed spaces $(\C^n, \cO^\mathrm{hol}_{\C^n})$ and $(\A^n_\C, \cO_{\A^n_\C})$ where $\cO_{\A^n_\C}$ is the structure sheaf.
+	We define a map $(f, f^\sharp)\colon (\C^n, \cO^\mathrm{hol}_{\C^n}) \to (\A^n_\C, \cO_{\A^n_\C})$ as follows:
+	$f$ is the map 
+	\begin{align*}
+		f\colon \C^n &\isom \MaxSpec(\C[x_1, \ldots, x_n]) \incl \A^n_\C \\
+		(t_1, \ldots, t_n) &\mapsto (x_1 - t_1, \ldots, x_n - t_n)
+	\end{align*}
+	which is continuous because polynomials are continuous in the standard topology on $\C^n$.
+	Letting $A \coloneq \C[x_1, \ldots, x_n]$, we define $f^\sharp\colon \cO_{\A^n_\C} \to f_* \cO^\mathrm{hol}_{\C^n}$ as
+	\begin{equation*}
+		f^\sharp|_U(s) = \left(U \cap \C^n \xto{s} \coprod_{\ideal{m} \in U \cap \C^n} A_{\ideal{m}} \to \C\right)
+	\end{equation*}
+	for all $(s\colon U \to \coprod_{\ideal{p} \in U} A_{\ideal{p}}) \in \cO_{\A^n_\C}(U)$ sections over the open set $U \subseteq \A^n_\C$ where the map $\coprod_{\ideal{m} \in U \cap \C^n} A_{\ideal{m}} \to \C$ is given component-wise by the maps $A_{\ideal{m}} \surj A_{\ideal{m}} / \ideal{m} A_{\ideal{m}} \isom \C$.
+	Holomorphicity of $f^\sharp|_U(s)$ comes down to the fact that $s$ is locally representable as a quotient of polynomials which are of course holomorphic.
+\end{example}
+\begin{proposition}\label{prp:sch:morphbij}
+	Let $A$, $B$ be two rings.
+	Then there exists a bijection
+	\begin{equation*}
+		\begin{Bmatrix}
+			\text{ring homomorphisms} \\
+			A \to B
+		\end{Bmatrix}
+		\leftrightarrow
+		\begin{Bmatrix}
+			\text{morphisms of locally ringed spaces} \\
+			(\Spec B, \cO_{\Spec B}) \to (\Spec A, \cO_{\Spec A})
+		\end{Bmatrix}
+	\end{equation*}
+\end{proposition}
+\begin{proof}
+	TODO.
+\end{proof}
+\begin{definition}
+	A \defineterm{scheme} is a ringed space $(X, \cO_X)$ that is locally isomorphic to an affine scheme, i.e. for all points $x \in X$ there exists an open neighborhood $U \ni x$ such that $(U, \cO_X|_U)$ is isomorphic to $(\Spec A, \cO_{\Spec A})$ for some ring $A$.
+\end{definition}
+\begin{definition}
+	We define $\AffSch$, $\Sch$, and $\LocRingSpc$ to be the categories with objects the affine schemes, schemes, and locally ringed spaces, respectively, and morphisms all morphisms of locally ringed spaces.
+
+	We also define a category $\RingSpc$ which has as objects all ringed spaces and as morphisms all morphisms of ringed spaces.
+\end{definition}
+We thus have a chain of subcategory inclusions
+\begin{equation*}
+	\AffSch \incl \Sch \incl \LocRingSpc \incl \RingSpc
+\end{equation*}
+of which the first two are full.
+\begin{remark}
+	Proposition \ref{prp:sch:morphbij} implies that we have an equivalence of categories 
+	\begin{align*}
+		\op{\CRing} &\xto{\eqv} \AffSch \\
+		A &\mapsto (\Spec A, \cO_{\Spec A})
+	\end{align*}
+\end{remark}
+\begin{remark}
+	Recall the example from Remark \ref{rmk:sch:nonlocal} and note that the induced map $(\Spec Q(A), \cO_{\Spec Q(A)} \to (\Spec A, \cO_{\Spec A})$ \emph{is} a morphism of local rings.
+\end{remark}
+
+\printindex
+\end{document}
