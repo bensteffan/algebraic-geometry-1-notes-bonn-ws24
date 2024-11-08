@@ -2,6 +2,8 @@
 
 \newcommand{\cO}{\mathcal{O}}
 \newcommand{\cC}{\mathcal{C}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\cG}{\mathcal{G}}
 \newcommand{\A}{\mathbb{A}}
 
 \DefineCategory{Sh}
@@ -9,6 +11,7 @@
 \DefineCategory{AffSch}
 \DefineCategory{LocRingSpc}
 \DefineCategory{RingSpc}
+\DefineCategory{Ouv}
 
 \NewDocumentCommand{\defineterm}{om}{
 	\emph{#2}\index{\IfNoValueTF{#1}{#2}{#1}}
@@ -26,6 +29,40 @@
 \section*{About These Notes}
 
 \section{Sheaves}
+Sheaf theory is supposed to keep track of local vs. global information on topological spaces.
+\begin{definition}
+	Let $X$ be a topological space.
+	Define a poset $\Ouv_X$ with objects the open sets of $X$ ordered by inclusion.
+
+	Let $\cC$ be a category.
+	A $\cC$-valued \defineterm{presheaf} on $X$ is a functor $\cF\colon \op{\Ouv_X} \to \cC$.
+\end{definition}
+We will mostly be interested in presheaves of abelian groups, rings, or other algebraic structures.
+Sometimes one requires that $\cF(\emptyset)$ is a terminal object of $\cC$, but we generally will not assume this.
+
+Given such a presheaf $\cF$ and some open set $U \subseteq X$, we will call the elements of $\cF(U)$ \defineterm[section!local]{local sections of $\cF$} over $U$.
+We write $\Gamma(U, \cF) \coloneq \cF(U)$ for the \defineterm{space of sections} over $U$.
+If $U = X$, then an element of $\cF(X)$ will be known as a \defineterm[sectin!global]{global section} of $\cF$ and $\Gamma(X, \cF)$ as the \emph{space of global sections}.
+
+Given open sets $V \subseteq U \subseteq X$, we will write the induced map of the inclusion as $\rho_{UV}\colon \cF(U) \to \cF(V)$ and call it a \defineterm{restriction map}.
+If $s \in \cF(U)$ is a section, then we will often denote its \emph{restriction} $\rho_{UV}(s) \in \cF(V)$ to $V$ by $s|_V$.
+
+We will take the term \enquote{presheaf on $X$} sans further qualifiers to mean $\Ab$-valued presheaf on $X$.
+\begin{example}
+	Let $X$ and $Y$ be spaces.
+	\begin{enumerate}
+		\item Define a presheaf $\cF$ of sets on $X$ by putting 
+			\begin{equation*}
+				\cF(U) \coloneq \{f\colon X \to Y \mid f \text{ continuous}\}
+			\end{equation*}
+			for any open $U \subseteq X$ with restriction maps given by restriction of domain.
+		\item Letting $Y = \R$ in the last definition, we obtain the \defineterm[sheaf!of continuous functions]{presheaf $\cC_X$ of continuous functions} on $X$.
+			Note that in this case pointwise addition and multiplication make $\cC_X$ into a presheaf of rings on $X$, although we will often consider it as simply as a presheaf of abelian groups.
+		\item Let $G$ be an abelian group.
+			Define the \defineterm[presheaf!constant]{constant presheaf} $\mathbb{G}$ with values in $G$ as $\mathbb{G}(U) \coloneq G$ for all $U \subseteq X$ open with all restriction maps the identity of $G$.
+	\end{enumerate}
+\end{example}
+
 \section{Schemes}
 \begin{definition}
 	A \defineterm{ringed space} is a pair $(X, \cO_X)$ where $X$ is a space and $\cO_X\in \Sh_{\CRing}(X)$ a sheaf of rings on $X$.
