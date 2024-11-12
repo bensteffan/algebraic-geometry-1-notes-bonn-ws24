@@ -1,10 +1,13 @@
 \documentclass[wip, algebra]{bsteffan-lecturenotes}
 
+\addbibresource{references.bib}
+
 \newcommand{\cO}{\mathcal{O}}
 \newcommand{\cC}{\mathcal{C}}
 \newcommand{\cF}{\mathcal{F}}
 \newcommand{\cG}{\mathcal{G}}
 \newcommand{\A}{\mathbb{A}}
+\renewcommand{\P}{\mathbb{P}}
 
 \DefineCategory{Sh}
 \DefineCategory{Sch}
@@ -78,7 +81,7 @@ We will take the term \enquote{presheaf on $X$} sans further qualifiers to mean 
 Note that an isomorphism of ringed spaces is a map $(f, f^\sharp)\colon (X, \cO_X) \to (Y, \cO_Y)$ of ringed spaces such that $f$ is a homeomorphism and $f^\sharp$ an isomorphism of sheaves.
 
 In many cases (though not always) $f^\sharp$ will be naturally \enquote{induced} by $f$.
-\begin{example}
+\begin{example}\label{epl:sch:examples}
 	\leavevmode
 	\begin{enumerate}
 		\item If $X$ is a space and $\cO_X = \cC_X$ its sheaf of continuous functions, then $(X, \cO_X)$ is a ringed space.
@@ -105,7 +108,7 @@ In many cases (though not always) $f^\sharp$ will be naturally \enquote{induced}
 			We call this ringed space the \defineterm[ringed space!associated with an affine algebraic set]{ringed space associated with the affine algebraic set $X$}.
 	\end{enumerate}
 \end{example}
-Note that in examples 2 and 3, we cannot expect a general continuous map to induce a morphism of ringed spaces in the same way, since composing a smooth/holomorphic map with a continuous function may not yield a smooth/holomorphic map again, respectively.
+Note that in examples 2 and 3, we cannot expect a general continuous map to induce a morphism of ringed spaces in the same way, since composing a smooth (respectively, holomorphic) map with a continuous function may not yield a smooth (respectively, holomorphic) map again.
 \begin{remark}
 	A regular function $h\colon U \to k$ is continuous with respect to the Zariski topologies on its domain and codomain; this follows from the fact that polynomials are continuous.
 
@@ -193,6 +196,36 @@ Note that $(\Spec k, \cO_{\Spec k})$ and $(\Spec k[x]/(x^2), \cO_{\Spec k[x]/(x^
 	for all $(s\colon U \to \coprod_{\ideal{p} \in U} A_{\ideal{p}}) \in \cO_{\A^n_\C}(U)$ sections over the open set $U \subseteq \A^n_\C$ where the map $\coprod_{\ideal{m} \in U \cap \C^n} A_{\ideal{m}} \to \C$ is given component-wise by the maps $A_{\ideal{m}} \surj A_{\ideal{m}} / \ideal{m} A_{\ideal{m}} \isom \C$.
 	Holomorphicity of $f^\sharp|_U(s)$ comes down to the fact that $s$ is locally representable as a quotient of polynomials which are of course holomorphic.
 \end{example}
+\begin{lemma}
+	Let $(f, f^\sharp)\colon (\Spec A, \cO_A) \to (\Spec B, \cO_B)$ be a morphism of locally ringed spaces.
+	Then $f$ is of the form $f = \Spec \phi$ where $\phi \coloneq f^\sharp(\Spec A)\colon B \isom \cO_B(\Spec B) \to (f_* \cO_A)(\Spec B) = \cO_A(\Spec A) \isom A$ is the map on global sections.
+\end{lemma}
+\begin{proof}
+	Since passing to stalks is commutative with the map on global sections, we have a commutative diagram
+	\begin{equation*}
+		\begin{tikzcd}
+			B
+					\ar[r, "\phi"]
+					\ar[d]
+				& A
+					\ar[d]
+			\\
+			B_{f(\ideal{q})}
+					\ar[r, swap, "f^\sharp_{\ideal{q}}"]
+				& A_{\ideal{q}}
+		\end{tikzcd}
+	\end{equation*}
+	for any $\ideal{q} \in \Spec A$.
+	But $(f, f^\sharp)$ is local, so $(f^\sharp_{\ideal{q}})^{-1}(\ideal{q} B_{\ideal{q}}) = f(\ideal{q}) B_{f(\ideal{q})}$ and we conclude that $\phi^{-1}(\ideal{q}) = f(\ideal{q})$, whence $f = \Spec \phi$.
+\end{proof}
+\begin{corollary}
+	Let $(f, f^\sharp), (g, g^\sharp)\colon (\Spec A, \cO_A) \to (\Spec B, \cO_B)$ be two morphisms of locally ringed spaces.
+	If $f^\sharp(\Spec B) = g^\sharp(\Spec B)$, then $(f, f^\sharp) = (g, g^\sharp)$.
+\end{corollary}
+\begin{solution}
+	By the previous lemma we have $f = g$.
+	To show that $f^\sharp = g^\sharp$, it suffices to show that they agree on all distinguished open sets $D(b) \subseteq \Spec B$, and this follows from the fact that $D(b) = \Spec B_b$ by restriction.
+\end{solution}
 \begin{proposition}\label{prp:sch:morphbij}
 	Let $A$, $B$ be two rings.
 	Then there exists a bijection
@@ -209,7 +242,26 @@ Note that $(\Spec k, \cO_{\Spec k})$ and $(\Spec k[x]/(x^2), \cO_{\Spec k[x]/(x^
 	\end{equation*}
 \end{proposition}
 \begin{proof}
-	TODO.
+	Given a morphism $(f, f^\sharp)\colon (\Spec B, \cO_{\Spec B}) \to (\Spec A, \cO_{\Spec A})$, we obtain a ring homomorphism $\phi\colon A \to B$ as
+	\begin{align*}
+		\phi = f^\sharp\colon A \isom \cO_A(\Spec A) \to (f_* \cO_B)(\Spec A) &= \cO_B(f^{-1}(\Spec A)) \\
+																			  &= \cO_B(\Spec B) \\
+																			  &\isom B
+	\end{align*}
+	In the other direction, if we start with a ring homomorphism $\psi\colon A \to B$, we obtain a morphism $(g, g^\sharp)\colon (\Spec B, \cO_{B}) \to (\Spec A, \cO_{A})$ via $g = \Spec \psi$ and defining $g^\sharp\colon \cO_A \to g_* \cO_B$ as follows: 
+	For any distinguished open set $D(a) \subseteq \Spec A$, we have $\cO_A(D(a)) \isom A_a$ as well as 
+	\begin{equation*}
+		(g_* \cO_B)(D(a)) = \cO_B(g^{-1}(D(a))) = \cO_B(D(\psi(a))) = B_{\psi(a)}
+	\end{equation*}
+	so we can take $g^\sharp\colon \cO_A(D(a)) \to (g_* \cO_B)(D(a))$ to be the natural map $A_a \to B_{\psi(a)}$ induced by $\psi$.
+	It is not hard to check that this glues together to a sheaf homomorphism (in particular since the $D(a)$ form a basis of the Zariski topology on $\Spec A$), so $(g, g^\sharp)$ is a morphism of ringed spaces.
+	To see that it is in fact a morphism of locally ringed spaces, let $\ideal{q} \in \Spec B$ be a prime ideal and define $\ideal{p} \coloneq \psi^{-1}(\ideal{q})$.
+	Since the map $g^\sharp_{\ideal{p}}\colon \cO_{A, \ideal{p}} \to \cO_{B, \ideal{q}}$ is compatible with $\psi = g^\sharp(\Spec A)$, we find that $(g^\sharp_{\ideal{p}})^{-1}(\ideal{q} B_{\ideal{q}}) = (\psi^{-1}(\ideal{q})) A_{\psi^{-1}(\ideal{q})} = \ideal{p} A_{\ideal{p}}$ so $g^\sharp$ is local.
+
+	Finally, we will show that these two constructions are mutually inverse.
+	One direction is easy: 
+	If we start with a ring homomorphism $\phi\colon A \to B$, then construct a morphism of locally ringed spaces $(f, f^\sharp)$, we recover $\phi$ as $\phi = f^\sharp(\Spec A)$.
+	On the other hand, if we start with $(f, f^\sharp)$ and apply our construction to $f^\sharp(\Spec A)$ to get another morphism $(g, g^\sharp)$, the previous corollary implies that $(f, f^\sharp) = (g, g^\sharp)$ since $f^\sharp(\Spec A) = g^\sharp(\Spec B)$ by construction.
 \end{proof}
 \begin{definition}
 	A \defineterm{scheme} is a ringed space $(X, \cO_X)$ that is locally isomorphic to an affine scheme, i.e. for all points $x \in X$ there exists an open neighborhood $U \ni x$ such that $(U, \cO_X|_U)$ is isomorphic to $(\Spec A, \cO_{\Spec A})$ for some ring $A$.
@@ -232,8 +284,94 @@ of which the first two are full.
 	\end{align*}
 \end{remark}
 \begin{remark}
-	Recall the example from Remark \ref{rmk:sch:nonlocal} and note that the induced map $(\Spec Q(A), \cO_{\Spec Q(A)} \to (\Spec A, \cO_{\Spec A})$ \emph{is} a morphism of local rings.
+	Recall the example from Remark \ref{rmk:sch:nonlocal} and note that the induced map $(\Spec Q(A), \cO_{\Spec Q(A)}) \to (\Spec A, \cO_{\Spec A})$ \emph{is} a morphism of local rings.
 \end{remark}
 
+\subsection{From Classical Algebraic Geometry to Scheme Theory}
+Let $k$ be an algebraically closed field and $X \subseteq k^n$ an affine algebraic set, say $X = V(\ideal{a})$ for some ideal $\ideal{a} \subseteq k[x_1, \ldots, x_n]$.
+Then $X$ comes with a sheaf, its sheaf of regular functions $\cO_X$ (see example \ref{epl:sch:examples}), which gives a ringed space $(X, \cO_X)$.
+In general $(X, \cO_X)$ is not a scheme, but we can associate to it a scheme as follows:
+Consider the ideal $I(X) \subseteq k[x_1, \ldots, x_n]$ given by 
+\begin{equation*}
+	I(X) \coloneq \{f \in k[x_1, \ldots, x_n] \mid f(t_1, \ldots, t_n) = 0 \text{ for all } (t_1, \ldots, t_n) \in X\}
+\end{equation*}
+By Hilbert's Nullstellensatz, we then have $I(X) = \sqrt{\ideal{a}}$.
+We then obtain the \defineterm{affine coordinate ring} $A(X) \coloneq k[x_1, \ldots, x_n] / I(X)$ of $X$, and from this an affine scheme $(\Spec A(X), \cO_{A(X)})$.
+\begin{proposition}
+	There exists a morphism of locally ringed spaces $(f, f^\sharp)\colon (X, \cO_X) \to (\Spec A(X), \cO_{A(X)})$.
+\end{proposition}
+\begin{proof}
+	Noting that 
+	\begin{equation*}
+		\MaxSpec A(X) = \{\ideal{m} \in \MaxSpec k[x_1, \ldots, x_n] \mid I(X) \subseteq \ideal{m}\}
+	\end{equation*}
+	we see that under the bijection $k^n \leftrightarrow \MaxSpec k[x_1, \ldots, x_n]$, $(t_1, \ldots, t_n) \mapsto (x_1 - t_1, \ldots, x_n - t_n)$ we in fact have $X \isom \MaxSpec A(X)$, and so define $f$ to be the inclusion $X \isom \MaxSpec A(X) \incl \Spec A(X)$.
+
+	If $U \subseteq \Spec A(X)$ is open and $s\colon U \to \coprod_{\ideal{p} \in U} A(X)_{\ideal{p}}$ is any section in $\cO_{A(X)}(U)$, we obtain a section $t \in (f_* \cO_X)(U) = \cO_X(U \cap \MaxSpec A(X))$ via
+	\begin{equation*}
+		t\colon U \cap \MaxSpec A(X) \xto{s|_{U \cap \MaxSpec A(X)}} \coprod_{\ideal{m} \in \MaxSpec A(X)} A_{\ideal{m}} \to k
+	\end{equation*}
+	where the last map is obtained by observing that $A(X)_{\ideal{m}} / \ideal{m} A(X)_{\ideal{m}} \isom k$ for all $\ideal{m} \in \MaxSpec A(X)$ and applying this isomorphism to each component.
+	% TODO check
+	Since $s$ is locally of the form $s = \bar{g}_1 / \bar{g}_2$ for $\bar{g}_1, \bar{g}_2 \in A(X)$, $t$ is locally of the form $t = g_1 / g_2$ for $g_1, g_2$ lifts of $\bar{g}_1, \bar{g}_2$, respectively, and therefore $f^\sharp(s) \coloneq t$ is well-defined.
+
+	% TODO spell this out?
+	One then checks that $(f, f^\sharp)$ does in fact define a morphism of locally ringed spaces.
+	In fact, if $\ideal{m} \in \MaxSpec k[x_1, \ldots, x_n]$ is the maximal ideal corresponding to $(t_1, \ldots, t_n) \in k^n$, then $\cO_{X, \ideal{m}} \isom \cO_{Y, \ideal{m}} \isom A(X)_{\ideal{m}}$.
+\end{proof}
+\begin{remark}
+	To define $(\Spec A(X), \cO_{A(X)})$, we only that $X$ is an affine algebraic set, not that $X = V(\ideal{a})$ for a given ideal $\ideal{a}$.
+	If we remember this information, we can consider $\Spec k[x_1, \ldots, x_n] / \ideal{a}$.
+	We then have morphisms
+	\begin{equation*}
+		(X, \cO_X) \xto{(f, f^\sharp)} (\Spec A(X), \cO_{A(X)}) \xto{(g, g^\sharp)} (\Spec k[x_1, \ldots, x_n] / \ideal{a}, \cO_{k[x_1, \ldots, x_n] / \ideal{a}})
+	\end{equation*}
+	% TODO homeomorphism?
+	where $g$ is a continuous bijection.
+\end{remark}
+\begin{example}
+	Let $k$ be a field and $A \coloneq k[x] / (x^2)$ its ring of dual numbers.
+	Then $\Spec k$ and $\Spec A$ both consist of a single point.
+	Define two maps $(f, f^\sharp)\colon (\Spec k, \cO_{k}) \to (\Spec A, \cO_{A})$ and $(g, g^\sharp)\colon (\Spec A, \cO_{A}) \to (\Spec k, \cO_k)$ as follows:
+	$f$ and $g$ must be the unique maps. 
+	The map $f^\sharp$ is given by the quotient map $f^\sharp\colon \cO_A(\Spec A) \isom A \surj A / (x) \isom k \isom (f_* \cO_k)(\Spec A)$, and its counterpart $g^\sharp\colon \cO_k(\Spec k) \isom k \incl A \isom (g_* \cO_A)(\Spec k)$ is the canonical inclusion.
+	Then $(g, g^\sharp) \circ (f, f^\sharp) = \id_{(\Spec k, \cO_k)}$, but $(f, f^\sharp) \circ (g, g^\sharp) \neq \id_{(\Spec A, \cO_A)}$: $f^\sharp \circ g^\sharp$ is the composite $A \surj k \incl A \neq \id_A$.
+\end{example}
+% TODO Exercise 26
+\begin{exercise}
+	TODO
+\end{exercise}
+Here are two special cases of this:
+\begin{example}
+	\leavevmode
+	\begin{enumerate}
+		\item Let $(X, \cO_X)$ be any scheme.
+			Since there is a unique ring map $\Z \to \Gamma(X, \cO_X)$, there is a unique morphism of schemes $X \to \Spec \Z$, i.e. $\Spec \Z$ is a terminal object of $\Sch$.
+		\item If $k$ is a field and $A$ a $k$-algebra, then the inclusion $k \incl A$ corresponds to a morphism $(\Spec A, \cO_A) \to (\Spec k, \cO_k)$.
+	\end{enumerate}
+\end{example}
+Next, we want to briefly discuss how to create new schemes out of old via gluing.
+\begin{proposition}[{\cite[Exercise 4.4.A]{vakil_rising_2025}}]
+	Suppose we are given schemes $X_i$, open subschemes $X_{ij} \subseteq X_i$ with $X_{ii} = X_i$, and isomorphisms $f_{ij}\colon X_{ij} \to X_{ji}$ with $f_{ii}$ the identity such that the \defineterm{cocycle condition} $f_{ik}|_{X_{ij} \cap X_{ik}} = f_{jk}|_{X_{ji} \cap X_{jk}} \circ f_{ij}|_{X_{ij} \cap X_{ik}}$ is satisfied for all $i, j, k$.
+	Then there is a unique scheme $X$ along with open subschemes isomorphic to the $X_i$ respecting the gluing data in the obvious sense.
+\end{proposition}
+\begin{proof}
+	TODO (maybe?)
+\end{proof}
+\begin{example}
+	Let $k$ be a field and let $X_1 = X_2 = \A^1_k$ and $U_1 = U_2 = \A^1_k \setminus \{0\} = \Spec(k[x]_x)$. 
+	There are two interesting choices of morphism $(\phi, \phi^\sharp)\colon (U_1, \cO_{U_1}) \to (U_2, \cO_{U_2})$:
+	\begin{enumerate}
+		\item $(\phi, \phi^\sharp) = \id_{(U_1, \cO_{U_1})}$.
+			In this case we obtain the \defineterm{affine line with two origins}.
+		\item $(\phi, \phi^\sharp)$ is given by the ring isomorphism $k[x]_x \to k[x]_x$, $x \mapsto 1 / x$.
+			In this case we obtain the \defineterm{projective line} $\P^1_k$ over the field $k$.
+			% TODO pictures?
+	\end{enumerate}
+\end{example}
+To make sense of this second example, assume that $k$ is algebraically closed and only consider maximal ideals.
+Then $\phi^{-1}((x - t)) = (x - 1 / t)$, so $\P^1_k$ identifies with $k^2 \setminus / k^\times$, points of which we write as $[t_1 : t_2]$ (these are the familiar homogeneous coordinates).
+
+\printbibliography
 \printindex
 \end{document}
