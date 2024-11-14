@@ -459,7 +459,7 @@ Before the proof, let us prove a quick lemma.
 \end{proof}
 We now come back to Noetherianness.
 By definition, a scheme is locally Noetherian if it admits a cover by affine subschemes of Noetherian rings.
-It is natural to ask (and to expect true) whether this already implies that any affine subscheme is one of Noetherian rings, and the answer is yes, even though the proof is somewhat lengthy.
+It is natural to ask (and to expect true) whether this already implies that any affine subscheme is one of Noetherian rings, and indeed the answer is yes, even though the proof is somewhat tedious.
 \begin{proposition}
 	A scheme $X$ is locally Noetherian iff for any open affine subscheme $\Spec A \subseteq X$, the ring $A$ is Noetherian.
 \end{proposition}
@@ -559,7 +559,7 @@ In fact, we can give two separate definitions which will turn out to agree.
 	with the top map an isomorphism.
 \end{definition}
 \begin{definition}
-	A \defineterm{closed subscheme} of a scheme $(X, \cO_X)$ consists of a closed subset $i\colon Z \incl X$ and structure sheaf $\cO_Z$ such that $(Z, \cO_Z)$ is a scheme, together with a sheaf of ideals $\theta_Z \subseteq \cO_X$ such that $\cO_X / \theta_Z \isom i_* \cO_Z$ (here the quotient is  quotient of sheaves).
+	A \defineterm{closed subscheme} of a scheme $(X, \cO_X)$ consists of a closed subset $i\colon Z \incl X$ and structure sheaf $\cO_Z$ such that $(Z, \cO_Z)$ is a scheme, together with a sheaf of ideals $\theta_Z \subseteq \cO_X$ such that $\cO_X / \theta_Z \isom i_* \cO_Z$ (here the quotient is a quotient of sheaves).
 \end{definition}
 \begin{proposition}
 	Let $A$ be a ring.
@@ -569,7 +569,7 @@ In fact, we can give two separate definitions which will turn out to agree.
 	\end{equation*}
 \end{proposition}
 \begin{proof}
-	Given an ideal $\ideal{a} \subseteq A$, consider $(\Spec A / \ideal{a}, \cO_{A / \ideal{a}}) \subseteq \Spec A, \cO_A)$.
+	Given an ideal $\ideal{a} \subseteq A$, consider $(\Spec A / \ideal{a}, \cO_{A / \ideal{a}}) \subseteq (\Spec A, \cO_A)$.
 	Then $\Spec A / \ideal{a} = V(\ideal{a}) \subseteq \Spec A$ is closed and the map $\cO_A \surj i_* \cO_{A / \ideal{a}}$ surjective since for all prime ideals $\ideal{p} \in \Spec A$ containing $\ideal{a}$, the map $A_{\ideal{p}} \surj (A / \ideal{a})_{\ideal{p}} = A_{\ideal{p}} / \ideal{a} A_{\ideal{p}}$ is.
 	Conversely, if $(Z, \cO_Z) \subseteq (\Spec A, \cO_A)$ is a closed subscheme, we obtain an ideal $\ideal{a} \coloneq \ker(\Gamma(\Spec A, \cO_A) \to \Gamma(Z, \cO_Z))$.
 	% TODO actually do this
