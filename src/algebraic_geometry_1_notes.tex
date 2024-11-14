@@ -531,6 +531,51 @@ It is natural to ask (and to expect true) whether this already implies that any 
 	so $A$ is Noetherian.
 \end{proof}
 
+\subsection{Open and Closed Subschemes}
+Recall that if $U \subseteq X$ is an open subset of a scheme $(X, \cO_X)$, then $(U, \cO_X|_U)$ is an open subscheme of $X$ (in particular it is again a scheme).
+\begin{remark}
+	If $\Spec B \subseteq \Spec A$ is an open affine subscheme of an affine scheme, then $\Spec B = \bigcup_{i = 1}^n \Spec A_{a_i}$ for suitable $a_1, \ldots a_n \in A$.
+	If $b_i$ is the image of $a_i$ under the associated ring homomorphism $A \to B$, then it holds that $\Spec A_{a_i} = \Spec B_{b_i}$ (this we showed in the proof of the preceding proposition).
+\end{remark}
+\begin{remark}
+	An open subscheme of an affine scheme need not again be affine.
+	For instance, $\A^n_k \setminus \{0\} \subset \A^n_k$ is open but not affine if $n \geq 2$ for any field $k$.
+\end{remark}
+Closed subschemes are not quite as straightforward.
+In fact, we can give two separate definitions which will turn out to agree.
+\begin{definition}
+	A \defineterm{closed subscheme} of a scheme $(X, \cO_X)$ is an equivalence class of morphisms of schemes $(i, i^\sharp)\colon (Z, \cO_Z) \to (X, \cO_X)$ such that $i\colon Z \incl X$ is a closed embedding and $i^\sharp\colon \cO_X \to i_* \cO_Z$ is a surjection, where $(i, i^\sharp)$ is equivalent to $(i', i'^\sharp)\colon (Z', \cO_{Z'}) \to (X, \cO_X)$ if there is a commutative diagram
+	\begin{equation*}
+		\begin{tikzcd}[column sep = tiny]
+			(Z, \cO_Z)
+					\ar[rr, "\isom"]
+					\ar[dr]
+				& & (Z', \cO_{Z'})
+					\ar[dl]
+			\\
+				& (X, \cO_X)
+		\end{tikzcd}
+	\end{equation*}
+	with the top map an isomorphism.
+\end{definition}
+\begin{definition}
+	A \defineterm{closed subscheme} of a scheme $(X, \cO_X)$ consists of a closed subset $i\colon Z \incl X$ and structure sheaf $\cO_Z$ such that $(Z, \cO_Z)$ is a scheme, together with a sheaf of ideals $\theta_Z \subseteq \cO_X$ such that $\cO_X / \theta_Z \isom i_* \cO_Z$ (here the quotient is  quotient of sheaves).
+\end{definition}
+\begin{proposition}
+	Let $A$ be a ring.
+	Then there exists a natural bijection
+	\begin{equation*}
+		\{\ideal{a} \subseteq A \text{ ideal}\} \leftrightarrow \{Z \subseteq \Spec A \text{ closed subscheme}\}
+	\end{equation*}
+\end{proposition}
+\begin{proof}
+	Given an ideal $\ideal{a} \subseteq A$, consider $(\Spec A / \ideal{a}, \cO_{A / \ideal{a}}) \subseteq \Spec A, \cO_A)$.
+	Then $\Spec A / \ideal{a} = V(\ideal{a}) \subseteq \Spec A$ is closed and the map $\cO_A \surj i_* \cO_{A / \ideal{a}}$ surjective since for all prime ideals $\ideal{p} \in \Spec A$ containing $\ideal{a}$, the map $A_{\ideal{p}} \surj (A / \ideal{a})_{\ideal{p}} = A_{\ideal{p}} / \ideal{a} A_{\ideal{p}}$ is.
+	Conversely, if $(Z, \cO_Z) \subseteq (\Spec A, \cO_A)$ is a closed subscheme, we obtain an ideal $\ideal{a} \coloneq \ker(\Gamma(\Spec A, \cO_A) \to \Gamma(Z, \cO_Z))$.
+	% TODO actually do this
+	It is easy to check that these two constructions are mutually inverse to each other.
+\end{proof}
+
 \printbibliography
 \printindex
 \end{document}
