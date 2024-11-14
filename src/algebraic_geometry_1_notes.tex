@@ -6,8 +6,11 @@
 \newcommand{\cC}{\mathcal{C}}
 \newcommand{\cF}{\mathcal{F}}
 \newcommand{\cG}{\mathcal{G}}
+
 \newcommand{\A}{\mathbb{A}}
 \renewcommand{\P}{\mathbb{P}}
+
+\newcommand{\Nil}{\mathfrak{N}}
 
 \DefineCategory{Sh}
 \DefineCategory{Sch}
@@ -370,7 +373,163 @@ Next, we want to briefly discuss how to create new schemes out of old via gluing
 	\end{enumerate}
 \end{example}
 To make sense of this second example, assume that $k$ is algebraically closed and only consider maximal ideals.
-Then $\phi^{-1}((x - t)) = (x - 1 / t)$, so $\P^1_k$ identifies with $k^2 \setminus / k^\times$, points of which we write as $[t_1 : t_2]$ (these are the familiar homogeneous coordinates).
+Then $\phi^{-1}((x - t)) = (x - 1 / t)$, so $\P^1_k$ identifies with $k^2 \setminus \{0\} / k^\times$, points of which we write as $[t_1 : t_2]$ (these are the familiar homogeneous coordinates).
+
+\subsection{Properties of Schemes}
+We start out by listing some topological properties of schemes, i.e. properties that apply to the underlying space.
+\begin{definition}
+	Let $X = (X, \cO_X)$ be a scheme.
+	\begin{enumerate}
+		\item $X$ is \defineterm[scheme!connected]{connected} if $X$ is, i.e. if $X$ cannot be decomposed as the union of two disjoint proper non-empty subsets.
+		\item $X$ is \defineterm[scheme!irreducible]{irreducible} if $X$ is, i.e. if $X$ cannot be written as the union of two proper closed subsets (not necessarily disjoint).
+			Equivalently, $X$ is irreducible iff every open subset of $X$ is dense in $X$ iff any two non-empty open subsets of $X$ have non-empty intersection.
+		\item $X$ is \defineterm[scheme!quasicompact]{quasicompact} if $X$ is, i.e. if any open cover of $X$ admits a finite subcover.
+	\end{enumerate}
+\end{definition}
+Note that $X$ being irreducible implies $X$ is connected, but not vice-versa:
+For any field $k$, the scheme $\Spec k[x_1, x_2] / (x_1 x_2)$ is connected but at the same time union $\Spec k[x_1, x_2] / (x_1) \cup \Spec k[x_1, x_2] / (x_2)$ of proper closed subsets and therefore reducible.
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}[thick, scale = 2]
+		\draw (-1, 0) -- (1, 0) node[below] {$x_1$};
+		\draw (0, -1) -- (0, 1) node[left] {$x_2$};
+	\end{tikzpicture}
+	\caption{The scheme $\Spec k[x_1, x_2] / (x_1 x_2)$.}
+\end{figure}
+\begin{remark}
+	If $X$ is quasicompact, then any closed subspace of $X$, too, is quasicompact.
+	The same is not true for open subspaces in general.
+\end{remark}
+\begin{example}
+	For every ring $A$, $\Spec A$ is quasicompact.
+	% TODO put proof here or in appendix?
+\end{example}
+We will also need a few properties that are scheme-theoretic in nature:
+\begin{definition}
+	Let $X = (X, \cO_X)$ be a scheme.
+	\begin{enumerate}
+		\item $X$ is \defineterm[scheme!locally Noetherian]{locally Noetherian} if it admits an affine cover $X = \bigcup_{i \in I} \Spec A_i$ such that $A_i$ is a Noetherian ring.
+		\item $X$ is \defineterm[scheme!Noetherian]{Noetherian} if it is locally Noetherian and quasi-compact.
+		\item $X$ is \defineterm[scheme!reduced]{reduced} if $\Gamma(U, \cO_X)$ is a reduced ring for all $U \subseteq X$ open.
+		\item $X$ is \defineterm[scheme!integral]{integral} if $\Gamma(U, \cO_X)$ is an integral domain for all $U \subseteq X$ open.	
+	\end{enumerate}
+\end{definition}
+% TODO put that here
+By exercise 28, $X$ being reduced is equivalent to all the stalks $\cO_{X, x}$ of $X$ being reduced rings.
+The analogous statement for $X$ being integral is false, however: 
+Although it holds that $X$ being integral implies all its stalks being integral, there are non-integral schemes with integral stalks, e.g. $\Spec k \sqcup \Spec k$ for $k$ a field.
+Note also that integral implies reduced but not vice-versa: 
+Take for instance $\Spec k[x_1, x_2] / (x_1 x_2)$.
+Note also that open subset of an irreducible space are again irreducible.
+\begin{proposition}
+	A scheme $(X, \cO_X)$ is integral iff it is irreducible and reduced.
+\end{proposition}
+Before the proof, let us prove a quick lemma.
+\begin{lemma}
+	Let $(X, \cO_X)$ be any scheme, $U \subseteq X$ an open subset, and $s \in \Gamma(U, \cO_X)$ a section.
+	Then the set $\{x \in U \mid s_x \in \ideal{m}_x\} \subseteq U$ is closed in $U$, where $\ideal{m}_x \subset \cO_{X, x}$ is the maximal ideal.
+\end{lemma}
+\begin{proof}
+	TODO.
+\end{proof}
+\begin{proof}[Proof of proposition]
+	If $(X, \cO_X)$ is integral then it is reduced.
+	If $X$ was not irreducible, then we could find non-empty proper open subsets $U_1, U_2 \subset X$ with $U_1 \cap U_2 = \emptyset$.
+	But this implies $\Gamma(U_1 \cup U_2, \cO_X) = \Gamma(U_1, \cO_X) \times \Gamma(U_2, \cO_X)$ which is not an integral domain, contradiction.
+
+	Conversely, assume $(X, \cO_X)$ is irreducible and reduced and let $s_1, s_2 \in \Gamma(U, \cO_X)$ be sections over some open $U \subseteq X$ with $s_1 s_2 = 0$.
+	By the previous lemma, the two sets $X_i \coloneq \{x \in U \mid s_{i, x} \in \ideal{m}_x\}	\subseteq U$ ($i = 1, 2$) are closed.
+	But if $0 = (s_1 s_2)_x = s_{1, x} s_{2, x}$, then we must have $s_{1, x} \in \ideal{m}_x$ or $s_{2, x} \in \ideal{m}_x$ for each $x \in U$ since $\ideal{m}_x$ is in particular a prime ideal, and this implies that $X_1 \cup X_2 = U$.
+	But $X$ is irreducible, so $U$, too, is irreducible, so without loss of generality we may assume that $X_1 = U$.
+	Let $\Spec A \subseteq U$ be an open affine subscheme and define $t\coloneq s_1|_{\Spec A}$.
+	We then in particular have $t_x \in \ideal{m}_x$ for all $x \in \Spec A$, but unraveling the definitions this is to say that $t / 1 \in \ideal{p} A_{\ideal{p}}$ for all $\ideal{p} \in \Spec A$, so $t \in \ideal{p}$ for all $\ideal{p} \in \Spec A$, which is to say that $\ideal{p} \in \Nil A$ and therefore that $t = 0$ since $X$ and therefore $A$ is reduced.
+	Thus $s_1|_{\Spec A} = 0$, so covering $U$ with affine schemes we find that $s_1 = 0$ altogether.
+\end{proof}
+\begin{corollary}
+	If $X$ is an integral scheme, then there exists a unique \defineterm{generic point} $\eta \in X$, i.e. a point whose closure is the whole space $X$.
+\end{corollary}
+\begin{proof}
+	Pick an affine subscheme $\Spec A \subseteq X$ and define $\eta \coloneq (0) \in \Spec A$.
+	Then $\close{\{\eta\}} = \Spec A$ and by irreducibility we must already have $\close{\{\eta\}} = X$, seeing as $\Spec A$ is dense in $X$.
+
+	It remains to show that $\eta$ is unique.
+	Let thus $\eta' \in X$ be another generic point and pick an affine subscheme $\Spec A \subseteq X$ containing $\eta$.
+	Since $X \setminus \Spec A$ is closed and $\close{\{\eta'\}} = X$, we must then have $\eta' \in \Spec A$.
+	Assuming without loss of generality that $\eta = (0) \in \Spec A$ and identifying $\eta'$ with some prime ideal $\ideal{p} \in \Spec A$, we have $\eta \in V(\ideal{p})$, but this means $\ideal{p} = (0)$, so $\eta = \eta'$.
+\end{proof}
+We now come back to Noetherianness.
+By definition, a scheme is locally Noetherian if it admits a cover by affine subschemes of Noetherian rings.
+It is natural to ask (and to expect true) whether this already implies that any affine subscheme is one of Noetherian rings, and the answer is yes, even though the proof is somewhat lengthy.
+\begin{proposition}
+	A scheme $X$ is locally Noetherian iff for any open affine subscheme $\Spec A \subseteq X$, the ring $A$ is Noetherian.
+\end{proposition}
+% TODO split this proof up into multiple lemmas
+\begin{proof}
+	One direction of the proof is true by definition.
+	Let thus $X$ be a locally Noetherian scheme and pick a cover $X = \bigcup_{i \in I} \Spec A_i$ with the $A_i$ Noetherian.
+	Let $U = \Spec A \subseteq X$ be another open, affine subscheme, and let $U_i \coloneq \Spec A_i \cap U$ such that $U = \bigcup_{i \in I} U_i$.
+	Since $U$ is affine, it is quasicompact, so we may reduce to a finite covering $U = \bigcup_{i = 1}^n U_i$.
+	Now $U_i \subseteq \Spec A_i$ is open, so we may cover it with finitely many distinguished opens $U_i = \bigcup_{j = 1}^{k_i} \Spec A_{i, a_j}$.
+	Fixing one $B \coloneq A_{i, a_j}$, we can find an element $a \in A$ such that $\Spec A_a \subseteq \Spec B$, which gives rise to a commutative diagram
+	\begin{equation*}
+		\begin{tikzcd}
+			A 
+					\ar[r]
+					\ar[dr]
+				& B
+					\ar[d]
+			\\
+				& A_a
+		\end{tikzcd}
+	\end{equation*}
+	Let $b \in B$ be the image of $a$ under the top map.
+	We now claim that $\Spec A_a = \Spec B_b$ as sets, but this is clear: 
+	For any prime ideal $\ideal{q} \in \Spec B$, we have $b \notin \ideal{q}$ iff $a \notin \ideal{p} \coloneq \ideal{q}^c$.
+	
+	More importantly, however, we also have $\Spec A_a = \Spec B_b$ \emph{as schemes}.
+	To this end, we have to show that we have a commutative diagram
+	\begin{equation*}
+		\begin{tikzcd}[column sep = tiny]
+				& B
+					\ar[dl]
+					\ar[dr]
+			\\
+			A_a 
+					\ar[rr, "\isom"]
+				& & B_b
+		\end{tikzcd}
+	\end{equation*}
+	But we already know that $\cO_A|_{\Spec B} \isom \cO_B$, so further restriction yields 
+	\begin{equation*}
+		\cO_{A_a} \isom \cO_A|_{\Spec A_a} \isom \cO_B|_{\Spec B_b} \isom \cO_{B_b}
+	\end{equation*}
+	so taking sections yields the claim.
+
+	Next, we show that any ideal $\ideal{a} \subseteq A$ can be written as $\ideal{a} = \bigcap_{i = 1}^n \pi_i^{-1}(\pi_i(\ideal{a}) A_{a_i})$ where $\pi_i\colon A \to A_{a_i}$ are the canonical maps.
+	Clearly $\ideal{a}$ is contained in the intersection.
+	On the other hand, if $b \in \bigcap_{i = 1}^n \pi_i^{-1}(\pi_i(\ideal{a}) A_{a_i})$ is any element, then we can write each $\pi_i(b)$ as $\pi_i(b) = b / 1 = b_i / a_i^{n_i}$ for some $b_i \in \ideal{a}$.
+	Since $b_i / a_i^{n_i} = (a_i b_i) / a_i^{n_i + 1}$ and $a_i b_i \in \ideal{a}$, we may in fact assume that $\pi_i(b) = b_i / a_i^m$ for some fixed $m$ independent of $i$.
+	We then find $m_1, \ldots, m_i \in \N$ such that $(b_i - a_i^m b) a_i^{m_i} = 0$ for all $i$, and setting $M \coloneq \max \{m_1, \ldots, m_n\}$ we obtain $(b_i - a_i^m b) a_i^M = 0$.
+	But this is to say that $a_i^{m + M} b \in \ideal{a}$, so since $\Spec A = \bigcup_{i = 1}^n \Spec A_{a_i}$, which is the same as saying that $\bigcap_{i = 1}^n V(a_i) = V(a_1, \ldots, a_n) = \emptyset$, we see that we must have $(a_1, \ldots, a_n) = (1)$, which in turn is the case iff $(a_1^k, \ldots, a_n^k) = (1)$ for any $k > 0$.
+	Applying this to $k = m + M$, we obtain that 1 can be expressed as a linear combination
+	\begin{equation*}
+		1 = \sum_{i = 1}^n \beta_i a_i^k
+	\end{equation*}
+	for some $\beta_i \in A$ and multiplying both sides with $b$ then yields
+	\begin{equation*}
+		b = \sum_{i = 1}^n \beta_i \underbrace{a_i^k b}_{\in \ideal{a}}
+	\end{equation*}
+	so $b \in \ideal{a}$, as we set out to show.
+
+	To finish up the proof, let $\ideal{a}_1 \subseteq \ideal{a}_2 \subseteq \ldots$ be an ascending chain of ideals of $A$.
+	We then obtain ascending chains $\pi_i(\ideal{a}_1) A_{a_i} \subseteq \pi_i(\ideal{a}_2) A_{a_i} \subseteq \ldots$ of ideals of $A_{a_i}$ for all $i = 1, \ldots, n$.
+	But the $A_{a_i}$ are Noetherian, so for each there exists some $N_i > 0$ with $\pi_i(\ideal{a}_{N_i}) A_{a_i} = \pi_i(\ideal{a}_{N_i + 1}) A_{a_i} = \ldots$.
+	Then putting $N \coloneq \max \{N_1, \ldots, N_n\}$, we find that $\pi_i(\ideal{a}_N) A_{a_i} = \pi_i(\ideal{a}_{N + 1}) A_{a_i} = \ldots$ for all $i$, so 
+	\begin{equation*}
+		\ideal{a}_N = \bigcap_{i = 1}^n \pi_i^{-1}(\pi_i(\ideal{a}_N) A_{a_i}) = \bigcap_{i = 1}^n \pi_i^{-1}(\pi_i(\ideal{a}_{N + 1}) A_{a_i}) = \ideal{a}_{N + 1} = \ldots
+	\end{equation*}
+	so $A$ is Noetherian.
+\end{proof}
 
 \printbibliography
 \printindex
