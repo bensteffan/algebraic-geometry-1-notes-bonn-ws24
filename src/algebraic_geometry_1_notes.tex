@@ -1,5 +1,7 @@
 \documentclass[wip, algebra]{bsteffan-lecturenotes}
 
+\usepackage{stmaryrd}
+
 \addbibresource{references.bib}
 
 \newcommand{\cO}{\mathcal{O}}
@@ -279,7 +281,7 @@ We thus have a chain of subcategory inclusions
 	\AffSch \incl \Sch \incl \LocRingSpc \incl \RingSpc
 \end{equation*}
 of which the first two are full.
-\begin{remark}
+\begin{remark}\label{prp:sch:ringaff}
 	Proposition \ref{prp:sch:morphbij} implies that we have an equivalence of categories 
 	\begin{align*}
 		\op{\CRing} &\xto{\eqv} \AffSch \\
@@ -572,9 +574,79 @@ In fact, we can give two separate definitions which will turn out to agree.
 	Given an ideal $\ideal{a} \subseteq A$, consider $(\Spec A / \ideal{a}, \cO_{A / \ideal{a}}) \subseteq (\Spec A, \cO_A)$.
 	Then $\Spec A / \ideal{a} = V(\ideal{a}) \subseteq \Spec A$ is closed and the map $\cO_A \surj i_* \cO_{A / \ideal{a}}$ surjective since for all prime ideals $\ideal{p} \in \Spec A$ containing $\ideal{a}$, the map $A_{\ideal{p}} \surj (A / \ideal{a})_{\ideal{p}} = A_{\ideal{p}} / \ideal{a} A_{\ideal{p}}$ is.
 	Conversely, if $(Z, \cO_Z) \subseteq (\Spec A, \cO_A)$ is a closed subscheme, we obtain an ideal $\ideal{a} \coloneq \ker(\Gamma(\Spec A, \cO_A) \to \Gamma(Z, \cO_Z))$.
-	% TODO actually do this
-	It is easy to check that these two constructions are mutually inverse to each other.
+
+	TODO: Complete proof.
 \end{proof}
+
+\section{Fibre Products}
+\begin{definition}
+	Fix a scheme $S \in \Sch$.
+	In this section, we will consider \defineterm[S-scheme@$S$-schemes]{$S$-schemes}, i.e. elements of the slice category $\Sch_{/ S}$ of schemes over $S$.
+
+	When $S = \Spec k$ for $k$ a field, we will simply speak of $k$-schemes.
+\end{definition}
+Note that $\Sch_{/ \Spec Z} \isom \Sch$ since $\Spec \Z$ is terminal in $\Sch$.
+
+In this section we will be interested in studying products in $\Sch_{/ S}$, or equivalently pullbacks (or \defineterm[fibre product]{fibre products}) in $\Sch$.
+
+As a first step, let us treat the case that all involved schemes are affine.
+Recalling that $\CRing$ has pushouts, given by the relative tensor product $A \tensor_B C$, we obtain that $\AffSch$ has pullbacks via remark \ref{prp:sch:ringaff}.
+We then have the following:
+\begin{proposition}
+	The inclusion $i\colon \AffSch \incl \Sch$ has a left adjoint $l\colon \Sch \to \AffSch$ given by $l((X, \cO_X)) \coloneq \Spec \Gamma(X, \cO_X)$ on objects.
+	In other words, there are natural isomorphisms
+	\begin{equation*}
+		\AffSch(\Spec \Gamma(X, \cO_X), Y) \isom \Sch(X, Y)
+	\end{equation*}
+	for any scheme $X$ and affine scheme $Y$.
+\end{proposition}
+\begin{proof}
+	TODO.
+\end{proof}
+As a consequence, the inclusion $\AffSch \incl \Sch$ preserves limits, in particular pullbacks, so the fibre product of $\Spec A \leftarrow \Spec B \rightarrow \Spec C$ in $\Sch$ is given by $\Spec A \tensor_B C$ together with the obvious structure maps.
+
+Before moving on to the general proof, let us discuss some applications.
+\begin{definition}
+	Let $Y$ be a scheme, $y \in Y$ a point, and define the \defineterm{residue field} $k(y) \coloneq \cO_{Y, y} / \ideal{m}_y$ of $y$ where $\ideal{m}_y \subset \cO_{Y, y}$ is the maximal ideal.
+	We then have a morphism of schemes $\Spec k(y) \to Y$ taking the unique point of $\Spec k(y)$ to $y$ and on structure sheaves being given by the composite 
+	\begin{equation*}
+		\cO_Y \to \cO_{Y, y} \surj i_* k(y)
+	\end{equation*}
+	Let now $f\colon X \to Y$ be a morphism of schemes.
+	The \defineterm{fibre} of $f$ over $y$ is the fibre product
+	\begin{equation*}
+		\begin{tikzcd}
+			X_y \coloneq X \times_Y \Spec k(y) 
+					\ar[r]
+					\ar[d, swap, "p"]
+				& \Spec k(y)
+					\ar[d]
+			\\
+			X
+					\ar[r, "f"]
+				& Y
+		\end{tikzcd}
+	\end{equation*}
+\end{definition}
+\begin{definition}
+	If $Y$ is an integral scheme, then it has a unique generic point $\eta \in Y$.
+	If $f\colon X \to Y$ is a morphism of schemes, we define the \defineterm{generic fibre} $X_\eta$ of $f$ to be that over $\eta$.
+	Similarly, a \defineterm{closed fibre} of $f$ is any fibre over a closed point $y \in Y$.
+\end{definition}
+\begin{example}
+	If $A$ is a DVR, then $\Spec A$ consists of exactly two points: $\eta = (0)$ and $t = \ideal{m}$ where $\ideal{m} \subset A$ is the maximal ideal.
+	A morphism $f\colon X \to \Spec A$ thus has exactly two fibres: one closed and one generic.
+	By definition, these come with morphisms
+	\begin{align*}
+		X_\eta &\to \Spec k(\eta) = \Spec Q(A) \;\;\text{and}\\
+		X_t &\to \Spec k(t) = \Spec A / \ideal{m}
+	\end{align*}
+	As a concrete example, consider $A = \Z_{(p)}$ for some prime $p$.
+	Then $k(t) = \F_p$ and $k(\eta) = \Q$, so $X_\eta$ is a scheme over $\Q$ and $X_t$ is a scheme over $\F_p$.
+	Note in particular that the two residue fields have different characteristics.
+
+	On the other hand, if $A = k\llbracket x\rrbracket$, then $k(\eta) = k((x))$ and $k(t) = k$ which are of the same characteristic.
+\end{example}
 
 \printbibliography
 \printindex
