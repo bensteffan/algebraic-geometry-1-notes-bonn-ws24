@@ -636,7 +636,7 @@ In fact, we can give two separate definitions which will turn out to agree.
 	We now show that $Z = \Spec A$ as schemes.
 	Since $Z \subset \Spec A$ is closed, there are elements $\{a_i \in A \mid i \in I\}$ where $I$ is some index set such that $Z = V((a_i)_{i \in I})$.
 	Pick some $a = a_i$.
-	Since $\Spec A$ is quasi-compact and $Z \subseteq \Spec A$ is closed, it, too, is quasi-compact and can therefore be covered with finitely many open affine subschemes $Z = \bicup_{j = 1}^n \Spec B_i$.
+	Since $\Spec A$ is quasi-compact and $Z \subseteq \Spec A$ is closed, it, too, is quasi-compact and can therefore be covered with finitely many open affine subschemes $Z = \bigcup_{j = 1}^n \Spec B_i$.
 	The maps $A \incl \Gamma(Z, \cO_Z) \to \cO_Z(\Spec B_i) = B_i$ take the element $a$ to $b_i$, so since $\Spec B_i \subseteq Z \subseteq V(a)$, we find that all prime ideals $\ideal{p} \in \Spec B_i$ must contain $b_i$, i.e. $b_i$ is nilpotent.
 
 	TODO: Complete proof.
@@ -669,7 +669,32 @@ We then have the following:
 \end{proof}
 As a consequence, the inclusion $\AffSch \incl \Sch$ preserves limits, in particular pullbacks, so the fibre product of $\Spec A \leftarrow \Spec B \rightarrow \Spec C$ in $\Sch$ is given by $\Spec A \tensor_B C$ together with the obvious structure maps.
 
-Before moving on to the general proof, let us discuss some applications.
+Before moving on to the general proof, let us discuss some applications and properties.
+\begin{remark}
+	Let $X$ be an $S$-scheme, $Z$ a $T$-scheme, and $Y$ both an $S$- and $T$-scheme.
+	As for pullbacks in any category, $X \times_S Y$ is unique up to unique isomorphism.
+	Also, there is a unique isomorphism $(X \times_S Y) \times_T Z \isom X \times_S (Y \times_T Z)$ which commutes with the structure maps.
+\end{remark}
+\begin{example}
+	Let $k$ be a field.
+	We will usually write $X \times_k Y$ in place of $X \times_{\Spec k} Y$ for $X, Y$ two $k$-schemes.
+	Then we have $\A^n_k \times_k \A^m_k \isom \A^{n + m}_k$, seeing as $k[x_1, \ldots, x_n] \tensor_k k[y_1, \ldots, y_m] \isom k[x_1, \ldots, x_n, y_1, \ldots, y_m]$.
+
+	Importantly, note, however, that $|\A^n_k \times_k \A^m_k| \neq |\A^n_k| \times |\A^m_k|$ in general (take $n = m = 1$).
+\end{example}
+\begin{example}
+	Let $X = Y = \Spec \C$ considered as $\R$-schemes.
+	Then
+	\begin{align*}
+		X \times_\R Y &= \Spec \C \tensor_\R \C \\
+					  &\isom \Spec \R[x] / (x^2 + 1) \tensor_\R \C \\
+					  &\isom \Spec \C[x] / (x^2 + 1) \\
+					  &\isom \Spec \C[x] / (x + i)(x - 1) \\
+					  &\isom \Spec \C \times \C
+	\end{align*}
+	thus $|X \times_\R Y|$ has exactly two points while $|X| \times |Y|$ has one.
+	In particular, there is no obvious natural map $|X| \times |Y| \to |X \times_\R Y|$ one could write down!
+\end{example}
 \begin{definition}
 	Let $Y$ be a scheme, $y \in Y$ a point, and define the \defineterm{residue field} $k(y) \coloneq \cO_{Y, y} / \ideal{m}_y$ of $y$ where $\ideal{m}_y \subset \cO_{Y, y}$ is the maximal ideal.
 	We then have a morphism of schemes $\Spec k(y) \to Y$ taking the unique point of $\Spec k(y)$ to $y$ and on structure sheaves being given by the composite 
@@ -678,7 +703,7 @@ Before moving on to the general proof, let us discuss some applications.
 	\end{equation*}
 	Let now $f\colon X \to Y$ be a morphism of schemes.
 	The \defineterm{fibre} of $f$ over $y$ is the fibre product
-	\begin{equation*}
+	\begin{equation}\label{diag:sch:fibre}
 		\begin{tikzcd}
 			X_y \coloneq X \times_Y \Spec k(y) 
 					\ar[r]
@@ -690,7 +715,7 @@ Before moving on to the general proof, let us discuss some applications.
 					\ar[r, "f"]
 				& Y
 		\end{tikzcd}
-	\end{equation*}
+	\end{equation}
 \end{definition}
 \begin{definition}
 	If $Y$ is an integral scheme, then it has a unique generic point $\eta \in Y$.
@@ -711,7 +736,70 @@ Before moving on to the general proof, let us discuss some applications.
 
 	On the other hand, if $A = k\llbracket x\rrbracket$, then $k(\eta) = k((x))$ and $k(t) = k$ which are of the same characteristic.
 \end{example}
+We will now prove the existence of fibre products.
+\begin{proposition}
+	$\Sch$ admits all fibre products.
+\end{proposition}
+\begin{proof}
+	TODO.
+\end{proof}
+We now resume talking about fibres.
+\begin{proposition}
+	Let $f\colon X \to Y$ be a morphism of schemes.
+	Then there is a homeomorphism from $|X_y|$ to $f^{-1}(Y)$.
+\end{proposition}
+\begin{proof}
+	The commutativity of diagram \eqref{diag:sch:fibre} implies that $p$ lands in $f^{-1}(y)$, so we have a continuous map $g\colon |X_y| \to f^{-1}(y)$.
+	To see that $g$ is surjective, pick any element $x \in f^{-1}(y)$ and consider the diagram
+	\begin{equation*}
+		\begin{tikzcd}
+			\Spec k(x)
+					\ar[dr, dashed, "\exists!"]
+					\ar[drr, bend left = 20, "\Spec \phi"]
+					\ar[ddr, bend right = 20]
+			\\[-1em]
+				&[-2.2em] X_y
+					\ar[r]
+					\ar[d]
+					\ar[dr, phantom, "\lrcorner" very near start]
+				& \Spec k(y) 
+					\ar[d]
+			\\
+				& X
+					\ar[r, swap, "f"]
+				& Y
+		\end{tikzcd}
+	\end{equation*}
+	where $\phi$ is the induced map on residue fields
+	\begin{equation*}
+		\begin{tikzcd}
+			\cO_{Y, y} 
+					\ar[r, "f^\sharp"]
+					\ar[d, two heads]
+				& \cO_{X, x}
+					\ar[d, two heads]
+			\\
+			k(y)
+					\ar[r, dashed, swap, "\phi"]
+				& k(x)
+		\end{tikzcd}
+	\end{equation*}
+	using that $f^\sharp$ is local.
+	Thus $x \in \img g$.
 
+	For injectivity, we may without loss of generality assume that $X = \Spec B$ and $Y = \Spec A$ so that $y$ corresponds to some prime ideal $\ideal{p} \in \Spec A$ and $X_y = \Spec k(Y) \tensor_A B$.
+	Seeing as $k(y) = A_{\ideal{p}} / \ideal{p} A_{\ideal{p}}$ in this case, we have $X_y = \Spec S^{-1} B / \ideal{p} B$ where $S = A \setminus \ideal{p}$.
+	Then 
+	\begin{align*}
+		|X_y| &= \{\ideal{q} \in \Spec B \mid \underbrace{\ideal{p} B \subseteq \ideal{q}}_{\Leftrightarrow \ideal{p} \subseteq \ideal{q}^c} \text{ and } \ideal{q}^c \cap S = \emptyset\} \\
+			  &= \{\ideal{q} \in \Spec B \mid \ideal{q}^c \subseteq \ideal{p}\} \\
+			  &= f^{-1}(y)
+	\end{align*}
+	so $g$ is injective.
+
+	% TODO explain this better!
+	Finally, to see that $g^{-1}\colon f^{-1}(y) \to |X_y|$ is continuous, we note that we have a basis for the topology on $X_y$ consisting of sets of the form $D(b / s)$ with $b / s \in S^{-1} B$, i.e. they are of the form $D(b) \cap f^{-1}(y)$.
+\end{proof}
 \printbibliography
 \printindex
 \end{document}
