@@ -14,6 +14,8 @@
 
 \newcommand{\Nil}{\mathfrak{N}}
 
+\newcommand{\nisom}{\ncong}
+
 \DefineCategory{Sh}
 \DefineCategory{Sch}
 \DefineCategory{AffSch}
@@ -693,7 +695,7 @@ Before moving on to the general proof, let us discuss some applications and prop
 
 	Importantly, note, however, that $|\A^n_k \times_k \A^m_k| \neq |\A^n_k| \times |\A^m_k|$ in general (take $n = m = 1$).
 \end{example}
-\begin{example}
+\begin{example}\label{epl:sch:fpR}
 	Let $X = Y = \Spec \C$ considered as $\R$-schemes.
 	Then
 	\begin{align*}
@@ -867,6 +869,7 @@ It is easy to check that this in fact defines a functor.
 		X(K) \coloneq \Sch_{/ k}(\Spec K, X)
 	\end{equation*}
 \end{definition}
+% TODO something about Galois groups?
 Observe that there is a bijection between $X(K)$ and the $K$-rational points $X_K(K)$ of the base change along $\Spec K \to \Spec k$:
 This follows from the universal property of the pushout in the diagram
 \begin{equation*}
@@ -945,6 +948,64 @@ Note that by pullback pasting the outer rectangle is also a pullback square.
 	Consider an $\Z_{(p)}$-scheme $X \to \Spec \Z_{(p)}$ for some prime number $p$.
 	Then $\Spec \Z_{(p)} = \{\eta = (0), t = (p)\}$, so we have two fibres $X_\eta \to \Spec k(\eta) = \Spec \Q$ and $X_t \to \Spec k(t) = \Spec \F_p$ and therefore also two geometric fibres $X_{\close{\eta}} \to \Spec \close{\Q}$ and $X_{\close{t}} \to \Spec \close{\F_p}$.
 \end{example}
+Two warnings are in order: 
+First, note that base change does not translate to underlying spaces.
+In other words, the square at the left being a pullback does not imply the square at the right is a pullback in the following diagram:
+\begin{equation*}
+	\begin{tikzcd}
+		X_R
+				\ar[r]
+				\ar[d]
+				\ar[dr, phantom, "\lrcorner" very near start]
+			& X
+				\ar[d]
+		\\
+		R 
+				\ar[r]
+			& S
+	\end{tikzcd}
+	\qquad\qquad
+	\begin{tikzcd}
+		{|X_R|}
+				\ar[r]
+				\ar[d]
+			& {|X|}
+				\ar[d]
+		\\
+		{|R|}
+				\ar[r]
+			& {|S|}
+	\end{tikzcd}
+\end{equation*}
+Consider for instance $X = R = \Spec \C$ and $S = \Spec \R$ so that $X_R = \Spec \C \times_{\Spec \R} \Spec \C \isom \Spec \C[x] / (x + i)(x - i)$, i.e. $|X_R| = \{(x - i), (x + i)\}$ whereas $|X| \times_{|S|} |R|$ is a singleton (cf. example \ref{epl:sch:fpR}).
+In particular, note that connectedness is not preserved under fibre products.
+
+The other warning concerns base change along endomorphisms.
+\begin{definition}
+	Let $k$ be a field and $X$ a $k$-scheme.
+	Given an automorphism $\sigma \in \Aut(k)$, define the \defineterm[scheme!conjugate]{conjugate $k$-scheme} $X^\sigma$ of $X$ associated to $\sigma$ as the pullback
+	\begin{equation*}
+		\begin{tikzcd}
+			X^\sigma
+					\ar[r]
+					\ar[d]
+					\ar[dr, pullback marker]
+				& X
+					\ar[d]
+			\\
+			\Spec k
+					\ar[r, swap, "\Spec \sigma"]
+				& \Spec k
+		\end{tikzcd}
+	\end{equation*}
+\end{definition}
+Note that $X \isom X^\sigma$ as schemes, but generally not as $k$-schemes:
+\begin{example}
+	Consider $X = \Spec \R$ viewed as a $\Q\big(\sqrt{2}\big)$-scheme and let $\sigma\colon \Q\big(\sqrt{2}\big) \to \Q\big(\sqrt{2}\big)$ be the automorphism sending $\sqrt{2}$ to $-\sqrt{2}$.
+	Then $X^\sigma \nisom X$ as $\Q\big(\sqrt{2}\big)$-schemes:
+	There is no automorphism of $\R$ taking $\sqrt{2}$ to $-\sqrt{2}$ (in fact, the only automorphism of $\R$ is the identity).
+\end{example}
+% TODO \P^1_C example
 
 \printbibliography
 \printindex
