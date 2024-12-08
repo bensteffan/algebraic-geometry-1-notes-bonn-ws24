@@ -23,8 +23,8 @@
 \DefineCategory{RingSpc}
 \DefineCategory{Ouv}
 
-\NewDocumentCommand{\defineterm}{om}{
-	\emph{#2}\index{\IfNoValueTF{#1}{#2}{#1}}
+\NewDocumentCommand{\defineterm}{om}{%
+	\emph{#2}\index{\IfNoValueTF{#1}{#2}{#1}}%
 }
 
 \tikzcdset{
@@ -1006,6 +1006,38 @@ Note that $X \isom X^\sigma$ as schemes, but generally not as $k$-schemes:
 	There is no automorphism of $\R$ taking $\sqrt{2}$ to $-\sqrt{2}$ (in fact, the only automorphism of $\R$ is the identity).
 \end{example}
 % TODO \P^1_C example
+
+\section{Morphisms of Schemes}
+We will now discuss a number of properties of morphisms of schemes.
+To start, we have a number of purely topological properties:
+\begin{definition}
+	Let $f\colon X \to Y$ be a morphism of schemes.
+	Then $f$ is\textellipsis{}
+	\begin{enumerate}
+		\item \defineterm[morphism of schemes!open]{open}/\defineterm[morphism of schemes!closed]{closed} if $|f|\colon |X| \to |Y|$ is, 
+		\item \defineterm[morphism of schemes!dominant]{dominant} if $f(|X|)$ is dense in $|Y|$,
+		\item \defineterm[morphism of schemes!quasi-compact]{quasi-compact} if for all quasi-compact open subsets $V \subseteq Y$, $f^{-1}(V)$ is quasi-compact, and
+		\item \defineterm[morphism of schemes!quasi-finite]{quasi-finite} all fibres $f^{-1}(y)$ for $y \in Y$ are finite.
+	\end{enumerate}
+\end{definition}
+Note that if $Y$ is integral, then $f$ is dominant iff $\eta \in \img f$.
+% TODO explain?
+Also note that it is enough to check quasi-compactness on an open affine cover of $Y$.
+\begin{definition}
+	Let $f\colon X \to Y$ be a morphism of schemes.
+	Then $f$ is an \defineterm[morphism of schemes!open immersion]{open/closed immersion}\index{morphism of schemes!closed immersion} if $f$ is an isomorphism onto an open (respective, closed) subscheme of $Y$.
+\end{definition}
+We also have some purely scheme-theoretic properties:
+\begin{definition}
+	Let $f\colon X \to Y$ be a morphism of schemes.
+	We say that $f$ is\textellipsis{}
+	\begin{enumerate}
+		\item \defineterm[morphism of schemes!locally of finite type]{locally of finite type} if there exists an open affine covering $Y = \bigcup_i \Spec A_i$ of $Y$ and open affine covering $f^{-1}(\Spec A_i) = \bigcup_j \Spec B_{ij}$ of $f^{-1}(\Spec A_i)$ such that each $B_{ij}$ is a finite type $A_i$-algebra,
+		\item \defineterm[morphism of schemes!of finite type]{of finite type} if it is locally of finite type and there are only finitely many $B_{ij}$ for each $i$ in the preceding definition,
+		\item \defineterm[morphism of schemes!affine]{affine} there exists an open affine covering $Y = \bigcup_i \Spec A_i$ such that $f^{-1}(\Spec A_i)$ is affine, and
+		\item \defineterm[morphism of schemes!finite]{finite} if it is affine and $B_i \coloneq f^{-1}(\Spec A_i)$ is a finite $A_i$-module for all $i$.
+	\end{enumerate}
+\end{definition}
 
 \printbibliography
 \printindex
