@@ -25,6 +25,17 @@
 	\emph{#2}\index{\IfNoValueTF{#1}{#2}{#1}}
 }
 
+\tikzcdset{
+	pushout marker/.style = {
+		phantom,
+		"\ulcorner" very near start
+	},
+	pullback marker/.style = {
+		phantom,
+		"\lrcorner" very near start
+	},
+}
+
 \course{Algebraic Geometry \uppercase\expandafter{\romannumeral 1\relax}}
 \lecturer{Prof. Dr. Daniel Huybrechts}
 \assistant{Dr. Giacomo Mezzedini}
@@ -390,7 +401,7 @@ We start out by listing some topological properties of schemes, i.e. properties 
 \end{definition}
 Note that $X$ being irreducible implies $X$ is connected, but not vice-versa:
 For any field $k$, the scheme $\Spec k[x_1, x_2] / (x_1 x_2)$ is connected but at the same time union $\Spec k[x_1, x_2] / (x_1) \cup \Spec k[x_1, x_2] / (x_2)$ of proper closed subsets and therefore reducible.
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\begin{tikzpicture}[thick, scale = 2]
 		\draw (-1, 0) -- (1, 0) node[below] {$x_1$};
@@ -647,7 +658,7 @@ In fact, we can give two separate definitions which will turn out to agree.
 	Fix a scheme $S \in \Sch$.
 	In this section, we will consider \defineterm[S-scheme@$S$-scheme]{$S$-schemes}, i.e. elements of the slice category $\Sch_{/ S}$ of schemes over $S$.
 
-	When $S = \Spec k$ for $k$ a field, we will simply speak of $k$-schemes.
+	When $S = \Spec k$ for $k$ a field, we will simply speak of $k$-schemes and write $\Sch_{/ k} \coloneq \Sch_{/ \Spec k}$.
 \end{definition}
 Note that $\Sch_{/ \Spec \Z} \isom \Sch$ since $\Spec \Z$ is terminal in $\Sch$.
 
@@ -800,6 +811,141 @@ We now resume talking about fibres.
 	% TODO explain this better!
 	Finally, to see that $g^{-1}\colon f^{-1}(y) \to |X_y|$ is continuous, we note that we have a basis for the topology on $X_y$ consisting of sets of the form $D(b / s)$ with $b / s \in S^{-1} B$, i.e. they are of the form $D(b) \cap f^{-1}(y)$.
 \end{proof}
+
+\subsection{Base Change}
+Let $\phi\colon R \to S$ be a morphism of schemes.
+We define a functor $\Sch_{/ S} \to \Sch_{/ R}$, $(X \xto{f} S) \mapsto (X_R \xto{g} R)$ through the pullback diagram
+\begin{equation*}
+	\begin{tikzcd}
+		X_R \coloneq X \times_S R
+				\ar[r]
+				\ar[d, swap, "g"]
+				\ar[dr, phantom, "\lrcorner" very near start]
+			& X
+				\ar[d, "f"]
+		\\
+		R 
+				\ar[r, swap, "\phi"]
+			& S
+	\end{tikzcd}
+\end{equation*}
+on objects.
+If $\alpha\colon X \to Y$ is a morphism of $S$-schemes, we then define $\alpha_R\colon X_R \to Y_R$ via the commutative cube
+\begin{equation*}
+	\begin{tikzcd}
+		X_R
+				\ar[rr]
+				\ar[dd, swap, "g"]
+				\ar[dr, dashed, swap, "\alpha_R"]
+			& & X
+				\ar[dd, swap, "f\;" near start]
+				\ar[dr, "\alpha"]
+		\\
+			& Y_R
+				\ar[rr, crossing over]
+			& & Y
+				\ar[dd]
+		\\
+		R 
+				\ar[rr, "\phi" near end]
+				\ar[dr, equals]
+			& & S
+				\ar[dr, equals]
+		\\
+			& R 
+				\ar[rr, "\phi"]
+				\ar[from = uu, crossing over]
+			& & S
+	\end{tikzcd}
+\end{equation*}
+induced by the universal property of the pullback.
+It is easy to check that this in fact defines a functor.
+\begin{definition}
+	Let $K / k$ be a field extension and $X$ a $k$-scheme.
+	We define the set of \defineterm[K-rational point@$K$-rational point]{$K$-rational points} $X(K)$ of $X$ to be
+	\begin{equation*}
+		X(K) \coloneq \Sch_{/ k}(\Spec K, X)
+	\end{equation*}
+\end{definition}
+Observe that there is a bijection between $X(K)$ and the $K$-rational points $X_K(K)$ of the base change along $\Spec K \to \Spec k$:
+This follows from the universal property of the pushout in the diagram
+\begin{equation*}
+	\begin{tikzcd}
+		\Spec K
+				\ar[dr, dashed, "\exists!"]
+				\ar[drr, bend left = 20]
+				\ar[ddr, equals, bend right = 18]
+		\\[-1em]
+			&[-2.2em] X_K
+				\ar[r]
+				\ar[d]
+				\ar[dr, phantom, "\lrcorner" very near start]
+			& K
+				\ar[d]
+		\\
+			& \Spec K 
+				\ar[r]
+			& \Spec k
+	\end{tikzcd}
+\end{equation*}
+We can combine this with our discussion of fibres:
+\begin{definition}
+	Let $f\colon X \to Y$ be a morphism of schemes, let $y \in Y$ be a point with residue field $k(y)$, and fix an algebraic closure $\close{k(y)}$ of $k(y)$.
+	The \defineterm[fibre!geometric]{geometric fibre} $X_{\close{y}}$ of $X$ over $y$ is defined by the pullback
+	\begin{equation*}
+		\begin{tikzcd}
+			X_{\close{y}}
+					\ar[r]
+					\ar[d]
+					\ar[dr, pullback marker]
+				& X_y
+					\ar[r]
+					\ar[d]
+					\ar[dr, pullback marker]
+				& X
+					\ar[d]
+			\\
+			\Spec \close{k(y)}
+					\ar[r]
+				& \Spec k(y)
+					\ar[r]
+				& Y
+		\end{tikzcd}
+	\end{equation*}
+\end{definition}
+Note that by pullback pasting the outer rectangle is also a pullback square.
+\begin{example}
+	Fix a field $k$ and an algebraic closure $\close{k}$ of $k$ and consider the $k$-scheme $\A^1_k$.
+	Since $\A^1_k$ is already the fibre of the unique morphism $\A^1_k \to \Spec k = \{(0)\}$, its geometric fibre is given by
+	\begin{equation*}
+		\begin{tikzcd}
+			\mathllap{(\A^1_k)_{\close{(0)}} =\ } \A^1_{\close{k}} 
+					\ar[r]
+					\ar[d]
+					\ar[dr, pullback marker]
+				& \A^1_k
+					\ar[d]
+			\\
+			\Spec \close{k}
+					\ar[r]
+				& \Spec k
+		\end{tikzcd}
+	\end{equation*}
+	In particular, note that $\A^1_k = \{(0)\} \cup \{(f) \mid f \in k[x] \text{ irreducible}\}$ whereas $\A^1_{\close{k}} = \{0\} \cup \{(x - \lambda) \mid \lambda \in \close{k}\} \leftrightarrow \{(0)\} \cup \close{k}$: 
+	Unless $k = \close{k}$ already, the geometric fibre has fewer points than the ordinary fibre.
+\end{example}
+\begin{example}
+	Let $k$ be a field and $\close{k}$ an algebraic closure of $k$.
+	Then the $\close{k}$-rational points of $\A^n_k$ are in bijection with $k^n$ for any $n$ since we have
+	\begin{equation*}
+		\A^n_k(\close{k}) = \A^n_{\close{k}}(\close{k}) \leftrightarrow k^n
+	\end{equation*}
+\end{example}
+\begin{example}
+	Consider an $\Z_{(p)}$-scheme $X \to \Spec \Z_{(p)}$ for some prime number $p$.
+	Then $\Spec \Z_{(p)} = \{\eta = (0), t = (p)\}$, so we have two fibres $X_\eta \to \Spec k(\eta) = \Spec \Q$ and $X_t \to \Spec k(t) = \Spec \F_p$ and therefore also two geometric fibres $X_{\close{\eta}} \to \Spec \close{\Q}$ and $X_{\close{t}} \to \Spec \close{\F_p}$.
+\end{example}
+
 \printbibliography
 \printindex
 \end{document}
