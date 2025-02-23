@@ -327,7 +327,7 @@ We then obtain the \defineterm{affine coordinate ring} $A(X) \coloneq k[x_1, \ld
 
 	If $U \subseteq \Spec A(X)$ is open and $s\colon U \to \coprod_{\ideal{p} \in U} A(X)_{\ideal{p}}$ is any section in $\cO_{A(X)}(U)$, we obtain a section $t \in (f_* \cO_X)(U) = \cO_X(U \cap \MaxSpec A(X))$ via
 	\begin{equation*}
-		t\colon U \cap \MaxSpec A(X) \xto{s|_{U \cap \MaxSpec A(X)}} \coprod_{\ideal{m} \in \MaxSpec A(X)} A_{\ideal{m}} \to k
+		t\colon U \cap \MaxSpec A(X) \xto{s|_{U \cap \MaxSpec A(X)}} \coprod_{\ideal{m} \in \MaxSpec A(X)} A(X)_{\ideal{m}} \to k
 	\end{equation*}
 	where the last map is obtained by observing that $A(X)_{\ideal{m}} / \ideal{m} A(X)_{\ideal{m}} \isom k$ for all $\ideal{m} \in \MaxSpec A(X)$ and applying this isomorphism to each component.
 	% TODO check
@@ -355,10 +355,14 @@ We then obtain the \defineterm{affine coordinate ring} $A(X) \coloneq k[x_1, \ld
 	The map $f^\sharp$ is given by the quotient map $f^\sharp\colon \cO_A(\Spec A) \isom A \surj A / (x) \isom k \isom (f_* \cO_k)(\Spec A)$, and its counterpart $g^\sharp\colon \cO_k(\Spec k) \isom k \incl A \isom (g_* \cO_A)(\Spec k)$ is the canonical inclusion.
 	Then $(g, g^\sharp) \circ (f, f^\sharp) = \id_{(\Spec k, \cO_k)}$, but $(f, f^\sharp) \circ (g, g^\sharp) \neq \id_{(\Spec A, \cO_A)}$: $f^\sharp \circ g^\sharp$ is the composite $A \surj k \incl A \neq \id_A$.
 \end{example}
-% TODO Exercise 26
-\begin{exercise}
-	TODO
-\end{exercise}
+\begin{proposition}\label{prp:affinclleftadj}
+	The inclusion $i\colon \AffSch \incl \Sch$ has a left adjoint $l\colon \Sch \to \AffSch$ given by $l((X, \cO_X)) \coloneq \Spec \Gamma(X, \cO_X)$ on objects.
+	In other words, there are natural isomorphisms
+	\begin{equation*}
+		\AffSch(\Spec \Gamma(X, \cO_X), Y) \isom \Sch(X, Y)
+	\end{equation*}
+	for any scheme $X$ and affine scheme $Y$.
+\end{proposition}
 Here are two special cases of this:
 \begin{example}
 	\leavevmode
@@ -549,8 +553,8 @@ It is natural to ask (and to expect true) whether this already implies that any 
 \subsection{Open and Closed Subschemes}
 Recall that if $U \subseteq X$ is an open subset of a scheme $(X, \cO_X)$, then $(U, \cO_X|_U)$ is an open subscheme of $X$ (in particular it is again a scheme).
 \begin{remark}
-	If $\Spec B \subseteq \Spec A$ is an open affine subscheme of an affine scheme, then $\Spec B = \bigcup_{i = 1}^n \Spec A_{a_i}$ for suitable $a_1, \ldots a_n \in A$.
-	If $b_i$ is the image of $a_i$ under the associated ring homomorphism $A \to B$, then it holds that $\Spec A_{a_i} = \Spec B_{b_i}$ (this we showed in the proof of the preceding proposition).
+	If $\Spec B \subseteq \Spec A$ is an open affine subscheme of an affine scheme, then $\Spec B = \bigcup_{i = 1}^n \Spec A_{a_i}$ for suitable $a_1, \ldots, a_n \in A$.
+	If $b_i$ is the image of $a_i$ under the associated ring homomorphism $A \to B$, then $\Spec A_{a_i} = \Spec B_{b_i}$ (this we showed in the proof of the preceding proposition).
 \end{remark}
 \begin{remark}
 	An open subscheme of an affine scheme need not again be affine.
@@ -667,21 +671,14 @@ Note that $\Sch_{/ \Spec \Z} \isom \Sch$ since $\Spec \Z$ is terminal in $\Sch$.
 In this section we will be interested in studying products in $\Sch_{/ S}$, or equivalently pullbacks (or \defineterm[fibre product]{fibre products}) in $\Sch$.
 
 As a first step, let us treat the case that all involved schemes are affine.
-Recalling that $\CRing$ has pushouts, given by the relative tensor product $A \tensor_B C$, we obtain that $\AffSch$ has pullbacks via remark \ref{prp:sch:ringaff}.
-We then have the following:
 \begin{proposition}
-	The inclusion $i\colon \AffSch \incl \Sch$ has a left adjoint $l\colon \Sch \to \AffSch$ given by $l((X, \cO_X)) \coloneq \Spec \Gamma(X, \cO_X)$ on objects.
-	In other words, there are natural isomorphisms
-	\begin{equation*}
-		\AffSch(\Spec \Gamma(X, \cO_X), Y) \isom \Sch(X, Y)
-	\end{equation*}
-	for any scheme $X$ and affine scheme $Y$.
+	The inclusion $\AffSch \incl \Sch$ preserves arbitrary limits, in particular pullbacks.
+	Moreover $\AffSch$ has all pullbacks, and the pullback of a cospan $\Spec A \rightarrow \Spec C \leftarrow \Spec B$ in $\AffSch$ is given by $\Spec A \tensor_C B$.
 \end{proposition}
 \begin{proof}
-	TODO.
+	The first statement is an immediate consequence of the fact that the inclusion admits a left adjoint, see Proposition \ref{prp:affinclleftadj}.
+	The second follows from the equivalence $\AffSch \simeq \op{\CRing}$ of Remark \ref{prp:sch:ringaff}.
 \end{proof}
-As a consequence, the inclusion $\AffSch \incl \Sch$ preserves limits, in particular pullbacks, so the fibre product of $\Spec A \leftarrow \Spec B \rightarrow \Spec C$ in $\Sch$ is given by $\Spec A \tensor_B C$ together with the obvious structure maps.
-
 Before moving on to the general proof, let us discuss some applications and properties.
 \begin{remark}
 	Let $X$ be an $S$-scheme, $Z$ a $T$-scheme, and $Y$ both an $S$- and $T$-scheme.
@@ -712,7 +709,7 @@ Before moving on to the general proof, let us discuss some applications and prop
 	Let $Y$ be a scheme, $y \in Y$ a point, and define the \defineterm{residue field} $k(y) \coloneq \cO_{Y, y} / \ideal{m}_y$ of $y$ where $\ideal{m}_y \subset \cO_{Y, y}$ is the maximal ideal.
 	We then have a morphism of schemes $\Spec k(y) \to Y$ taking the unique point of $\Spec k(y)$ to $y$ and on structure sheaves being given by the composite 
 	\begin{equation*}
-		\cO_Y \to \cO_{Y, y} \surj i_* k(y)
+		\cO_Y \to \cO_{Y, y} \surj k(y) \isom i_* \cO_{k(y)}
 	\end{equation*}
 	Let now $f\colon X \to Y$ be a morphism of schemes.
 	The \defineterm{fibre} of $f$ over $y$ is the fibre product
