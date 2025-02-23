@@ -363,6 +363,9 @@ We then obtain the \defineterm{affine coordinate ring} $A(X) \coloneq k[x_1, \ld
 	\end{equation*}
 	for any scheme $X$ and affine scheme $Y$.
 \end{proposition}
+\begin{proof}
+	TODO
+\end{proof}
 Here are two special cases of this:
 \begin{example}
 	\leavevmode
@@ -440,7 +443,7 @@ Although it holds that $X$ being integral implies all its stalks being integral,
 Note also that integral implies reduced but not vice-versa: 
 Take for instance $\Spec k[x_1, x_2] / (x_1 x_2)$.
 Note also that open subset of an irreducible space are again irreducible.
-\begin{proposition}
+\begin{proposition}\label{prp:intiffirredred}
 	A scheme $(X, \cO_X)$ is integral iff it is irreducible and reduced.
 \end{proposition}
 Before the proof, let us prove a quick lemma.
@@ -449,9 +452,14 @@ Before the proof, let us prove a quick lemma.
 	Then the set $\{x \in U \mid s_x \in \ideal{m}_x\} \subseteq U$ is closed in $U$, where $\ideal{m}_x \subset \cO_{X, x}$ is the maximal ideal.
 \end{lemma}
 \begin{proof}
-	TODO.
+	Write $I_s \coloneq \{x \in U \mid s_x \notin \ideal{m}_x\}$.
+	We will show that $I_s$ is open in $U$.
+	To that end, note that $s_x \notin \ideal{m}_x$ is to say that $s_x$ is a unit since $\cO_{X, x}$ is local.
+	If $s_x^{-1} \in \cO_{X, x}$ is its inverse, then by definition of the stalk we find sections $s_V, s_V^{-1} \in \cO_X(V)$ on some open neighborhood $x \in V \subseteq U$ representing $s_x$ and $s_x^{-1}$, respectively, but then in particular we have that $s_V s_V^{-1} = 1$.
+	Noting that we may take $s_V = s|_V$ we find that $s_y \notin \ideal{m}_y$ for all $y \in V$.
+	In other words, $I_s$ contains an open neighborhood around each of its points and must therefore be open.
 \end{proof}
-\begin{proof}[Proof of proposition]
+\begin{proof}[Proof of Proposition \ref{prp:intiffirredred}]
 	If $(X, \cO_X)$ is integral then it is reduced.
 	If $X$ was not irreducible, then we could find non-empty proper open subsets $U_1, U_2 \subset X$ with $U_1 \cap U_2 = \emptyset$.
 	But this implies $\Gamma(U_1 \cup U_2, \cO_X) = \Gamma(U_1, \cO_X) \times \Gamma(U_2, \cO_X)$ which is not an integral domain, contradiction.
