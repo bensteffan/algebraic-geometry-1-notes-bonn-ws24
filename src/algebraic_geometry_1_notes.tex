@@ -567,6 +567,14 @@ Recall that if $U \subseteq X$ is an open subset of a scheme $(X, \cO_X)$, then 
 \begin{remark}
 	An open subscheme of an affine scheme need not again be affine.
 	For instance, $\A^n_k \setminus \{0\} \subset \A^n_k$ is open but not affine if $n \geq 2$ for any field $k$.
+
+	Why is this the case? Let us consider what happens for $n = 2$.
+	To see this, note that we have $\A^2_k \setminus \{0\} = D(x_1) \cup D(x_2)$.
+	Since all rings involved are integral, the restriction maps to $D(x_1)$, $D(x_2)$, and $D(x_1) \cap D(x_2) = D(x_1 x_2)$ are all injective, so $\Gamma\big(U, \cO_{\A^2_k}\big)$ consists of pairs of functions $f \in \Gamma\big(D(x_1), \cO_{\A^2_k}\big) = k[x_1, x_2, x_1^{-1}]$ and $g \in \Gamma\big(D(x_2), \cO_{\A^2_k}\big) = k[x_1, x_2, x_2^{-1}]$ agreeing when restricted to $\Gamma(D(x_1 x_2), \cO_{\A^n_k}) = k[x_1, x_2, (x_1 x_2)^{-1}]$.
+	Thus $f$ and $g$ must be polynomials, so $\Gamma\big(U, \cO_{\A^2_k}\big) = k[x_1, x_2]$.
+
+	In other words, if $U$ was affine we would have to have $U \isom \A^2_k$ again.
+	But note that $V(x_1) \cap V(x_2) = V(x_1, x_2) = \emptyset$ in $U$, contradicting the fact that we should have $I(V(x_1, x_2)) = (x_1, x_2)$.
 \end{remark}
 Closed subschemes are not quite as straightforward.
 In fact, we can give two separate definitions which will turn out to agree.
@@ -764,10 +772,10 @@ We will now prove the existence of fibre products.
 We now resume talking about fibres.
 \begin{proposition}
 	Let $f\colon X \to Y$ be a morphism of schemes.
-	Then there is a homeomorphism from $|X_y|$ to $f^{-1}(Y)$.
+	Then there is a homeomorphism from $|X_y|$ to $f^{-1}(y)$ for any point $y \in Y$.
 \end{proposition}
 \begin{proof}
-	The commutativity of diagram \eqref{diag:sch:fibre} implies that $p$ lands in $f^{-1}(y)$, so we have a continuous map $g\colon |X_y| \to f^{-1}(y)$.
+	The commutativity of diagram \eqref{diag:sch:fibre} implies that the image of $p$ lands in $f^{-1}(y)$, so we have a continuous map $g \coloneq |p|\colon |X_y| \to f^{-1}(y)$.
 	To see that $g$ is surjective, pick any element $x \in f^{-1}(y)$ and consider the diagram
 	\begin{equation*}
 		\begin{tikzcd}
@@ -888,7 +896,7 @@ This follows from the universal property of the pushout in the diagram
 				\ar[r]
 				\ar[d]
 				\ar[dr, phantom, "\lrcorner" very near start]
-			& K
+			& X
 				\ar[d]
 		\\
 			& \Spec K 
@@ -923,15 +931,15 @@ We can combine this with our discussion of fibres:
 \end{definition}
 Note that by pullback pasting the outer rectangle is also a pullback square.
 \begin{example}
-	Fix a field $k$ and an algebraic closure $\close{k}$ of $k$ and consider the $k$-scheme $\A^1_k$.
-	Since $\A^1_k$ is already the fibre of the unique morphism $\A^1_k \to \Spec k = \{(0)\}$, its geometric fibre is given by
+	Fix a field $k$ and an algebraic closure $\close{k}$ of $k$ and consider the $k$-scheme $\A^n_k$.
+	Since $\A^n_k$ is already the fibre of the unique morphism $\A^n_k \to \Spec k = \{(0)\}$, its geometric fibre is given by
 	\begin{equation*}
 		\begin{tikzcd}
-			\mathllap{(\A^1_k)_{\close{(0)}} =\ } \A^1_{\close{k}} 
+			\mathllap{(\A^n_k)_{\close{(0)}} =\ } \A^n_{\close{k}} 
 					\ar[r]
 					\ar[d]
 					\ar[dr, pullback marker]
-				& \A^1_k
+				& \A^n_k
 					\ar[d]
 			\\
 			\Spec \close{k}
@@ -939,15 +947,20 @@ Note that by pullback pasting the outer rectangle is also a pullback square.
 				& \Spec k
 		\end{tikzcd}
 	\end{equation*}
+	(note that $k[x_1, \ldots, x_n] \tensor_k \close{k} \isom \close{k}[x_1, \ldots, x_n]$).
 	In particular, note that $\A^1_k = \{(0)\} \cup \{(f) \mid f \in k[x] \text{ irreducible}\}$ whereas $\A^1_{\close{k}} = \{0\} \cup \{(x - \lambda) \mid \lambda \in \close{k}\} \leftrightarrow \{(0)\} \cup \close{k}$: 
 	Unless $k = \close{k}$ already, the geometric fibre has fewer points than the ordinary fibre.
 \end{example}
 \begin{example}
 	Let $k$ be a field and $\close{k}$ an algebraic closure of $k$.
-	Then the $\close{k}$-rational points of $\A^n_k$ are in bijection with $k^n$ for any $n$ since we have
-	\begin{equation*}
-		\A^n_k(\close{k}) = \A^n_{\close{k}}(\close{k}) \leftrightarrow k^n
-	\end{equation*}
+	Then the $\close{k}$-rational points of $\A^n_k$ are in bijection with $\close{k}^n$ for any $n$ since we have
+	\begin{align*}
+		\A^n_k(\close{k}) &= \A^n_{\close{k}}(\close{k}) \\
+						  &= \Sch_{/ \close{k}}\big(\Spec \close{k}, \A^n_{\close{k}}\big) \\
+						  &= \Sch\big(\Spec \close{k}, \A^n_{\close{k}}\big) \\
+						  &\isom \CRing\big(\close{k}[x_1, \ldots, x_n], \close{k}\big) \\
+						  &\leftrightarrow \close{k}^n
+	\end{align*}
 \end{example}
 \begin{example}
 	Consider an $\Z_{(p)}$-scheme $X \to \Spec \Z_{(p)}$ for some prime number $p$.
