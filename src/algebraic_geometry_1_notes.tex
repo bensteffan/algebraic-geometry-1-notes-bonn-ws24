@@ -1,7 +1,5 @@
 \documentclass[wip, algebra]{bsteffan-lecturenotes}
 
-\usepackage{stmaryrd}
-
 \addbibresource{references.bib}
 
 \newcommand{\cO}{\mathcal{O}}
@@ -22,21 +20,6 @@
 \DefineCategory{LocRingSpc}
 \DefineCategory{RingSpc}
 \DefineCategory{Ouv}
-
-\NewDocumentCommand{\defineterm}{om}{%
-	\emph{#2}\index{\IfNoValueTF{#1}{#2}{#1}}%
-}
-
-\tikzcdset{
-	pushout marker/.style = {
-		phantom,
-		"\ulcorner" very near start
-	},
-	pullback marker/.style = {
-		phantom,
-		"\lrcorner" very near start
-	},
-}
 
 \course{Algebraic Geometry \uppercase\expandafter{\romannumeral 1\relax}}
 \lecturer{Prof. Dr. Daniel Huybrechts}
@@ -295,19 +278,19 @@ We thus have a chain of subcategory inclusions
 \end{equation*}
 of which the first two are full.
 \begin{remark}\label{prp:sch:ringaff}
-	Proposition \ref{prp:sch:morphbij} implies that we have an equivalence of categories 
+	\Cref{prp:sch:morphbij} implies that we have an equivalence of categories 
 	\begin{align*}
 		\op{\CRing} &\xto{\eqv} \AffSch \\
 		A &\mapsto (\Spec A, \cO_{\Spec A})
 	\end{align*}
 \end{remark}
 \begin{remark}
-	Recall the example from Remark \ref{rmk:sch:nonlocal} and note that the induced map $(\Spec Q(A), \cO_{\Spec Q(A)}) \to (\Spec A, \cO_{\Spec A})$ \emph{is} a morphism of local rings.
+	Recall the example from \cref{rmk:sch:nonlocal} and note that the induced map $(\Spec Q(A), \cO_{\Spec Q(A)}) \to (\Spec A, \cO_{\Spec A})$ \emph{is} a morphism of local rings.
 \end{remark}
 
 \subsection{From Classical Algebraic Geometry to Scheme Theory}
 Let $k$ be an algebraically closed field and $X \subseteq k^n$ an affine algebraic set, say $X = V(\ideal{a})$ for some ideal $\ideal{a} \subseteq k[x_1, \ldots, x_n]$.
-Then $X$ comes with a sheaf, its sheaf of regular functions $\cO_X$ (see example \ref{epl:sch:examples}), which gives a ringed space $(X, \cO_X)$.
+Then $X$ comes with a sheaf, its sheaf of regular functions $\cO_X$ (see \cref{epl:sch:examples}), which gives a ringed space $(X, \cO_X)$.
 In general $(X, \cO_X)$ is not a scheme, but we can associate to it a scheme as follows:
 Consider the ideal $I(X) \subseteq k[x_1, \ldots, x_n]$ given by 
 \begin{equation*}
@@ -459,7 +442,7 @@ Before the proof, let us prove a quick lemma.
 	Noting that we may take $s_V = s|_V$ we find that $s_y \notin \ideal{m}_y$ for all $y \in V$.
 	In other words, $I_s$ contains an open neighborhood around each of its points and must therefore be open.
 \end{proof}
-\begin{proof}[Proof of Proposition \ref{prp:intiffirredred}]
+\begin{proof}[Proof of \cref{prp:intiffirredred}]
 	If $(X, \cO_X)$ is integral then it is reduced.
 	If $X$ was not irreducible, then we could find non-empty proper open subsets $U_1, U_2 \subset X$ with $U_1 \cap U_2 = \emptyset$.
 	But this implies $\Gamma(U_1 \cup U_2, \cO_X) = \Gamma(U_1, \cO_X) \times \Gamma(U_2, \cO_X)$ which is not an integral domain, contradiction.
@@ -692,8 +675,8 @@ As a first step, let us treat the case that all involved schemes are affine.
 	Moreover $\AffSch$ has all pullbacks, and the pullback of a cospan $\Spec A \rightarrow \Spec C \leftarrow \Spec B$ in $\AffSch$ is given by $\Spec A \tensor_C B$.
 \end{proposition}
 \begin{proof}
-	The first statement is an immediate consequence of the fact that the inclusion admits a left adjoint, see Proposition \ref{prp:affinclleftadj}.
-	The second follows from the equivalence $\AffSch \simeq \op{\CRing}$ of Remark \ref{prp:sch:ringaff}.
+	The first statement is an immediate consequence of the fact that the inclusion admits a left adjoint, see \cref{prp:affinclleftadj}.
+	The second follows from the equivalence $\AffSch \simeq \op{\CRing}$ of \cref{prp:sch:ringaff}.
 \end{proof}
 Before moving on to the general proof, let us discuss some applications and properties.
 \begin{remark}
@@ -995,7 +978,7 @@ In other words, the square at the left being a pullback does not imply the squar
 			& {|S|}
 	\end{tikzcd}
 \end{equation*}
-Consider for instance $X = R = \Spec \C$ and $S = \Spec \R$ so that $X_R = \Spec \C \times_{\Spec \R} \Spec \C \isom \Spec \C[x] / (x + i)(x - i)$, i.e. $|X_R| = \{(x - i), (x + i)\}$ whereas $|X| \times_{|S|} |R|$ is a singleton (cf. example \ref{epl:sch:fpR}).
+Consider for instance $X = R = \Spec \C$ and $S = \Spec \R$ so that $X_R = \Spec \C \times_{\Spec \R} \Spec \C \isom \Spec \C[x] / (x + i)(x - i)$, i.e. $|X_R| = \{(x - i), (x + i)\}$ whereas $|X| \times_{|S|} |R|$ is a singleton (cf. \cref{epl:sch:fpR}).
 In particular, note that connectedness is not preserved under fibre products.
 
 The other warning concerns base change along endomorphisms.
@@ -1026,7 +1009,80 @@ Note that $X \isom X^\sigma$ as schemes, but generally not as $k$-schemes:
 % TODO \P^1_C example
 
 \section{Morphisms of Schemes}
-We will now discuss a number of properties of morphisms of schemes.
+We will now discuss a bunch of properties of morphisms of schemes.
+A lot of these are going to be \enquote{reasonable,} in the following sense:
+\begin{definition}[{\cite[Paragraph 8.1.1]{vakil_rising_2025}}]
+	A class $\symcal{A}$ of morphisms of schemes is called \defineterm[reasonable class of morphisms]{reasonable} if it has all of the following properties:
+	\begin{enumerate}
+		\item $\symcal{A}$ is closed under composition.
+		\item $\symcal{A}$ is closed under base change.
+		\item\label{en:sch:localontarget} $\symcal{A}$ is \emph{local on the target}.
+			This means that\textellipsis{}
+			\begin{enumerate}
+				\item for all $(f\colon X \to Y) \in \symcal{A}$ and all open subsets $V \subseteq Y$, the restriction $f|_{f^{-1}(V)}\colon f^{-1}(V) \to V$ is in $\symcal{A}$, and
+				\item a morphism $f\colon X \to Y$ of schemes is in $\symcal{A}$ if there exists an open cover $Y = \bigcup_{i \in I} V_i$ of $Y$ such that $f|_{f^{-1}(V_i)} \in \symcal{A}$ for all $i \in I$.
+			\end{enumerate}
+	\end{enumerate}
+\end{definition}
+\begin{proposition}[{\cite[Exercise 8.1.A]{vakil_rising_2025}}]
+	Let $\symcal{A}$ be a reasonable class of morphisms of schemes (not necessarily satisfying property \lref{en:sch:localontarget}).
+	Given $(f\colon X \to Y), (g\colon X' \to Y') \in \symcal{A}$ where $X, Y, X', Y' \in \Sch_{/ S}$ for some $S \in \Sch$, then $f \times_S g\colon X \times_S X' \to Y \times_S Y'$ is in $\symcal{A}$.
+\end{proposition}
+\begin{proof}
+	Consider the diagram
+	\begin{equation*}
+		\begin{tikzcd}
+			X \times_S X'
+					\ar[r, "\id_X \times_S g"]
+					\ar[d]
+				&[1.4em] X \times_S Y'
+					\ar[r]
+					\ar[d]
+					\ar[dr, phantom, "\lrcorner" very near start]
+				& X
+					\ar[d]
+			\\
+			X' 
+					\ar[r, "g"]
+				& Y'
+					\ar[r]
+				& S
+		\end{tikzcd}
+	\end{equation*}
+	Since the right-hand square and the outer rectangle are pullbacks, so, too, is the left-hand square, whence $\id_X \times_S g \in \symcal{A}$ since $\symcal{A}$ is closed under base change.
+	By the same argument we find $f \times_S \id_{Y'} \in \symcal{A}$, so altogether $f \times_S g = (f \times_S \id_{Y'}) \circ (\id_X \times_S g) \in \symcal{A}$.
+\end{proof}
+\begin{definition}\label{def:sch:diagonal}
+	Given a morphism $f\colon X \to Y$ of schemes, its \defineterm{diagonal} $\Delta_f = \Delta_{X / Y}\colon X \to X \times_Y X$ is given by the pullback
+	\begin{equation*}
+		\begin{tikzcd}
+			X
+					\ar[dr, dashed, "\Delta_f" near end]
+					\ar[drr, equals, bend left = 20]
+					\ar[ddr, equals, bend right = 18]
+			\\[-.7em]
+				&[-1.5em] X \times_Y X
+					\ar[r]
+					\ar[d]
+					\ar[dr, phantom, "\lrcorner" very near start]
+				& X
+					\ar[d, "f"]
+			\\
+				& X
+					\ar[r, swap, "f"]
+				& Y
+		\end{tikzcd}
+	\end{equation*}
+\end{definition}
+Given a reasonable class $\symcal{A}$ of morphisms of schemes, we write $\symcal{A}\delta$ for the class of all morphisms of schemes whose diagonal lies in $\symcal{A}$.
+\begin{theorem}[Cancellation Theorem, {\cite[Theorem 11.1.1]{vakil_rising_2025}}]
+	Let $\symcal{A}$ be a reasonable class of morphisms of schemes (not necessarily satisfying property \lref{en:sch:localontarget}).
+	Given morphisms $X \xto{f} Y \xto{g} Z$ of schemes, if $g \circ f \in \symcal{A}$ and $g \in \symcal{A}\delta$, then $f \in \symcal{A}$.
+\end{theorem}
+\begin{proof}
+	TODO	
+\end{proof}
+
 To start, we have a number of purely topological properties:
 \begin{definition}
 	Let $f\colon X \to Y$ be a morphism of schemes.
@@ -1056,6 +1112,13 @@ We also have some purely scheme-theoretic properties:
 		\item \defineterm[morphism of schemes!finite]{finite} if it is affine and $B_i \coloneq f^{-1}(\Spec A_i)$ is a finite $A_i$-module for all $i$.
 	\end{enumerate}
 \end{definition}
+\begin{proposition}\label{prp:sch:surjringmapclosedimm}
+	Let $\phi\colon A \to B$ be a surjective ring map.
+	Then $\Spec \phi\colon \Spec B \to \Spec A$ is a closed immersion onto $V(\ker \phi) \subseteq \Spec A$.
+\end{proposition}
+\begin{proof}
+	This follows from the fact that $\phi$ induces an isomorphism $A / \ker \phi \isom B$.
+\end{proof}
 We will now discuss some \enquote{standard tricks} when working with properties of morphisms of schemes.
 \begin{proposition}\label{prp:sch:basicloc}
 	If $f\colon \Spec B \to \Spec A$ is a morphism induced by a morphism $\phi\colon A \to B$ of rings, then $f^{-1}(\Spec A_s) = \Spec B_t$ for all $s \in A$ and $t \in B$ with $\phi(s) = t$.
@@ -1081,7 +1144,7 @@ We will now discuss some \enquote{standard tricks} when working with properties 
 	If $X = \bigcup_{i \in I} \Spec B_i$ is a covering of $X$ by open affine subschemes, then $f^{-1}(\Spec A_s) = \Spec (B_i)_t$ for all $s \in A$, $t_i \in B_i$ such that the ring map associated to the restriction $f|_{\Spec B_i}$ takes $s$ to $t_i$.
 \end{proposition}
 \begin{proof}
-	This is a direct consequence of proposition \ref{prp:sch:basicloc}.
+	This is a direct consequence of \cref{prp:sch:basicloc}.
 \end{proof}
 \begin{proposition}
 	Assume $\phi\colon A \to B$ is a ring homomorphism and $b_i \in B$ be a collection of elements such that $(b_i \mid i \in I) = B$.
@@ -1149,31 +1212,32 @@ This has the following immediate consequence:
 
 \subsection{Separated and Proper Morphism}
 \begin{definition}
-	A morphism $f\colon X \to Y$ of schemes is \defineterm[morphism of schemes!separated]{separated} if the diagonal $\Delta_f = \Delta_{X / Y}\colon X \to X \times_Y X$ defined by the pullback
-	\begin{equation*}
-		\begin{tikzcd}
-			X
-					\ar[dr, dashed, "\Delta_f" near end]
-					\ar[drr, equals, bend left = 20]
-					\ar[ddr, equals, bend right = 18]
-			\\[-.7em]
-				&[-1.5em] X \times_Y X
-					\ar[r]
-					\ar[d]
-					\ar[dr, phantom, "\lrcorner" very near start]
-				& X
-					\ar[d, "f"]
-			\\
-				& X
-					\ar[r, swap, "f"]
-				& Y
-		\end{tikzcd}
-	\end{equation*}
-	is a closed immersion.
+	A morphism $f\colon X \to Y$ of schemes is \defineterm[morphism of schemes!separated]{separated} if the diagonal $\Delta_f\colon X \to X \times_Y X$ (cf. \cref{def:sch:diagonal}) is a closed immersion.
 \end{definition}
 \begin{example}
 	Morphisms $f\colon \Spec B \to \Spec A$ between affine schemes are always separated: 
-	$f$ corresponds to a ring map $A \to B$, and $\Delta_f$ to the ring map $\phi\colon B \tensor_A B \surj B$, whence $\Delta_f$ is an isomorphism from $\Spec B$ onto $V(\ker \phi) \subseteq \Spec(B \tensor_A B)$.
+	If $f$ corresponds to the ring map $\phi\colon A \to B$, then $\Delta_f$ corresponds to the ring map $\psi\colon B \tensor_A B \to B$ in the pushout diagram
+	\begin{equation*}
+		\begin{tikzcd}
+			A
+					\ar[r, "\phi"]
+					\ar[d, swap, "\phi"]
+				& B
+					\ar[d]
+					\ar[ddr, bend left, equals]
+				&[-1.5em]
+			\\
+			B
+					\ar[r]
+					\ar[drr, bend right = 21, equals]
+				& B \tensor_A B
+					\ar[dr, dashed, "\psi"]
+					\ar[ul, phantom, "\ulcorner" very near start]
+			\\[-1em]
+				& & B
+		\end{tikzcd}
+	\end{equation*}
+	This means $\psi$ is injective, so $\Delta_f$ is a closed immersion by \cref{prp:sch:surjringmapclosedimm}.
 
 	Similarly, every affine morphism is separated, and so are open and closed immersions.
 \end{example}
@@ -1188,8 +1252,24 @@ In fact, we can weaken the condition of $\Delta_f$ being a closed immersion some
 	A morphism $f\colon X \to Y$ of schemes is \defineterm[morphism of schemes!proper]{proper} if it is separated, of finite type, and \defineterm[morphism of schemes!universally closed]{universally closed}, i.e. all pullbacks of $f$ are closed maps.
 \end{definition}
 \begin{example}
-	The map $\A^1_k \to \Spec k$ where $k$ is a field is closed but not universally so.
-	On the other hand, the map $\P^1_k \to \Spec k$ is proper.
+	The map $\A^1_k \to \Spec k$ where $k$ is a field is closed but not universally so:
+	For instance, the left hand map in the pullback diagram
+	\begin{equation*}
+		\begin{tikzcd}
+			\A^2_k
+					\ar[r]
+					\ar[d]
+					\ar[dr, phantom, "\lrcorner" very near start]
+				& \A^1_k
+					\ar[d]
+			\\
+			\A^1_k
+					\ar[r]
+				& \Spec k
+		\end{tikzcd}
+	\end{equation*}
+	is not closed.
+	On the other hand, the map $\P^1_k \to \Spec k$ is proper, as we will see later.
 	% TODO proof
 \end{example}
 \begin{example}
