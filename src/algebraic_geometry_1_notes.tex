@@ -10,10 +10,13 @@
 \newcommand{\A}{\mathbb{A}}
 \renewcommand{\P}{\mathbb{P}}
 
-\newcommand{\Nil}{\operatorname{Nil}}
-\newcommand{\Proj}{\operatorname{Proj}}
+\newcommand{\Nil}{\mathrm{Nil}}
+\newcommand{\Proj}{\mathrm{Proj}}
+\newcommand{\Div}{\mathrm{Div}}
 
 \newcommand{\nisom}{\ncong}
+
+\DeclareNamedOperator{codim}
 
 \DefineCategory{Sh}
 \DefineCategory{Sch}
@@ -55,7 +58,7 @@ If $s \in \cF(U)$ is a section, then we will often denote its \emph{restriction}
 We will take the term \enquote{presheaf on $X$} sans further qualifiers to mean $\Ab$-valued presheaf on $X$.
 \begin{example}
 	Let $X$ and $Y$ be spaces.
-	\begin{enumerate}
+	\begin{alphanumerate}
 		\item Define a presheaf $\cF$ of sets on $X$ by putting 
 			\begin{equation*}
 				\cF(U) \coloneq \{f\colon X \to Y \mid f \text{ continuous}\}
@@ -65,7 +68,7 @@ We will take the term \enquote{presheaf on $X$} sans further qualifiers to mean 
 			Note that in this case pointwise addition and multiplication make $\cC_X$ into a presheaf of rings on $X$, although we will often consider it as simply as a presheaf of abelian groups.
 		\item Let $G$ be an abelian group.
 			Define the \defineterm[presheaf!constant]{constant presheaf} $\mathbb{G}$ with values in $G$ as $\mathbb{G}(U) \coloneq G$ for all $U \subseteq X$ open with all restriction maps the identity of $G$.
-	\end{enumerate}
+	\end{alphanumerate}
 \end{example}
 
 \section{Schemes}
@@ -85,7 +88,7 @@ Note that an isomorphism of ringed spaces is a map $(f, f^\sharp)\colon (X, \cO_
 In many cases (though not always) $f^\sharp$ will be naturally \enquote{induced} by $f$.
 \begin{example}\label{epl:sch:examples}
 	\leavevmode
-	\begin{enumerate}
+	\begin{alphanumerate}
 		\item If $X$ is a space and $\cO_X = \cC_X$ its sheaf of continuous functions, then $(X, \cO_X)$ is a ringed space.
 			Given a continuous map $f\colon X \to Y$, we obtain a morphism $(f, f^\sharp)\colon (X, \cO_X) \to (Y, \cO_Y)$ by 
 			\begin{align*}
@@ -108,7 +111,7 @@ In many cases (though not always) $f^\sharp$ will be naturally \enquote{induced}
 			\end{equation*}
 			together with the obvious restriction maps.
 			We call this ringed space the \defineterm[ringed space!associated with an affine algebraic set]{ringed space associated with the affine algebraic set $X$}.
-	\end{enumerate}
+	\end{alphanumerate}
 \end{example}
 Note that in examples 2 and 3, we cannot expect a general continuous map to induce a morphism of ringed spaces in the same way, since composing a smooth (respectively, holomorphic) map with a continuous function may not yield a smooth (respectively, holomorphic) map again.
 \begin{remark}
@@ -168,7 +171,7 @@ Note that in examples 2 and 3, we cannot expect a general continuous map to indu
 \end{definition}
 \begin{example}
 	The following are important examples of affine schemes:
-	\begin{enumerate}
+	\begin{alphanumerate}
 		\item $(\Spec \Z, \cO_{\Spec \Z})$.
 			For $D(a)$ a basic open set, we have $\cO_{\Spec \Z}(D(a)) \isom \Z_a$.
 		\item $(\Spec k, \cO_{\Spec k})$ for $k$ a field.
@@ -179,7 +182,7 @@ Note that in examples 2 and 3, we cannot expect a general continuous map to indu
 			We then have $\cO_{\Spec A}(\Spec A) = A$ and $\cO_{\Spec A}(\{(0)\}) = \cO_{\Spec A, (0)} = Q(A)$.
 		\item $(\Spec k[x]/(x^2), \cO_{\Spec k[x]/(x^2)})$ where $k$ is a field ($k[x] / (x^2)$ is known as the \defineterm[dual numbers]{ring of dual numbers} over $k$).
 			In this case $\Spec k[x]/(x^2)$ again consists of a single point, namely $(x)$.
-	\end{enumerate}
+	\end{alphanumerate}
 \end{example}
 Note that $(\Spec k, \cO_{\Spec k})$ and $(\Spec k[x]/(x^2), \cO_{\Spec k[x]/(x^2)})$ consist both of one point, yet are different: $\cO_{\Spec k}(\Spec k) = k$ while $\cO_{\Spec k[x]/(x^2)}(\Spec k[x]/(x^2)) = k[x] / (x^2)$.
 \begin{example}
@@ -353,11 +356,11 @@ We then obtain the \defineterm{affine coordinate ring} $A(X) \coloneq k[x_1, \ld
 Here are two special cases of this:
 \begin{example}
 	\leavevmode
-	\begin{enumerate}
+	\begin{alphanumerate}
 		\item Let $(X, \cO_X)$ be any scheme.
 			Since there is a unique ring map $\Z \to \Gamma(X, \cO_X)$, there is a unique morphism of schemes $X \to \Spec \Z$, i.e. $\Spec \Z$ is a terminal object of $\Sch$.
 		\item If $k$ is a field and $A$ a $k$-algebra, then the inclusion $k \incl A$ corresponds to a morphism $(\Spec A, \cO_A) \to (\Spec k, \cO_k)$.
-	\end{enumerate}
+	\end{alphanumerate}
 \end{example}
 Next, we want to briefly discuss how to create new schemes out of old via gluing.
 \begin{proposition}[{\cite[Exercise 4.4.A]{vakil_rising_2025}}]
@@ -370,13 +373,13 @@ Next, we want to briefly discuss how to create new schemes out of old via gluing
 \begin{example}
 	Let $k$ be a field and let $X_1 = X_2 = \A^1_k$ and $U_1 = U_2 = \A^1_k \setminus \{0\} = \Spec(k[x]_x)$. 
 	There are two interesting choices of morphism $(\phi, \phi^\sharp)\colon (U_1, \cO_{U_1}) \to (U_2, \cO_{U_2})$:
-	\begin{enumerate}
+	\begin{alphanumerate}
 		\item $(\phi, \phi^\sharp) = \id_{(U_1, \cO_{U_1})}$.
 			In this case we obtain the \defineterm{affine line with two origins}.
 		\item $(\phi, \phi^\sharp)$ is given by the ring isomorphism $k[x]_x \to k[x]_x$, $x \mapsto 1 / x$.
 			In this case we obtain the \defineterm{projective line} $\P^1_k$ over the field $k$.
 			% TODO pictures?
-	\end{enumerate}
+	\end{alphanumerate}
 \end{example}
 To make sense of this second example, assume that $k$ is algebraically closed and only consider maximal ideals.
 Then $\phi^{-1}((x - t)) = (x - 1 / t)$, so $\P^1_k$ identifies with $k^2 \setminus \{0\} / k^\times$, points of which we write as $[t_1 : t_2]$ (these are the familiar homogeneous coordinates).
@@ -385,12 +388,12 @@ Then $\phi^{-1}((x - t)) = (x - 1 / t)$, so $\P^1_k$ identifies with $k^2 \setmi
 We start out by listing some topological properties of schemes, i.e. properties that apply to the underlying space.
 \begin{definition}
 	Let $X = (X, \cO_X)$ be a scheme.
-	\begin{enumerate}
+	\begin{alphanumerate}
 		\item $X$ is \defineterm[scheme!connected]{connected} if $X$ is, i.e. if $X$ cannot be decomposed as the union of two disjoint proper non-empty subsets.
 		\item $X$ is \defineterm[scheme!irreducible]{irreducible} if $X$ is, i.e. if $X$ cannot be written as the union of two proper closed subsets (not necessarily disjoint).
 			Equivalently, $X$ is irreducible iff every open subset of $X$ is dense in $X$ iff any two non-empty open subsets of $X$ have non-empty intersection.
 		\item $X$ is \defineterm[scheme!quasicompact]{quasicompact} if $X$ is, i.e. if any open cover of $X$ admits a finite subcover.
-	\end{enumerate}
+	\end{alphanumerate}
 \end{definition}
 Note that $X$ being irreducible implies $X$ is connected, but not vice-versa:
 For any field $k$, the scheme $\Spec k[x_1, x_2] / (x_1 x_2)$ is connected but at the same time union $\Spec k[x_1, x_2] / (x_1) \cup \Spec k[x_1, x_2] / (x_2)$ of proper closed subsets and therefore reducible.
@@ -413,12 +416,12 @@ For any field $k$, the scheme $\Spec k[x_1, x_2] / (x_1 x_2)$ is connected but a
 We will also need a few properties that are scheme-theoretic in nature:
 \begin{definition}
 	Let $X = (X, \cO_X)$ be a scheme.
-	\begin{enumerate}
+	\begin{alphanumerate}
 		\item $X$ is \defineterm[scheme!locally Noetherian]{locally Noetherian} if it admits an affine cover $X = \bigcup_{i \in I} \Spec A_i$ such that $A_i$ is a Noetherian ring.
 		\item $X$ is \defineterm[scheme!Noetherian]{Noetherian} if it is locally Noetherian and quasi-compact.
 		\item $X$ is \defineterm[scheme!reduced]{reduced} if $\Gamma(U, \cO_X)$ is a reduced ring for all $U \subseteq X$ open.
 		\item $X$ is \defineterm[scheme!integral]{integral} if $\Gamma(U, \cO_X)$ is an integral domain for all $U \subseteq X$ open.	
-	\end{enumerate}
+	\end{alphanumerate}
 \end{definition}
 % TODO put that here
 By exercise 28, $X$ being reduced is equivalent to all the stalks $\cO_{X, x}$ of $X$ being reduced rings.
@@ -1014,16 +1017,16 @@ We will now discuss a bunch of properties of morphisms of schemes.
 A lot of these are going to be \enquote{reasonable,} in the following sense:
 \begin{definition}[{\cite[Paragraph 8.1.1]{vakil_rising_2025}}]
 	A class $\symcal{A}$ of morphisms of schemes is called \defineterm[reasonable class of morphisms]{reasonable} if it has all of the following properties:
-	\begin{enumerate}
+	\begin{alphanumerate}
 		\item $\symcal{A}$ is closed under composition.
 		\item $\symcal{A}$ is closed under base change.
 		\item\label{en:sch:localontarget} $\symcal{A}$ is \emph{local on the target}.
 			This means that\textellipsis{}
-			\begin{enumerate}
+			\begin{alphanumerate}
 				\item for all $(f\colon X \to Y) \in \symcal{A}$ and all open subsets $V \subseteq Y$, the restriction $f|_{f^{-1}(V)}\colon f^{-1}(V) \to V$ is in $\symcal{A}$, and
 				\item a morphism $f\colon X \to Y$ of schemes is in $\symcal{A}$ if there exists an open cover $Y = \bigcup_{i \in I} V_i$ of $Y$ such that $f|_{f^{-1}(V_i)} \in \symcal{A}$ for all $i \in I$.
-			\end{enumerate}
-	\end{enumerate}
+			\end{alphanumerate}
+	\end{alphanumerate}
 \end{definition}
 \begin{proposition}[{\cite[Exercise 8.1.A]{vakil_rising_2025}}]
 	Let $\symcal{A}$ be a reasonable class of morphisms of schemes (not necessarily satisfying property \lref{en:sch:localontarget}).
@@ -1088,12 +1091,12 @@ To start, we have a number of purely topological properties:
 \begin{definition}
 	Let $f\colon X \to Y$ be a morphism of schemes.
 	Then $f$ is\textellipsis{}
-	\begin{enumerate}
+	\begin{alphanumerate}
 		\item \defineterm[morphism of schemes!open]{open}/\defineterm[morphism of schemes!closed]{closed} if $|f|\colon |X| \to |Y|$ is, 
 		\item \defineterm[morphism of schemes!dominant]{dominant} if $f(|X|)$ is dense in $|Y|$,
 		\item \defineterm[morphism of schemes!quasi-compact]{quasi-compact} if for all quasi-compact open subsets $V \subseteq Y$, $f^{-1}(V)$ is quasi-compact, and
 		\item \defineterm[morphism of schemes!quasi-finite]{quasi-finite} all fibres $f^{-1}(y)$ for $y \in Y$ are finite.
-	\end{enumerate}
+	\end{alphanumerate}
 \end{definition}
 Note that if $Y$ is integral, then $f$ is dominant iff $\eta \in \img f$.
 % TODO explain?
@@ -1128,12 +1131,12 @@ We also have some purely scheme-theoretic properties:
 \begin{definition}
 	Let $f\colon X \to Y$ be a morphism of schemes.
 	We say that $f$ is\textellipsis{}
-	\begin{enumerate}
+	\begin{alphanumerate}
 		\item \defineterm[morphism of schemes!locally of finite type]{locally of finite type} if there exists an open affine covering $Y = \bigcup_i \Spec A_i$ of $Y$ and open affine covering $f^{-1}(\Spec A_i) = \bigcup_j \Spec B_{ij}$ of $f^{-1}(\Spec A_i)$ such that each $B_{ij}$ is a finite type $A_i$-algebra,
 		\item \defineterm[morphism of schemes!of finite type]{of finite type} if it is locally of finite type and there are only finitely many $B_{ij}$ for each $i$ in the preceding definition,
 		\item \defineterm[morphism of schemes!affine]{affine} there exists an open affine covering $Y = \bigcup_i \Spec A_i$ such that $f^{-1}(\Spec A_i)$ is affine, and
 		\item \defineterm[morphism of schemes!finite]{finite} if it is affine and $B_i \coloneq f^{-1}(\Spec A_i)$ is a finite $A_i$-module for all $i$.
-	\end{enumerate}
+	\end{alphanumerate}
 \end{definition}
 \begin{proposition}\label{prp:sch:surjringmapclosedimm}
 	Let $\phi\colon A \to B$ be a surjective ring map.
@@ -1532,7 +1535,7 @@ Note that $R / R_+ \isom R_0$.
 If $S \subseteq B$ is a multiplicative subset of homogeneous elements, the localization $S^{-1} B$ has the structure of a $\Z$-graded ring.
 \begin{definition}
 	\leavevmode
-	\begin{enumerate}
+	\begin{alphanumerate}
 		\item If $\ideal{p} \subset B$ is a prime ideal, let $S \subseteq B$ consist of all homogeneous elements of $B \setminus \ideal{p}$.
 			Then we call
 			\begin{equation*}
@@ -1544,7 +1547,7 @@ If $S \subseteq B$ is a multiplicative subset of homogeneous elements, the local
 				B_{(a)} \coloneq (S^{-1} B)_0
 			\end{equation*}
 			the \defineterm[localization!homogeneous]{homogeneous localization of $B$ at $a$}.
-	\end{enumerate}
+	\end{alphanumerate}
 \end{definition}
 These are ungraded rings.
 Note that
@@ -1593,13 +1596,65 @@ A morphism of $\cO_X$ modules is then a morphism of sheaves compatible with the 
 We write $\Mod_{\cO_X}$ for the category of all $\cO_X$-modules.
 \begin{definition}
 	An $\cO_X$-module $\cF$ is called\textellipsis{}
-	\begin{enumerate}
+	\begin{alphanumerate}
 		\item \defineterm[$\cO_X$-module!free]{free} if it is of the form $\cF \isom \cO_X^{\dsum I}$ for some index set $I$,
 		\item \defineterm[$\cO_X$-module!locally free]{locally free} if $\cF|_U \isom \cO_X^{\dsum I_U}|_U$ for all $U \subseteq X$ open, $I_U$ some index set,
 		\item \defineterm[$\cO_X$-module!locally free of rank $r$]{locally free of rank $r$} if it is locally free and $|I_U| = r$ for all $U \subseteq X$ open and some fixed $r \in \N$, and
 		\item \defineterm[$\cO_X$-module!invertible]{invertible}\index{sheaf!invertible|see {$\cO_X$-module!invertible}} if it is locally free of rank one.
-	\end{enumerate}
+	\end{alphanumerate}
 \end{definition}
+
+\section{Divisors}
+\begin{definition}
+	Given a space $X$, let $P_X^n$ denote the set of all ascending chains $\emptyset \neq X_0 \subsetneq X_1 \subsetneq \ldots \subsetneq X_n \subseteq X$ of irreducible closed subsets in $X$.  
+	The \defineterm{dimension} of $X$ is the integer
+	\begin{equation*}
+		\dim X \coloneq \sup \big\{n \in \N \mid P^n_X \neq \emptyset\big\}
+	\end{equation*}
+	If $Z \subseteq X$ is a closed irreducible subset, we similarly let $P_X^n(Z)$ denote the set of all ascending chains $Z = Z_0 \subsetneq Z_1 \subsetneq \ldots \subsetneq Z_n \subseteq X$ of irreducible closed subsets of $X$.
+	The \defineterm{codimension} of $Z$ in $X$ is then the integer
+	\begin{equation*}
+		\codim(Z \subset X) \coloneq \sup \big\{n \in \N \mid P^n_X(Z) \neq \emptyset\big\}
+	\end{equation*}
+\end{definition}
+For instance, we have $\dim \A^1_k = 1$: A non-empty closed irreducible subset of $\A^1_k$ is precisely a closed point.
+% TODO justify
+Similarly, $\dim \P^1_k = 1$.
+% TODO recall facts about Krull dimension of rings and height of prime ideals, probably in the appendix?
+\begin{definition}
+	A scheme $X$ is called \defineterm[regular scheme!in codimension 1]{regular in codimension 1} if all the rings $\cO_{X, x}$ of dimension 1 are regular where $x \in X$ is a point.
+\end{definition}
+In this section, we will largely restrain ourselves to working with a class of particularly nice schemes, those that are\textellipsis{}
+\begin{alphanumerate}
+	\item[\#]\label{ass:divs:standard} Noetherian, integral, separated, and regular in codimension 1.
+\end{alphanumerate}
+% TODO justify
+Note that if $X$ satisfies these properties, then the local rings $\cO_{X, x}$ of dimension 1 are discrete valuation rings.
+\begin{definition}
+	A \defineterm[divisor!prime]{prime divisor} of a scheme $X$ satisfying \lref{ass:divs:standard} is a closed, integral subscheme $Y \subset X$ of codimension 1.
+\end{definition}
+If $Y \subset X$ is a prime divisor, then it comes with a unique generic point $\eta \in Y$ since it is integral.
+% TODO why?
+The ring $\cO_{X, \eta}$ is then of dimension 1 and therefore a discrete valuation ring.
+
+Rather than considering prime divisors on their own, we will consider a \enquote{linearization} of them:
+\begin{definition}
+	A \defineterm[divisor!Weil]{Weil divisor} on $X$ is a finite formal linear combination 
+	\begin{equation*}
+		\sum_{\substack{Y \subset X \\ \mathclap{\text{prime divisor}}}} n_Y Y
+	\end{equation*}
+	with coefficients $n_Y \in \Z$.
+	We denote the group of all Weil divisors on $X$ by $\Div(X)$.
+\end{definition}
+\begin{example}
+	The prime divisors of $\P^1_k$ where $k$ is an algebraically closed field are precisely the closed points. 
+	Thus $\Div(\P^k_1)$ consists of finite sums $\sum n_{[a_0 : a_1]} [a_0 : a_1]$ where $a_0, a_1 \in k$ are not both zero.
+\end{example}
+% TODO why?
+\begin{example}
+	Let $f \in k[x_0, x_1, x_2]_d$ be a homogeneous degree-$d$ polynomial where $k$ is an algebraically closed field.
+	Then the prime divisors of $V_+(f) \subseteq \P^2_k$ consist of all the closed points $[a_0 : a_1 : a_2] \in V_+(f)$.
+\end{example}
 
 \printindex
 \printbibliography
