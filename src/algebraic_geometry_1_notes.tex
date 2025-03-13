@@ -6,13 +6,19 @@
 \newcommand{\cC}{\mathcal{C}}
 \newcommand{\cF}{\mathcal{F}}
 \newcommand{\cG}{\mathcal{G}}
+\newcommand{\cH}{\mathcal{H}}
+\newcommand{\cK}{\mathcal{K}}
 
 \newcommand{\A}{\mathbb{A}}
 \renewcommand{\P}{\mathbb{P}}
 
 \newcommand{\Nil}{\mathrm{Nil}}
 \newcommand{\Proj}{\mathrm{Proj}}
+\newcommand{\Pic}{\mathrm{Pic}}
 \newcommand{\Div}{\mathrm{Div}}
+\newcommand{\PrDiv}{\mathrm{PrDiv}}
+\newcommand{\Cl}{\mathrm{Cl}}
+\newcommand{\CaCl}{\mathrm{CaCl}}
 
 \newcommand{\nisom}{\ncong}
 
@@ -1632,6 +1638,7 @@ In this section, we will largely restrain ourselves to working with a class of p
 Note that if $X$ satisfies these properties, then the local rings $\cO_{X, x}$ of dimension 1 are discrete valuation rings.
 \begin{definition}
 	A \defineterm[divisor!prime]{prime divisor} of a scheme $X$ satisfying \lref{ass:divs:standard} is a closed, integral subscheme $Y \subset X$ of codimension 1.
+	We write $\PrDiv(X)$ for the set of all prime divisors of $X$.
 \end{definition}
 If $Y \subset X$ is a prime divisor, then it comes with a unique generic point $\eta \in Y$ since it is integral.
 % TODO why?
@@ -1641,7 +1648,7 @@ Rather than considering prime divisors on their own, we will consider a \enquote
 \begin{definition}
 	A \defineterm[divisor!Weil]{Weil divisor} on $X$ is a finite formal linear combination 
 	\begin{equation*}
-		\sum_{\substack{Y \subset X \\ \mathclap{\text{prime divisor}}}} n_Y Y
+		\sum_{Y \in \PrDiv(X)} n_Y Y
 	\end{equation*}
 	with coefficients $n_Y \in \Z$.
 	We denote the group of all Weil divisors on $X$ by $\Div(X)$.
@@ -1655,6 +1662,152 @@ Rather than considering prime divisors on their own, we will consider a \enquote
 	Let $f \in k[x_0, x_1, x_2]_d$ be a homogeneous degree-$d$ polynomial where $k$ is an algebraically closed field.
 	Then the prime divisors of $V_+(f) \subseteq \P^2_k$ consist of all the closed points $[a_0 : a_1 : a_2] \in V_+(f)$.
 \end{example}
+Given a prime divisor $Y \subset X$ with generic point $\eta \in Y$, the stalk $\cO_{X, \eta}$ is a discrete valuation ring with quotient field $K(X)$.
+Accordingly, choosing a uniformizer $t$ of the maximal ideal $\ideal{m}_\eta \subset \cO_{X, \eta}$, we obtain a valuation $v_Y\colon K(X)^\mlt \to \Z$ sending $t$ to 1.
+% TODO geometric intuition
+\begin{definition}
+	An element $f \in K(X)^\mlt$ has a \defineterm{zero} along a prime divisor $Y \subset X$ if $v_Y(f) > 0$.
+	It has a \defineterm{pole} along $Y$ if $v_Y(f) < 0$.
+	We call $v_Y(f)$ the \defineterm[order!of zero]{order}\index{order!of pole} of the zero or pole of $f$ at $Y$, respectively.
+\end{definition}
+\begin{definition}
+	To any $f \in K(X)^\mlt$ we associate its \defineterm[divisor!principal]{principal divisor}
+	\begin{equation*}
+		(f) \coloneq \sum_{Y \in \PrDiv(X)} \nu_Y(f) Y
+	\end{equation*}
+\end{definition}
+For this to make sense, we need to show that this sum is actually finite:
+\begin{lemma}
+	For any $f \in K(X)^\mlt$, we have $v_Y(f) = 0$ for all but finitely many prime divisors $Y \subset X$.
+\end{lemma}
+% TODO this whole thing is a mess
+\begin{proof}
+	Let $U = \Spec A \subseteq X$ be an open affine subscheme on which $f$ is regular. 
+	% TODO why?
+	The complement $Z \coloneq X \setminus U$ is closed, so there can only be finitely many prime divisors contained in $Z$, seeing as $X$ is Noetherian.
+	Now regularity implies that $v_Y(f) \geq 0$ for all prime divisors $Y \subset U$, with $v_Y(f) > 0$ precisely if $Y \subseteq V(f) \subseteq U$. 
+	But this is a closed subset, so again can only contain finitely many prime divisors.
+\end{proof}
+Note that $(fg) = (f) + (g)$ for $f, g \in K(X)^\mlt$, so the map $p\colon K(X)^\mlt \to \Div(X)$ sending $f$ to $(f)$ is a group homomorphism.
+\begin{definition}
+	Given $f \in K(X)^\mlt$, we write
+	\begin{equation*}
+		(f) = (f)_0 - (f)_\infty
+	\end{equation*}
+	where 
+	\begin{equation*}
+		(f)_0 \coloneq \sum_{\substack{Y \in \PrDiv(X) \\ v_Y(f) > 0}} v_Y(f) Y
+	\end{equation*}
+	is the \defineterm[divisor!zero]{zero divisor} of $f$ and 
+	\begin{equation*}
+		(f)_\infty \coloneq \sum_{\substack{Y \in \PrDiv(X) \\ v_Y(f) < 0}} v_Y(f) Y
+	\end{equation*}
+	is its \defineterm[divisor!pole]{pole divisor}.
+\end{definition}
+\begin{example}
+	Consider $X = \A^2_k$ for $k$ a field.
+	This certainly satisfies \lref{ass:divs:standard}.
+	For $f = x_1 / x_2 \in K(X) = k(x_1, x_2)$, we have $(f)_0 = V(x_1)$ and $(f)_\infty = V(x_2)$.
+\end{example}
+\begin{definition}
+	The \defineterm{divisor class group} of $X$ is the group
+	\begin{equation*}
+		\Cl(X) \coloneq \Div(X) / K(X)^\mlt
+	\end{equation*}
+	where we view $K(X)^\mlt$ as a subgroup of $\Cl(X)$ via the map $p$ from above.
+\end{definition}
+\begin{proposition}\label{prp:div:pdivclosedres}
+	Let $Z \subsetneq X$ be closed and let $U \coloneq X \setminus Z$.
+	Then:
+	\begin{alphanumerate}
+		\item The map $\Cl(X) \to \Cl(U)$, $\sum n_Y Y \mapsto \sum n_Y (Y \cap U)$ is surjective, and if $\codim(Z \subset X) > 1$ then it is an isomorphism.
+		\item\label{en:div:pdivses} If $Y \subset Z$ is a prime divisor, then the sequence
+			\begin{equation*}
+				\begin{tikzcd}[row sep = 0ex, column sep = small]
+					\Z 
+							\ar[r]
+						& \Cl(X)
+							\ar[r]
+						& \Cl(U) 
+							\ar[r]
+						& 0
+					\\
+					n 
+							\ar[r, mapsto]
+						& nY
+				\end{tikzcd}
+			\end{equation*}
+			is exact.
+	\end{alphanumerate}
+\end{proposition}
+\begin{proof}
+	TODO
+\end{proof}
+Generally $\Cl(X)$ can be difficult to compute, but let us look at a few easy examples:
+\begin{example}
+	Let $k$ be an algebraically closed field.
+	\begin{alphanumerate}
+		\item We have $\Cl(\A^1_k) = 0$.
+			In fact, a prime divisor $Y \subset \A^1_k$ is a closed point, so the prime divisors are in bijection with the elements of $k$. 
+			Thus, if $Y$ corresponds to $\lambda \in k$, then we have $Y = (x_1 - \lambda)$:
+			If $Y' = \{\lambda'\} \subset \A^1_k$ is another prime divisor, then $v_{Y'}(x_1 - \lambda) = 0$ since $x_1 - \lambda$ becomes a unit in $K(\A^1_k) = k((x_1 - \lambda'))$. 
+			Thus every prime divisor is principal and $\Cl(\A^1_k) = 0$.
+		\item On the other hand, $\Cl(\P^1_k) \isom \Z$:
+			Prime divisors of $\P^1_k$ again correspond to closed points $[a_0 : a_1] = (x_0 a_1 - a_0 x_1) \in \P^1_k$.
+			Identifying $K(\P^1_k)$ with $k(x_0 / x_1)$ (computed on $D_+(x_1)$) and given two prime divisors $Y = [a_0 : a_1], Y' = [a'_0 : a'_1]$ of $\P^1_k$, let
+			\begin{equation*}
+				f \coloneq \frac{a_0 x_1 - a_1 x_0}{a'_0 x_1 - a'_1 x_0} = \frac{a_0 - a_1(x_0 / x_1)}{a'_0 - a'_1(x_0 / x_1)} \in K(\P^1_k)^\mlt
+			\end{equation*}
+			Then $(f) = Y - Y'$, so any two prime divisors differ by a principal divisor.
+			This implies that the kernel of of the map $\Div(\P^1_k) \to \Z$, $\sum u_Y Y \mapsto \sum u_Y$ consists of all principal divisors, which implies that $\Cl(\P^1_k) \isom \Z$ if $\Cl(\P^1_k) \neq 0$, which we will show later.
+	\end{alphanumerate}
+\end{example}
+One of the drawbacks of $\Cl(X)$ is that it is only defined if $X$ satisfies \lref{ass:divs:standard}.
+For general schemes, there is a different approach:
+\begin{definition}
+	Given any scheme $X$, define a sheaf (of rings) $\cK_X \in \Sh(X)$ as the sheafification of the presheaf defined on affine open subsets $U = \Spec A \subseteq X$ by $U \mapsto Q(A) \coloneq S^{-1} A$ where $S \subset A$ is the set of all non-zero divisors.
+\end{definition}
+If $X$ is integral, then $Q(A) = K(X)$ for all $\Spec A \subseteq X$.
+In this case $\cK_X$ is simply the constant sheaf on $X$ with values in $K(X)$.
+By definition, $\cK_X$ comes with an injective map $\cO_X \incl \cK_X$ which restricts to an inclusion $\cO_X^\mlt \incl \cK_x^\mlt$, so we have a short exact sequence
+\begin{equation*}
+	0 \to \cO_X^\mlt \to \cK_X^\mlt \to \cK_X^\mlt / \cO_X^\mlt \to 0
+\end{equation*}
+\begin{definition}
+	A \defineterm[divisor!Cartier]{Cartier divisor} on $X$ is an element of $\Gamma(X, \cK_X^\mlt / \cO_X^\mlt)$.
+\end{definition}
+By definition, a Cartier divisor $D$ on $X$ can be represented by a family of sections $\{f_i \in \Gamma(U_i, \cK_X^\mlt)\}$ on an open covering $X = \bigcup_{i \in I} U_i$ such that $f_i / f_j \in \cO_X^\mlt(U_{ij}) \subseteq \cK_X^\mlt(U_{ij})$, but bear in mind that such a presentation is not unique.
+
+By definition we have a long exact sequence
+\begin{equation*}
+	0 \to H^0\big(X, \cO_X^\mlt\big) \to H^0\big(X, \cK_X^\mlt\big) \xto{\phi} H^0\big(X, \cK_X^\mlt / \cO_X^\mlt\big) \xto{\delta} H^1\big(X, \cO_X^\mlt\big) \to \cdots
+\end{equation*}
+% TODO what conditions do you need for the first iso?
+Note that $H^1(X, \cO_X^\mlt) \isom \Pic(X)$ and $H^0(X, \cK_X^\mlt) = K(X)^\mlt$ if $X$ is integral and that $H^0(X, \cO_X^\mlt) = k$ if it is additionally a proper $k$-scheme where $k$ is any algebraically closed field.
+\begin{definition}
+	A \defineterm[divisor!Cartier!principal]{principal Cartier divisor} on $X$ is a Cartier divisor in the image of $\phi$.
+	The \defineterm[divisor class group!Cartier]{Cartier divisor class group} of $X$ is the abelian group
+	\begin{equation*}
+		\CaCl(X) \coloneq H^0\big(X, \cK_X^\mlt / \cO_X^\mlt\big) \big/ \img \phi
+	\end{equation*}
+\end{definition}
+What is the relationship between $\Cl(X)$, $\CaCl(X)$, and $\Pic(X)$, provided that $X$ is suitably nice? 
+Note that we get an injection $\CaCl(X) \incl \Pic(X)$ from our long exact sequence above if $X$ is integral.
+\begin{proposition}
+	This injection is in fact an isomorphism.
+\end{proposition}
+\begin{proof}
+	The next term to the right in the long exact sequence is $H^1(X, \cK_X^\mlt)$.
+	If $X$ is integral then it is irreducible and $\cK_X^\mlt$ is a constant sheaf, therefore acyclic, therefore this group vanishes, so $\delta$ must be surjective.
+\end{proof}
+It will be useful to understand this isomorphism more concretely.
+% TODO move this into cohomology section
+As a first step, we will have to understand the connecting homomorphism $\delta$.
+Given any short exact sequence $0 \to \cF \to \cG \to \cH \to 0$ of sheaves on a space $X$, consider the long exact sequence 
+\begin{equation*}
+	0 \to H^0(X, \cF) \to H^0(X, \cG) \to H^0(X, \cH) \xto{\delta} H^1(X, \cF) \to \cdots
+\end{equation*}
+TODO
 
 \printindex
 \printbibliography
