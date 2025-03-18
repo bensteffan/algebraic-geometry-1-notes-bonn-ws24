@@ -20,6 +20,8 @@
 \newcommand{\Cl}{\mathrm{Cl}}
 \newcommand{\CaCl}{\mathrm{CaCl}}
 
+\newcommand{\PGL}{\mathrm{PGL}}
+
 \newcommand{\nisom}{\ncong}
 
 \DeclareNamedOperator{codim}
@@ -1648,9 +1650,10 @@ Rather than considering prime divisors on their own, we will consider a \enquote
 \begin{definition}
 	A \defineterm[divisor!Weil]{Weil divisor} on $X$ is a finite formal linear combination 
 	\begin{equation*}
-		\sum_{Y \in \PrDiv(X)} n_Y Y
+		D = \sum_{Y \in \PrDiv(X)} n_Y Y
 	\end{equation*}
 	with coefficients $n_Y \in \Z$.
+	If $n_Y \geq 0$ for all $Y$, we say that $D$ is \defineterm[divisor!Weil!effective]{effective}.
 	We denote the group of all Weil divisors on $X$ by $\Div(X)$.
 \end{definition}
 \begin{example}
@@ -1695,12 +1698,13 @@ Note that $(fg) = (f) + (g)$ for $f, g \in K(X)^\mlt$, so the map $p\colon K(X)^
 		(f) = (f)_0 - (f)_\infty
 	\end{equation*}
 	where 
+	% TODO the manual spacing
 	\begin{equation*}
-		(f)_0 \coloneq \sum_{\substack{Y \in \PrDiv(X) \\ v_Y(f) > 0}} v_Y(f) Y
+		(f)_0 \coloneq \;\sum_{\mathclap{\substack{Y \in \PrDiv(X) \\ v_Y(f) > 0}}}\; v_Y(f) Y
 	\end{equation*}
 	is the \defineterm[divisor!zero]{zero divisor} of $f$ and 
 	\begin{equation*}
-		(f)_\infty \coloneq \sum_{\substack{Y \in \PrDiv(X) \\ v_Y(f) < 0}} v_Y(f) Y
+		(f)_\infty \coloneq \,-\!\sum_{\mathclap{\substack{Y \in \PrDiv(X) \\ v_Y(f) < 0}}}\; v_Y(f) Y
 	\end{equation*}
 	is its \defineterm[divisor!pole]{pole divisor}.
 \end{definition}
@@ -1715,7 +1719,9 @@ Note that $(fg) = (f) + (g)$ for $f, g \in K(X)^\mlt$, so the map $p\colon K(X)^
 		\Cl(X) \coloneq \Div(X) / K(X)^\mlt
 	\end{equation*}
 	where we view $K(X)^\mlt$ as a subgroup of $\Cl(X)$ via the map $p$ from above.
+	We call an element $D \in \Cl(X)$ \defineterm[divisor!Weil!effective]{effective} if it is represented by an effective divisor in $\Div(X)$.
 \end{definition}
+Note that being effective does not mean that \emph{all} representatives of $D$ are effective, only that such a representative exists.
 \begin{proposition}\label{prp:div:pdivclosedres}
 	Let $Z \subsetneq X$ be closed and let $U \coloneq X \setminus Z$.
 	Then:
@@ -1774,9 +1780,12 @@ By definition, $\cK_X$ comes with an injective map $\cO_X \incl \cK_X$ which res
 	0 \to \cO_X^\mlt \to \cK_X^\mlt \to \cK_X^\mlt / \cO_X^\mlt \to 0
 \end{equation*}
 \begin{definition}
-	A \defineterm[divisor!Cartier]{Cartier divisor} on $X$ is an element of $\Gamma(X, \cK_X^\mlt / \cO_X^\mlt)$.
+	A \defineterm[divisor!Cartier]{Cartier divisor} on $X$ is an element of $H^0(X, \cK_X^\mlt / \cO_X^\mlt)$.
 \end{definition}
 By definition, a Cartier divisor $D$ on $X$ can be represented by a family of sections $\{f_i \in \Gamma(U_i, \cK_X^\mlt)\}$ on an open covering $X = \bigcup_{i \in I} U_i$ such that $f_i / f_j \in \cO_X^\mlt(U_{ij}) \subseteq \cK_X^\mlt(U_{ij})$, but bear in mind that such a presentation is not unique.
+\begin{definition}
+	A Cartier divisor $D \in H^0(X, \cK_X^\mlt / \cO_X^\mlt)$ is \defineterm[divisor!Cartier!effective]{effective} if it can be represented by a family of sections $\{f_i \in \cO_X(U_i)\}$.
+\end{definition}
 
 By definition we have a long exact sequence
 \begin{equation*}
@@ -1805,9 +1814,101 @@ It will be useful to understand this isomorphism more concretely.
 As a first step, we will have to understand the connecting homomorphism $\delta$.
 Given any short exact sequence $0 \to \cF \to \cG \to \cH \to 0$ of sheaves on a space $X$, consider the long exact sequence 
 \begin{equation*}
-	0 \to H^0(X, \cF) \to H^0(X, \cG) \to H^0(X, \cH) \xto{\delta} H^1(X, \cF) \to \cdots
+	0 \to H^0(X, \cF) \to H^0(X, \cG) \xto{\phi} H^0(X, \cH) \xto{\delta} H^1(X, \cF) \to \cdots
 \end{equation*}
-TODO
+Given $s \in H^0(X, \cH)$, we may find an open covering $X = \bigcup_{i \in I} U_i$ of $X$ with well-ordered index set $I$ and sections $s_i \in H^0(U_i, \cG)$ such that $\phi(s_i) = s|_{U_i}$ with $s_i|U_{ij} - s_j|_{U_ij} \in H^0(U_{ij}, \cF) \subseteq H^0(U_{ij}, \cG)$.
+% TODO why
+Then $\delta(s) \in H^1(X, \cF)$ is represented by the Čech cocycle $\{s_i|_{U_ij} - s_j|_{U_ij}\}_{i < j}$ (recall that we always have $H^1(X, \cF) \isom \check{H}^1(X, \cF)$).
+
+Applying this to our situation, let $D \in H^0(X, \cK_X^\mlt / \cO_X^\mlt)$ be represented a family $f_i \in \cK_X^\mlt(U_i) = K(X) \setminus \{0\}$ for $X = \bigcup_{i \in I} U_i$ a suitable open covering.
+Then $\delta(D) \in H^1(X, \cO_X^\mlt) \isom \Pic(X)$ is represented by the Čech cocycle $\{f_i / f_j \in \cO_X^\mlt(U_{ij})\}_{i < j}$.
+Denoting the resulting line bundle by $\cO(D) \in \Pic(X)$, we can realize $\cO(D)$ as a subsheaf of $\cK_X$ via $\cO(D)|_{U_i} \coloneq \cO|_{U_i} \cdot f_i^{-1}$.
+That this does in fact glue to a sheaf follows from the fact that $f_i / f_j \in \cO_X^\mlt(U_{ij})$, and it is a line bundle by definition.
+
+To make the link with $\Cl(X)$, we will from now again assume that $X$ satisfies \lref{ass:divs:standard}.
+Let $\phi\colon H^0(X, \cK_X^\mlt / \cO_X^\mlt) \to \Div(X)$ be given by sending a Cartier divisor $D$ represented as $\{f_i \in \cK_X^\mlt(U_i)\}_{i \in I}$ for some open covering $X = \bigcup_{i \in I} U_i$ to $\sum_{Y \in \PrDiv(X)} u_{D, Y} Y$ where $u_{D, Y} = \nu_Y(f_i)$ if $Y \cap U_i \neq \emptyset$.
+% TODO why? (finiteness)
+This is well-defined since $f_i / f_j \in \cO_X^\mlt(U_{ij})$, i.e. $\nu_Y(f_i / f_j) = 0$, and the sum is finite.
+Moreover, if $D$ is principal, i.e. the $f_i$ are the restrictions of a global section $f \in \cK_X^\mlt(X)$, then $\phi(D)$ is the principal Weil divisor $(f)$.
+In other words, we have a commutative diagram
+\begin{equation*}
+	\begin{tikzcd}[column sep = small]
+		0 
+				\ar[r]
+			& H^0\big(X, \cK_X^\mlt\big)
+				\ar[r]
+				\ar[d, equals]
+			& H^0\big(X, \cK_X^\mlt / \cO_X^\mlt\big)
+				\ar[r]
+				\ar[d, "\phi"]
+			& \CaCl(X)
+				\ar[r]
+				\ar[d, dashed, "\Phi"]
+			& 0
+		\\
+		0
+				\ar[r]
+			& K(X)^\mlt
+				\ar[r]
+			& \Div(X)
+				\ar[r]
+			& \Cl(X)
+				\ar[r]
+			& 0
+	\end{tikzcd}
+\end{equation*}
+with exact rows, with $\Phi$ induced by $\phi$.
+\begin{proposition}
+	The map $\phi$ (and hence also $\Phi$) is injective if $X$ is normal and and isomorphism if $X$ is factorial.
+\end{proposition}
+\begin{proof}
+	TODO
+\end{proof}
+Summing up, we have:
+\begin{corollary}
+	If $X$ is a factorial scheme, then $\Cl(X) \isom \Pic(X) \isom \CaCl(X)$.
+\end{corollary}
+% TODO check this
+\begin{example}
+	If $k$ is a field and $n > 0$, then $\CaCl(\P^n_k) \isom \isom \Pic(\P^n_k) \Cl(\P^n_k) \isom \Z$ with $\Pic(\P^n_k)$ generated by $\cO_{\P^n_k}(1)$, and $\Cl(\P^n_k)$ generated the class of any hyperplane $H = V_+(x_i)$, $0 \leq i \leq n$.
+
+	To see this last statement, note that if $f \in k[x_0, \ldots, x_n]_d$ is homogeneous of degree $d$ with factorization $f = \prod g_i^{n_i}$, $g_i$ irreducible, $k \in \N_{\geq 0}$, then the corresponding Weil divisor is $\sum n_i V_+(g_i)$. 
+	If $f_1, f_2 \in k[x_0, \ldots, x_n]_d$ are homogeneous of the same degree, then $f_1 / f_2 \in K(\P^n_k) = k(x_0, \ldots, x_n)$ is of homogeneous degree 0, so the two Weil divisors $D_1, D_2$ associated to $f_1, f_2$, respectively satisfy $D_1 - D_2 = (f_1 / f_2)$, whence $D_1 = D_2 \in \Cl(\P^n_k)$. 
+	Thus, we obtain a group homomorphism $\Z \to \Cl(\P^n_k)$ sending 1 to $H$.
+	This map is surjective:
+	A prime divisor $Y \subset \P^n_k$ is a closed subscheme and therefore of the form $V_+(\ideal{p})$ for $\ideal{p} \subset k[x_0, \ldots, x_n]$ a homogeneous prime ideal.
+	Since $\codim(Y \subset \P^n_k) = 1$, $\ideal{p}$ must be principal and therefore generated by an element $f \in \ideal{p}$ of homogeneous degree $d$, whence $Y = dH$ in $\Cl(\P^n_k)$.
+
+	Finally, to see that it is also injective, we observe that the composite $\Z \surj \Cl(\P^n_k) \isom \Pic(X)$ is of the form $d \mapsto \cO_{\P^n_k}(d)$:
+	Letting $H = V_+(x_0)$ without loss of generality, $\P^n_k = \bigcup_{i = 0}^n D_+(x_i)$ and $H \cap D_+(x_i) = V_+(x_0) \cap D_+(x_i) = V(x_0 / x_i)$ imply that the Cartier divisor associated with $H$ can be represented by $\{x_i / x_0 \in k(x_0, \ldots, x_n)_0\}$.
+	The associated line bundle is then given by the Čech cocycle $\{\phi_{ij} = x_i / x_j \in \cO_{\P^n_k}^\mlt(D_+(x_i x_j))\} \in \check{H}^1(\P^n_k, \cO_{\P^n_k}^\mlt)$ and this describes $\cO_{\P^n_k}(1)$, as we have seen.
+\end{example}
+\begin{example}
+	Let $\Aut_{/k}(\P^n_k)$ denote the group of automorphisms of $\P^n_k$ over $\Spec k$.
+	Then $\Aut_{/k}(\P^n_k) \isom \PGL(n + 1, k) \coloneq \GL(n + 1, k) / k^\mlt$.
+	% TODO
+\end{example}
+If $D \in H^0(X, \cK_X^\mlt / \cO_X^\mlt)$ is an effective Cartier divisor represented by $\{f_i \in \cO_X(U_i)\}$ on some open covering $X = \bigcup_{i \in I} U_i$, then observe that
+\begin{equation*}
+	\cO(-D)|_{U_i} \isom \cO(X)_{U_i}^\vee = f^i \cO_{U_i} \subseteq \cO_{U_i} \subseteq \cK_X|_{U_i}
+\end{equation*}
+In other words, $\cO(-D)$ is a subsheaf of $\cO_X$, thus a sheaf of ideals, and therefore corresponds to a closed subscheme $V(D) \subseteq X$ which we will also usually simply denote by $D$.
+\begin{proposition}
+	If the associated Weil divisor of $D$ is a prime divisor $Y$, then $V(D) = Y$.
+\end{proposition}
+\begin{proof}
+	TODO
+\end{proof}
+\begin{proposition}
+	There is a short exact sequence
+	\begin{equation*}
+		0 \to \cO(-D) \to \cO_X \to i_* \cO(D) \to 0
+	\end{equation*}
+	where $i\colon V(D) \incl X$ is the inclusion.
+\end{proposition}
+\begin{proof}
+	TODO
+\end{proof}
 
 \printindex
 \printbibliography
