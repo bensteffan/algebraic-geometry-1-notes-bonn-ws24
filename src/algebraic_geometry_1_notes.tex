@@ -9,6 +9,7 @@
 \newcommand{\cH}{\mathcal{H}}
 \newcommand{\cK}{\mathcal{K}}
 \newcommand{\cL}{\mathcal{L}}
+\newcommand{\cM}{\mathcal{M}}
 
 \newcommand{\A}{\mathbb{A}}
 \renewcommand{\P}{\mathbb{P}}
@@ -22,6 +23,8 @@
 \newcommand{\CaCl}{\mathrm{CaCl}}
 \newcommand{\QCoh}{\mathrm{QCoh}}
 \newcommand{\Coh}{\mathrm{Coh}}
+\newcommand{\res}{\mathrm{res}}
+\newcommand{\grMod}{\mathrm{grMod}}
 
 \newcommand{\PGL}{\mathrm{PGL}}
 
@@ -37,6 +40,17 @@
 \DefineCategory{LocRingSpc}
 \DefineCategory{RingSpc}
 \DefineCategory{Ouv}
+
+\newcommand*\noloc{%
+        \nobreak
+        \mskip6mu plus1mu
+        \mathpunct{}%
+        \nonscript
+        \mkern-\thinmuskip
+        {:}%
+        \mskip2mu
+        \relax
+}
 
 \course{Algebraic Geometry \uppercase\expandafter{\romannumeral 1\relax}}
 \lecturer{Prof. Dr. Daniel Huybrechts}
@@ -1616,9 +1630,351 @@ We write $\Mod_{\cO_X}$ for the category of all $\cO_X$-modules.
 		\item \defineterm[$\cO_X$-module!invertible]{invertible}\index{sheaf!invertible|see {$\cO_X$-module!invertible}} if it is locally free of rank one.
 	\end{alphanumerate}
 \end{definition}
+\begin{definition}
+	Given $\cF, \cG \in \Mod_{\cO_X}$, their \defineterm[tensor product!on $\Mod_{\cO_X}$]{tensor product} is the sheaf $\cF \tensor_{\cO_X} \cG \in \Mod_{\cO_X}$ given by the sheafification of the presheaf sending an open set $U \subseteq X$ to $\cF(U) \tensor_{\cO_X(U)} \cG(U)$.
+\end{definition}
+\begin{proposition}
+	The tensor product $\tensor_{\cO_{X}}$ makes $\Mod_{\cO_X}$ into a symmetric monoidal abelian category with unit $\cO_X$
+\end{proposition}
+\begin{proof}
+	TODO
+\end{proof}
+\begin{remark}
+	Given two sheaves of rings $\cO_X$, $\cO'_X$ on the same space $X$ and a morphism $(X, \cO_X) \to (X, \cO'_X)$ of ringed spaces, there is an adjunction 
+	\begin{equation*}
+		\begin{tikzcd}[cramped]
+			{{-}} \tensor_{\cO_X} \cO'_X\colon\! \Mod_{\cO_X} 
+					\ar[r, phantom, "\scriptscriptstyle\bot" description]
+					\ar[r, shift left = 0.75ex]
+				& \Mod_{\cO'_X}\!\noloc \res_{\cO_X}
+					\ar[l, shift left = 0.75ex]
+		\end{tikzcd}
+	\end{equation*}
+	where $\res_{\cO_X}$ sends an $\cO'_X$-module to itself, intrepreted as an $\cO_X$-module via the given morphism, in analogy to the situation for modules over rings.
+\end{remark}
+This is for instance useful for working with sheaves of smooth and continuous functions on a manifold.
+For us, the following generalization will be of greater interest:
+Given a morphism $f\colon X \to Y$ of ringed spaces, note that $f_* \cF$ naturally carries the structure of an $f_* \cO_X$-module.
+This yields an $\cO_Y$-module via restriction along $f^\sharp\colon \cO_Y \to f_* \cO_X$ which we will also simply denote by $f_*$.
+Clearly this assignment gives a functor $f_*\colon \Mod_{\cO_X} \to \Mod_{\cO_Y}$.
+
+In the other direction, the counit $\epsilon$ of the $f^{-1} \dashv f_*$-adjunction gives rise to a morphism
+\begin{equation*}
+	f^{-1} \cO_Y \xto{f^{-1}(f^\sharp)} f^{-1} f_* \cO_X \xto{\epsilon} \cO_X
+\end{equation*}
+of sheaves, and therefore a functor $f^*\colon \Mod_{\cO_Y} \to \Mod_{\cO_X}$ taking $\cG \in \Mod_{\cO_Y}$ to $f^{-1} \cG \tensor_{f^{-1} \cO_Y} \cO_X$ which we call \defineterm[pullback]{pullback along $f$.}
+\begin{proposition}
+	These functors form an adjoint pair
+	\begin{equation*}
+		\begin{tikzcd}[cramped]
+			f^*\!\colon\! \Mod_{\cO_X} 
+					\ar[r, phantom, "\scriptscriptstyle\bot" description]
+					\ar[r, shift left = 0.75ex]
+				& \Mod_{\cO_Y}\!\noloc\! f_*
+					\ar[l, shift left = 0.75ex]
+		\end{tikzcd}
+	\end{equation*}
+\end{proposition}
+\begin{proposition}[Projection formula]\index{projection formula}
+	Given a morphism $f\colon X \to Y$ of ringed spaces and two sheaves $\cF \in \Mod_{\cO_X}$, $\cG \in \Mod_{\cO_Y}$ where $\cG$ is locally free of finite rank, there is a natural isomorphism
+	\begin{equation*}
+		f_*(\cF_X \otimes_{\cO_X} f^* \cG) \isom f_* \cF_X \otimes_{\cO_Y} \cG
+	\end{equation*}
+\end{proposition}
+\begin{definition}
+	Given a ringed space $X$, we call $\cF \in \Mod_{\cO_X}$ \defineterm[quasicoherent sheaf]{quasicoherent} if it is locally a quotient of free sheaves, i.e. for each $x \in X$ there exists an open neighborhood $U$ of $x$ and an exact sequence
+	\begin{equation*}
+		\cO_U^{\dsum I} \to \cO_U^{\dsum J} \to \cF|_U \to 0
+	\end{equation*}
+	with $I, J$ suitable index sets.
+	We call $\cF$ \defineterm[coherent sheaf]{coherent} if for each $x \in X$ there exists an open neighborhood $U$ of $x$ and a surjection $\cO_U^{\dsum n} \surj \cF|_U$ for some $n > 0$ and whenever $\phi\colon \cO_U^{\dsum n} \surj \cF|_U$ is a surjection defined on some open $U \subseteq X$, then $\ker \phi$ is locally finitely generated, i.e. it iself is the target of a surjection $\cO_V^{\dsum m} \surj (\ker \phi)|_V$ on an open neighborhood $V$ of each point of $U$.
+\end{definition}
+By definition every coherent sheaf is also quasicoherent.
+We let $\Coh(X)$ and $\QCoh(X)$ denote the full subcategories of $\Mod_{\cO_X}$ on the coherent and quasicoherent sheaves, respectively.
+% TODO characterization of QCoh(Spec A) & Coh(Spec A)
+\begin{proposition}\label{prp:qcoh:qcohacyclic}
+	Let $A$ be a ring. 
+	Then any $\cF \in \QCoh(\Spec A)$ is acyclic, i.e. $H^i(X, \cF) = 0$ for all $i > 0$.
+\end{proposition}
+\begin{corollary}
+	If $0 \to \cF \to \cG \to \cH \to 0$ is an exact sequence of sheaves on $X = \Spec A$ with $\cF$ quasicoherent, then $0 \to H^0(X, \cF) \to H^0(X, \cG) \to H^0(X, \cH) \to 0$ is exact.
+\end{corollary}
+\begin{proof}
+	Taking sections yields a long exact sequence
+	\begin{equation*}
+		0 \to H^0(X, \cF) \to H^0(X, \cG) \to H^0(X, \cH) \to H^1(X, \cF) \to \cdots
+	\end{equation*}
+	but $H^1(X, \cF) = 0$.
+\end{proof}
+\begin{corollary}
+	Let $X$ be a scheme.
+	Then $\QCoh(X) \subset \Mod_{\cO_X}$ is closed under extensions.
+\end{corollary}
+\begin{proof}
+	Let $0 \to \cF_1 \to \cF_2 \to \cF_3 \to 0$ be an exact sequence of $\cO_X$-modules with $\cF_1$ and $\cF_3$ quasicoherent.
+	Since being quasicoherent is a local property, we may assume that $X = \Spec A$ for some ring $A$.
+	Letting $M_i \coloneq H^0(X, \cF_i)$, we obtain a short exact sequence
+	\begin{equation*}
+		0 \to M_1 \to M_2 \to M_3 \to 0
+	\end{equation*}
+	Using that $\widetilde{{{-}}}$ is exact, we obtain a diagram
+	\begin{equation*}
+		\begin{tikzcd}
+			0 
+					\ar[r]
+				& \widetilde{M_1}
+					\ar[r]
+					\ar[d, "\isom"]
+				& \widetilde{M_2}
+					\ar[r]
+					\ar[d]
+				& \widetilde{M_3} 
+					\ar[r]
+					\ar[d, "\isom"]
+				& 0
+			\\
+			0 
+					\ar[r]
+				& \cF_1
+					\ar[r]
+				& \cF_2
+					\ar[r]
+				& \cF_3
+					\ar[r]
+				& 0
+		\end{tikzcd}
+	\end{equation*}
+	so by the five-lemma the middle vertical map, too, is an isomorphism and therefore $\cF_2$ is quasicoherent.
+\end{proof}
+\begin{proposition}
+	Let $A$ be a ring and $I$ an injective $A$-module.
+	Then $\widetilde{I} \in \QCoh(\Spec A)$ is flabby.
+\end{proposition}
+\begin{proof}
+	TODO
+\end{proof}
+It turns out that affine schemes are completely characterized by \cref{prp:qcoh:qcohacyclic}:
+\begin{theorem}[Serre]
+	If $X$ is a quasi-compact scheme, then $X$ is affine iff all quasicoherent sheaves on $X$ are acyclic iff $H^1(X, \theta) = 0$ for all quasicoherent sheaves of ideals $\theta \subseteq \cO_X$.
+\end{theorem}
+We will not prove this here.
+\begin{proposition}
+	Let $\phi\colon A \to B$ be a ring homomorphism and $f \coloneq \Spec \phi$.
+	If $\cF \in \QCoh(\Spec B)$, then $f_* \cF \in \QCoh(\Spec A)$, and if $\cG \in \QCoh(\Spec A)$, then $f^* \cG \in \QCoh(\Spec B)$.
+\end{proposition}
+\begin{proof}
+	TODO
+\end{proof}
+\begin{proposition}
+	Let $f\colon X \to Y$ be a morphism of schemes.
+	Then:
+	\begin{alphanumerate}
+		\item If $\cG \in \QCoh(Y)$, then $f^* \cG \in \QCoh(X)$.
+		\item If $\cG \in \Coh(Y)$ and $X$ is locally Noetherian, then $f^* \cG \in \Coh(X)$.
+		\item If $\cF \in \QCoh(X)$ and $X$ is Noetherian, then $f_* \cF \in \QCoh(Y)$.
+		\item If $\cF \in \Coh(X)$, $X$ is Noetherian and $f$ is proper, then $f_* \cF \in \Coh(X)$.
+	\end{alphanumerate}
+\end{proposition}
+\begin{proof}
+	TODO
+\end{proof}
+\begin{proposition}
+	Let $X$ be a separated scheme and $X = \bigcup_{i \in I} U_i$ an affine open cover.
+	Then the natural map
+	\begin{equation*}
+		\check{H}^i(\{U_i\}_{i \in I}, \cF) \to H^i(X, \cF)
+	\end{equation*}
+	is an isomorphism for all $\cF \in \QCoh(X)$.
+\end{proposition}
+\begin{proof}
+	Since $X$ is separated, the intersections $U_{i_0 \ldots i_n}$ are all affine as well, so the result follows from TODO and \cref{prp:qcoh:qcohacyclic}.
+\end{proof}
+\begin{proposition}
+	Let $Y$ be a scheme.
+	Then there is a bijection
+	\begin{equation*}
+		\{\theta \subseteq \cO_Y \text{ quasicoherent sheaves of ideals}\} \leftrightarrow \{X \subseteq Y \text{ closed subschemes}\}
+	\end{equation*}
+\end{proposition}
+\begin{proof}
+	% TODO why is i_* \cO_X qcoh?
+	Given a closed subscheme $i\colon X \incl Y$, we obtain a sheaf of ideals as $\theta_X \coloneq \ker(i^\sharp\colon \cO_Y \to i_* \cO_X)$ which is quasicoherent since both $\cO_Y$ and $i_* \cO_X$ are.
+	In the other direction, if $\theta \subseteq \cO_Y$ is a quasicoherent sheaf of ideals, then let $X \coloneq \supp(\cO_Y / \theta) = \{y \in Y \mid (\cO_Y / \theta)_y \neq 0\}$ and $\cO_X \coloneq \cO_Y / \theta$.
+	% TODO finish
+\end{proof}
+
+\subsection{Quasicoherent Sheaves on Projective Schemes}
+We will now return to our study of $\Proj$ and projective spaces.
+Let $B$ be a graded ring generated in degree 1.
+Define a functor
+\begin{align*}
+	\Gamma_*\colon \QCoh(\Proj B) &\to \grMod_B \\
+	\cF &\mapsto \bigdsum_{d \in \Z} \Gamma(\Proj B, \cF(d))
+\end{align*}
+A priori this only lands in $\grMod_\Z$, so our first task is to show that $\Gamma_*(\cF)$ is actually a graded $B$-module.
+% TODO
+\begin{proposition}
+	Let $A$ be a ring and consider $\P^n_A = \Proj A[x_0, \ldots, x_n]$.
+	Then $A[x_0, \ldots, x_n] \isom \Gamma_*(\cO_{\P^n_A})$.
+\end{proposition}
+\begin{proof}
+	TODO
+\end{proof}
+\begin{proposition}
+	Let $B$ be a graded ring generated in degree 1 and $\cF \in \QCoh(\Proj B)$.
+	Then 
+	\begin{equation*}
+		\widetilde{\Gamma_*(\cF)} \isom \cF
+	\end{equation*}
+\end{proposition}
+\begin{proof}
+	TODO
+\end{proof}
+\begin{proposition}
+	Let $B$ be a graded ring generated in degree 1.
+	There is an adjunction
+	\begin{equation*}
+		\begin{tikzcd}[cramped]
+			\widetilde{{-}}\!\colon\! \grMod_B
+					\ar[r, phantom, "\scriptscriptstyle\bot" description]
+					\ar[r, shift left = 0.75ex]
+				& \QCoh(\Proj B)\!\noloc\! \Gamma_*
+					\ar[l, shift left = 0.75ex]
+		\end{tikzcd}
+	\end{equation*}
+\end{proposition}
+\begin{proof}
+	TODO
+\end{proof}
+\begin{proposition}
+	Let $X$ be a quasi-compact scheme, $\cF \in \QCoh(X)$ and $\cL$ an invertible sheaf on $X$.
+	Then:
+	\begin{alphanumerate}
+		\item Given sections $s \in H^0(X, \cF)$ and $a \in H^0(X, \cL)$ such that $s|_{X_a} = 0$, then there exists an $n > 0$ such that $s \tensor a^{\tensor n} = 0$ in $H^0(X, \cF \tensor_{\cO_X} \cL^n)$.
+		\item For all $t \in H^0(X_a, \cF)$ there exists an $n > 0$ such that $a^{\tensor n} t \in \img(H^0(X, \cF \tensor_{\cO_X} \cL^n) \to H^0(X_a, \cF \tensor_{\cO_X} \cL^n))$.
+	\end{alphanumerate}
+\end{proposition}
+\begin{proof}
+	TODO
+\end{proof}
+Given any scheme $X$, we define the $n$-dimensional \defineterm{projective space} $\P^n_Y$ over $Y$ as the pullback
+\begin{equation*}
+	\begin{tikzcd}
+		\P^n_Y
+				\ar[r]
+				\ar[d]
+				\ar[dr, phantom, pullback marker]
+			& \P^n_\Z
+				\ar[d]
+		\\
+		Y 
+				\ar[r]
+			& \Spec \Z
+	\end{tikzcd}
+\end{equation*}
+\begin{definition}
+	A morphism $f\colon X \to Y$ of schemes is \defineterm[projective morphism]{projective} if there exists a closed immersion $i\colon X \to \P^n_Y$ making 
+	\begin{equation}\label[diag]{diag:qcoh:projctv}
+		\begin{tikzcd}[column sep = small]
+			X
+					\ar[rr, hook, "i"]
+					\ar[dr, swap, "f"]
+				& & \P^n_Y
+					\ar[dl]
+			\\
+				& Y
+		\end{tikzcd}
+	\end{equation}
+	commute.
+	We say $f$ is \defineterm[quasi-projective morphism]{quasi-projective} if there is a similar commutative diagram
+	\begin{equation*}
+		\begin{tikzcd}[column sep = small]
+			X
+					\ar[rr, hook, "i"]
+					\ar[dr, swap, "f"]
+				& & \close{X}
+					\ar[dl, "\bar{f}"]
+			\\
+				& Y
+		\end{tikzcd}
+	\end{equation*}
+	with $i$ an open embedding and $\bar{f}\colon \close{X} \to Y$ projective.
+\end{definition}
+\begin{definition}
+	Let $f\colon X \to Y$ be a projective morphism of schemes. 
+	An invertible sheaf $\cL$ on $X$ is \defineterm[very ample]{$f$-relatively very ample} if there exists a factorization as in \cref{diag:qcoh:projctv} with $i^* \cO_{\P^n_Y}(1) \isom \cL$ (here $\cO_{\P^n_Y}(1)$ is the pullback of $\cO_{\P^n_\Z}(1)$ along the structure map).
+\end{definition}
+\begin{proposition}
+	Projective morphisms are proper.
+\end{proposition}
+\begin{proof}
+	TODO
+\end{proof}
+\begin{proposition}
+	If $f\colon X \to \Spec A$ is a projective morphism, $A$ a Noetherian ring, $\cF \in \Coh(X)$ a coherent sheaf, and $\cL$ an $f$-relatively very ample invertible sheaf on $X$.
+	Then for $n \gg 0$, the sheaf $\cF \tensor_{\cO_X} \cL^n$ is finitely generated.
+\end{proposition}
+\begin{proof}
+	TODO
+\end{proof}
+We think of $\cL$ in this context as a twisting sheaf $\cO_{X}(1)$ (and will often write it as such) and accordingly of $\cF \tensor_{\cO_X} \cL^n$ as $\cF(n)$.
+\begin{proposition}
+	If $A$ is a finite-type $k$-algebra for some field $k$ and $X \to \Spec A$ is an injective projective morphism, then $H^0(X, \cF)$ is a finite $A$-module for all $\cF \in \Coh(X)$, and moreover $\cF(n)$ is acyclic for all $n \gg 0$.
+\end{proposition}
+\begin{proof}
+	TODO
+\end{proof}
+More generally, we have
+\begin{theorem}[Serre]
+	If $A$ is a Noetherian ring and $f\colon X \to \Spec A$ an injective projective morphism with $\cO_A(1)$ being $f$-relatively very ample, then $H^j(X, \cF)$ is a finite $A$-module for all $j$ and all $\cF \in \Coh(X)$, and $\cF(n)$ is acyclic for all $n \gg 0$.
+\end{theorem}
+\begin{corollary}
+	Let $f\colon X \to Y$ be projective with $Y$ locally Noetherian.
+	Then given any $\cF \in \Coh(X)$, all $R^i f_* \cF$ are also coherent.
+\end{corollary}
+\begin{proof}
+	TODO
+\end{proof}
+We will now take a brief detour to compute the cohomology of projective space:
+\begin{proposition}
+	Let $R$ be a ring. 
+	Then there are natural identifications
+	\begin{equation*}
+		H^q\big(\P^n_R, \cO_{\P^n_R}(d)\big) \isom \begin{cases}
+			R[x_0, \ldots, x_n]_d & q = 0, d \geq 0 \\
+			\Bigl(\frac{1}{x_0 \cdots x_n} R[x_0^{-1}, \ldots, x_n^{-1}]\Bigr)_d & q = n, d < 0 \\
+			0 & \text{else}
+		\end{cases}
+	\end{equation*}
+\end{proposition}
+Writing $h^i(\P^n_R, \cO_{\P^n_R}(d)) \coloneq \dim_k H^i(\P^n_R, \cO_{\P^n_R}(d))$, we in particular have that
+\begin{equation*}
+	h^q\big(\P^n_R, \cO_{\P^n_R}(d)\big) = \begin{cases}
+		\binom{n + d}{d} & q = 0, d \geq 0 \\
+		\binom{|d| - 1}{|d| - n - 1} & q = n, d < 0 \\
+		0 & \text{else}
+	\end{cases}
+\end{equation*}
+\begin{proof}
+	TODO
+\end{proof}
 
 \section{Invertible Sheaves and Line Bundles}
-Recall that an $\cO_X$-module on a ringed space $(X, \cO_X)$ is called \emph{invertible} if it is locally isomorphic to $\cO_X$.
+We now take a closer look at invertible sheaves.
+% TODO flesh out analogy
+In analogy with vector bundles, we will also call them \defineterm[line bundle]{line bundles}.
+\begin{proposition}
+	Let $\cL$ be a line bundle on a ringed space $X$. 
+	Then $\sHom_{\cO_X}(\cL, \cO_X)$ is also a line bundle.
+\end{proposition}
+\begin{proof}
+	Let $U \subseteq X$ be open such that $\cL|_U \isom \cO_U$.
+	Since $\Gamma(U, \sHom_{\cO_X}(\cL, \cO_X)) = \Hom_{\cO_X(U)}(\cL(U), \cO_X(U))$, we find that 
+	\begin{equation*}
+		\sHom_{\cO_X}(\cL, \cO_X)|_U \isom \sHom_{\cO_U}(\cL|_U, \cO_U) \isom \sHom_{\cO_U}(\cO_U, \cO_U) \isom \cO_U
+	\end{equation*}
+	so $\sHom_{\cO_X}(\cL, \cO_X)$ is locally free of rank 1.
+\end{proof}
 \begin{definition}
 	Let $X$ be a scheme.
 	The \defineterm{Picard group} of $X$ is the group
@@ -1637,7 +1993,7 @@ As given $\Pic(X)$ is just a set, but the following justifies its name:
 \begin{remark}
 	The Picard group is functorial:
 	% TODO justify this
-	If $f\colon X \to Y$ is a morphism of schemes, then the assignment $\cL \mapsto f^* \cL$ defines a group homomorphism $f^*\colon \Pic(Y) \to \Pic(X)$, noting in particular that pullbacks commute with tensor products and that $f^*\sHom({{-}}, {{-}}) \isom \sHom(f^*({{-}}), {{-}})$.
+	If $f\colon X \to Y$ is a morphism of schemes, then the assignment $\cL \mapsto f^* \cL$ defines a group homomorphism $f^*\colon \Pic(Y) \to \Pic(X)$, noting in particular that pullbacks commute with tensor products and that $f^*\sHom_{\cO_X}({{-}}, {{-}}) \isom \sHom_{\cO_X}(f^*({{-}}), {{-}})$.
 \end{remark}
 Given a line bundle $\cL \in \Pic(X)$, we can obtain a class in $\check{H}^1(X, \cO_X^\mlt) \isom H^1(X, \cO_X^\mlt)$ as follows: 
 Pick an open covering $X = \bigcup_{i \in I} U_i$ of $X$ trivializing $\cL$, i.e. such that there exist isomorphisms $\phi_i\colon \cL|_{U_i} \xto{\isom} \cO_{U_i}$ for all $i \in I$.
@@ -1717,12 +2073,12 @@ This statement has a converse:
 	If $X = \Spec A$ is an affine scheme, then every invertible sheaf on $X$ is ample:
 	If $\cF \in \Coh(X)$, $\cL \in \Pic(X)$ are given by $\cF = \widetilde{M}$ and $\cL = \widetilde{N}$ for $M, N \in \Mod_A$, then $H^0(\cF \tensor_{\cO_X} \cL^n) \isom M \tensor_A N^{\tensor n}$ and the map 
 	\begin{equation*}
-		M \tensor_A N^{\tensor_N} \tensor A_{\ideal{p}} \to M_{\ideal{p}} \tensor_{A_{\ideal{p}}} N_{\ideal{p}}^{\tensor n}
+		M \tensor_A N^{\tensor N} \tensor A_{\ideal{p}} \to M_{\ideal{p}} \tensor_{A_{\ideal{p}}} N_{\ideal{p}}^{\tensor n}
 	\end{equation*}
 	is obviously surjective for all prime ideals $\ideal{p}$ of $A$ (in fact, it is an isomorphism).
 \end{example}
 If $X$ is Noetherian, then ampleness can be checked on arbitrary powers:
-\begin{proposition}
+\begin{proposition}\label{prp:inv:amplechar}
 	Let $X$ be a Noetherian scheme and $\cL \in \Pic(X)$.
 	Then the following assertions are equivalent:
 	\begin{alphanumerate}
@@ -1733,19 +2089,18 @@ If $X$ is Noetherian, then ampleness can be checked on arbitrary powers:
 \end{proposition}
 \begin{proof}
 	The implications \lref{en:inv:ample1} $\Rightarrow$ \lref{en:inv:ample2} $\Rightarrow$ \lref{en:inv:ample3} hold by definition.
-	To see that \lref{en:inv:ample3} implies \lref{en:inv:ample1}, let $\cF \in \Coh(X)$ be a coherent sheaf.
-	%By assumption, we can then find an $m_0 > 0$ so that for all $m \geq m_0$, the sheaf $\cF \tensor_{\cO_X} \cL^{\tensor mn}$ is globally generated.
-	Let $\cF' \in \Coh(X)$ be the sheaf
+	To see that \lref{en:inv:ample3} implies \lref{en:inv:ample1}, let $\cF \in \Coh(X)$ be a coherent sheaf and let $\cF' \in \Coh(X)$ be the sheaf
 	\begin{equation*}
 		\cF' \coloneq \cF \dsum \big(\cF \tensor_{\cO_X} \cL\big) \dsum \big(\cF \tensor_{\cO_X} \cL^{\tensor 2}\big) \dsum \cdots \dsum \big(\cF \tensor_{\cO_X} \cL^{\tensor n - 1}\big)
 	\end{equation*}
 	By assumption, we may find $m_0 > 0$ such that $\cF' \tensor_{\cO_X} \cL^{\tensor nm}$ is globally generated for all $m \geq m_0$.
-	Now distributing the tensor product over direct the sums, we obtain
+	Now distributing the tensor product over the direct sums, we obtain
 	\begin{equation*}
 		\cF' \tensor_{\cO_X} \cL^{\tensor nm} \isom \big(\cF \tensor_{\cO_X} \cL^{\tensor nm}\big) \dsum \cdots \dsum \big(\cF \tensor_{\cO_X} \cL^{\tensor n - 1 + nm}\big)
 	\end{equation*}
 	% TODO is this really where this assumption is used? Justify!
-	Since $X$ is Noetherian, each sheaf in a direct sum is globally generated if the whole sum is, we find that $\cF \tensor_{\cO_X} \cL^{\tensor N}$ is globally generated for all $N \geq n m_0$, so $\cL$ is ample.
+	Since $X$ is Noetherian, each sheaf in a direct sum is globally generated if the whole sum is. 
+	Hence, we find that $\cF \tensor_{\cO_X} \cL^{\tensor N}$ is globally generated for all $N \geq n m_0$, so $\cL$ is ample.
 \end{proof}
 \begin{proposition}
 	Let $X \xto{f} \Spec A$ be a scheme over $\Spec A$ of finite type where $A$ is a Noetherian ring and $\cL \in \Pic(X)$ a line bundle.
@@ -1815,6 +2170,7 @@ Similarly, $\dim \P^1_k = 1$.
 \begin{definition}
 	A scheme $X$ is called \defineterm[regular scheme!in codimension 1]{regular in codimension 1} if all the rings $\cO_{X, x}$ of dimension 1 are regular where $x \in X$ is a point.
 \end{definition}
+In other words, $X$ is regular in codimension 1 if the maximal ideal of all the dimension 1 local rings $\cO_{X, x}$ is principal.
 In this section, we will largely restrain ourselves to working with a class of particularly nice schemes, those that are\textellipsis{}
 \begin{alphanumerate}
 	\item[\#]\label{ass:divs:standard} Noetherian, integral, separated, and regular in codimension 1.
@@ -1826,8 +2182,6 @@ Note that if $X$ satisfies these properties, then the local rings $\cO_{X, x}$ o
 	We write $\PrDiv(X)$ for the set of all prime divisors of $X$.
 \end{definition}
 If $Y \subset X$ is a prime divisor, then it comes with a unique generic point $\eta \in Y$ since it is integral.
-% TODO why?
-The ring $\cO_{X, \eta}$ is then of dimension 1 and therefore a discrete valuation ring.
 
 Rather than considering prime divisors on their own, we will consider a \enquote{linearization} of them:
 \begin{definition}
@@ -1848,6 +2202,7 @@ Rather than considering prime divisors on their own, we will consider a \enquote
 	Let $f \in k[x_0, x_1, x_2]_d$ be a homogeneous degree-$d$ polynomial where $k$ is an algebraically closed field.
 	Then the prime divisors of $V_+(f) \subseteq \P^2_k$ consist of all the closed points $[a_0 : a_1 : a_2] \in V_+(f)$.
 \end{example}
+% TODO link codimension to dimension of local ring
 Given a prime divisor $Y \subset X$ with generic point $\eta \in Y$, the stalk $\cO_{X, \eta}$ is a discrete valuation ring with quotient field $K(X)$.
 Accordingly, choosing a uniformizer $t$ of the maximal ideal $\ideal{m}_\eta \subset \cO_{X, \eta}$, we obtain a valuation $v_Y\colon K(X)^\mlt \to \Z$ sending $t$ to 1.
 % TODO geometric intuition
@@ -1999,9 +2354,9 @@ Given any short exact sequence $0 \to \cF \to \cG \to \cH \to 0$ of sheaves on a
 \begin{equation*}
 	0 \to H^0(X, \cF) \to H^0(X, \cG) \xto{\phi} H^0(X, \cH) \xto{\delta} H^1(X, \cF) \to \cdots
 \end{equation*}
-Given $s \in H^0(X, \cH)$, we may find an open covering $X = \bigcup_{i \in I} U_i$ of $X$ with well-ordered index set $I$ and sections $s_i \in H^0(U_i, \cG)$ such that $\phi(s_i) = s|_{U_i}$ with $s_i|U_{ij} - s_j|_{U_ij} \in H^0(U_{ij}, \cF) \subseteq H^0(U_{ij}, \cG)$.
+Given $s \in H^0(X, \cH)$, we may find an open covering $X = \bigcup_{i \in I} U_i$ of $X$ with well-ordered index set $I$ and sections $s_i \in H^0(U_i, \cG)$ such that $\phi(s_i) = s|_{U_i}$ with $s_i|U_{{ij}} - s_j|_{U_{ij}} \in H^0(U_{ij}, \cF) \subseteq H^0(U_{ij}, \cG)$.
 % TODO why
-Then $\delta(s) \in H^1(X, \cF)$ is represented by the Čech cocycle $\{s_i|_{U_ij} - s_j|_{U_ij}\}_{i < j}$ (recall that we always have $H^1(X, \cF) \isom \check{H}^1(X, \cF)$).
+Then $\delta(s) \in H^1(X, \cF)$ is represented by the Čech cocycle $\{s_i|_{U_{ij}} - s_j|_{U_{ij}}\}_{i < j}$ (recall that we always have $H^1(X, \cF) \isom \check{H}^1(X, \cF)$).
 
 Applying this to our situation, let $D \in H^0(X, \cK_X^\mlt / \cO_X^\mlt)$ be represented a family $f_i \in \cK_X^\mlt(U_i) = K(X) \setminus \{0\}$ for $X = \bigcup_{i \in I} U_i$ a suitable open covering.
 Then $\delta(D) \in H^1(X, \cO_X^\mlt) \isom \Pic(X)$ is represented by the Čech cocycle $\{f_i / f_j \in \cO_X^\mlt(U_{ij})\}_{i < j}$.
@@ -2162,6 +2517,220 @@ Summing up, we have proved the following:
 \begin{remark}
 	If $k$ is algebraically closed, then $|\cL|$ is in bijection with $\{D \in H^0\big(X, \cK_X^\mlt / \cO_X^\mlt\big) \text{ effective and } \cO(D) \isom \cL\}$ by \cref{prp:div:linebundleeffectivedivisor}.
 \end{remark}
+
+\section{Curves}
+\begin{definition}
+	A \defineterm[curve!smooth projective]{smooth projective curve} over a field $k$ is a $k$-scheme $C$ of dimension 1 satisfying the standard assumption \lref{ass:divs:standard}.
+\end{definition}
+The prime divisors on a smooth projective curve $C$ are given precisely by the closed points of $C$, so a Weil divisor $D \in \Div(C)$ is a finite linear combination $D = \sum n_x x$ of closed points $x \in C$ with coefficients $n_x \in \Z$.
+\begin{definition}
+	The \defineterm[degree!of a Weil divisor]{degree} of a Weil divisor $D  = \sum n_x x \in \Div(C)$ is the sum
+	\begin{equation*}
+		\deg(D) \coloneq \sum n_x [k(x) : k]
+	\end{equation*}
+	% TODO why is this a finite field extension?
+	where $[k(x) : k]$ is the degree of the finite field extension $k(x) / k$.
+\end{definition}
+Note that $\deg(D) \geq 0$ if $D$ is effective.
+\begin{proposition}
+	Principal Weil divisors on $C$ have degree 0.
+\end{proposition}
+% TODO this is extremely sketchy
+\begin{proof}
+	Given $f \in K(C)^\mlt$, let $\cL \coloneq \cO_C((f)_\infty) \isom \cO((f))$.
+	We may then find $s, t \in H^0(C, \cL) \setminus \{0\}$ such that $(s)_0 = (f)_0$ and $(t)_0 = (f)_\infty$, noting that $(f)_0 \cap (f)_\infty = \emptyset$.
+	Viewing $s$ and $t$ as maps $\cO_C \to \cL$, we obtain short exact sequences
+	\begin{equation*}
+		0 \to \cL^\vee \xto{s} \cO \to \cO_{(s)_0} \to 0
+	\end{equation*}
+	and 
+	\begin{equation*}
+		0 \to \cL^\vee \xto{t} \cO \to \cO_{(t)_0} \to 0
+	\end{equation*}
+	% TODO reference
+	by taking the associated closed scheme exact sequences and tensoring with $\cL^\vee$.
+	We thus have
+	\begin{equation*}
+		\chi(C, \cO_{(s)_0}) = \chi(C, \cO_{(t)_0}) = \chi(C, \cL^\vee) - \chi(C, \cO_{(\cO)})
+	\end{equation*}
+	% TODO Grothendieck's theorem
+	Noting that $\cO_{(s)_0}$ and $\cO_{(t)_0}$ are coherent with 0-dimensional support, we find that they are acyclic, so...
+	TODO
+\end{proof}
+\begin{corollary}
+	The degree map $\Div(C) \to \Z$ descends to a group homomorphism
+	\begin{equation*}
+		\deg\colon \Cl(C) \isom \CaCl(C) \isom \Pic(C) \to \Z
+	\end{equation*}
+\end{corollary}
+\begin{remark}
+	If $C(k) \neq \emptyset$, then this map is surjective.
+\end{remark}
+\begin{example}
+	Recall that $\Pic(\P^1_k) \isom \Z \cO_{\P^1_k}(1)$. 
+	Since $H^0(\P^1_k, \cO_{\P^1_k}(1)) \neq 0$, by \cref{prp:div:linebundleeffectivedivisor} there exists an effective divisor $D$ such that $\cO_{\P^1_k}(D) \isom \cO_{\P^1_k}(1)$, so $0 \leq \deg D = \deg \cO_{\P^1_k}(1)$ together with the preceding remark implies that $\deg \cO_{P^1_k}(1) = 1$.
+
+	We could also do this computation explicitly:
+	% TODO ???
+	The section $x_1 \in H^0(\P^1_k, \cO_{\P^1_k}(1))$ satisfies $(x_1)_0 = \{[0 : 1]\}$, so $\deg(\cO_{\P^1_k}(1)) = \deg((x_0)_\infty) = 1$.
+\end{example}
+Note in particular that $H^0(C, \cL) = 0$ for all $\cL \in \Pic(C)$ with $\deg \cL < 0$, again by \cref{prp:div:linebundleeffectivedivisor}.
+\begin{theorem}[Riemann-Roch]\index{Riemann-Roch theorem}
+	Let $C$ be a smooth projective curve over a field $k$ and $\cL \in \Pic(C)$ a line bundle.
+	Then
+	\begin{equation*}
+		\chi(C, \cL) = \deg(\cL) + 1 - g(C)
+	\end{equation*}
+	where $g(C) \coloneq h^1(C, \cO_C)$ is the \defineterm[genus!of a curve]{genus} of $C$.
+\end{theorem}
+For example, $g(\P^1_k) = 0$ whereas $g(\cO_{V_+(f)}) = (d - 1)(d - 2) / 2$ for a homogeneous polynomial $f \in k[x_0, \ldots, x_n]$ of degree $d$ (some $n > 0$).
+\begin{proof}
+	TODO
+\end{proof}
+To get the most out of the Riemann-Roch Theorem, we will combine it with the following theorem we are not going to prove:
+\begin{theorem}[Serre duality]
+	Let $C$ be a smooth projective curve over a field $k$.
+	Then there exists a line bundle $\omega_C \in \Pic(C)$, called the \defineterm{canonical bundle} of $C$, such that $H^1(C, \cL) \isom H^0(C, \cL^\vee \tensor_{\cO_C} \omega_C)^\vee$ for all $\cL \in \Pic(C)$. 
+\end{theorem}
+Together with Riemann-Roch, this gives the formula
+\begin{equation*}
+	h^0(C, \cL) - h^0(C, \cL^\vee \tensor_{\cO_C} \omega_c) = \deg \cL + 1 - g(C)
+\end{equation*}
+Immediately we derive the following consequences:
+\begin{proposition}
+	Let $C$ be a smooth projective curve over an algebraically closed field $k$ and $\cL \in \Pic(C)$ a line bundle.
+	For all distinct closed points $x \neq y \in C$, 
+	\begin{alphanumerate}
+		\item $\cL$ is globally generated iff $h^0(\cL(-x)) = h^0(\cL) - 1$,
+		\item\label{ert:curves:seppts} $\cL$ separates points iff $h^0(\cL(-x - y)) = h^0(\cL) - 2$, and
+		\item $\cL$ separates tangent directions iff $h^0(\cL(-2x)) = h^0(\cL) - 1$.
+	\end{alphanumerate}
+\end{proposition}
+\begin{proof}
+	Consider the short exact sequence
+	\begin{equation*}
+		0 \to \cO_C(-x) \to \cO_C \to k(x) \to 0
+	\end{equation*}
+	where we identify $k(x)$ with $i_* k(x)$ where $i\colon \{x\} \incl C$ is the inclusion.
+	Tensoring with $\cL$ and taking cohomology, we get an exact sequence
+	\begin{equation}\label{seq:curves:globgen}
+		0 \to H^0(C, \cL(-x)) \to H^0(C, \cL) \xto{\phi_x} \cL_x \to H^1(C, \cL(-x)) \to \ldots
+	\end{equation}
+	Then $\cL$ is globally generated at $x$ iff $\phi_x \neq 0$ which is the case precisely if $h^0(\cL(-x)) = h^0(\cL) - 1$. 
+
+	For \cref{ert:curves:seppts}, we take
+	\begin{equation*}
+		0 \to \cO_C(-x - y) \to \cO_C \to k(x) \dsum k(y) \to 0
+	\end{equation*}
+	and obtain
+	\begin{equation*}
+		0 \to H^0(C, \cL(-x - y)) \to H^0(C, \cL) \xto{\psi} \cL_x \dsum \cL_y \to H^1(C, \cL(-x - y)) \to \ldots
+	\end{equation*}
+	Then $\cL$ separates points iff $\psi$ is surjective, which is the case iff $h^0(\cL(-x - y)) = h^0(\cL) - 2$.
+
+	TODO last point
+\end{proof}
+\begin{corollary}
+	Let $C$ be a smooth projective curve over an algebraically closed field $k$ and $\cL \in \Pic(C)$ a line bundle.
+	Then $\cL$ is globally generated if $\deg \cL \geq 2g(C)$, and $\cL$ is very ample if $\deg \cL \geq 2g(C) + 1$.
+\end{corollary}
+\begin{proof}
+	Let $x \in C$ be a closed point and let $\cM \coloneq \omega_C \tensor_{\cO_C} \cL(-x)^\vee$.
+	Using \cref{seq:curves:globgen} from the preceding proof, it suffices to show that $H^1(C, \cL(-x)) = 0$. 
+	By Serre duality, this is the same as showing that $H^0(C, \cM)^\vee = 0$.
+	To this end, we claim that $\deg \omega_C = 2 g(C) - 2$:
+	Riemann-Roch implies that 
+	\begin{align*}
+		1 - g(C) & = \chi(C, \cO_C) \\
+				 &= h^0(\omega_C) - h^1(\cO_C) \\
+				 &= h^0(\cO_C) - h^0(\omega_C) \\
+				 &= 1 - h^0(\omega_C)
+	\end{align*}
+	so $h^0(\omega_C) = g(C)$.
+	Another round of Riemann-Roch implies that
+	\begin{align*}
+		\deg \omega_C + 1 - g(C) &= \chi(C, \omega_C) \\
+								 &= h^0(\omega_C) - h^1(\omega_C) \\
+								 &= g(C) - h^0(\cO_C) \\
+								 &= g(c) - 1
+	\end{align*}
+	so altogether we have $\deg \omega_C = 2g(C) - 2$.
+	Now
+	\begin{equation*}
+		\deg \cM = \deg \omega_C - \deg \cL(-x) = 2g(C) - 2 - \deg L + 1
+	\end{equation*}
+	which is $< 0$ if $\deg \cL > 2g(C) - 1$. 
+	Since the zeroth cohomology of a line bundle of negative degree vanishes, the claim follows.
+
+	TODO second statement
+\end{proof}
+\begin{corollary}
+	If $\cL \in \Pic(C)$, then $\cL$ is ample iff $\deg \cL > 0$.
+\end{corollary}
+\begin{proof}
+	Recall from \cref{prp:inv:amplechar} that $\cL$ is ample iff $\cL^n$ is very ample for some $n > 0$.
+	Thus, if $\deg \cL > 0$, then $\deg \cL^{2g(C) + 1} > 2g(C) + 1$ so $\cL^{2g(C) + 1}$ is very ample by the preceding corollary.
+	% TODO why does $H^0(C, \cL^n) \neq 0$ imply that $\deg \cL^n > 0$? Obviously $\deg \cL \geq 0$, but why can't it be = 0?
+	Conversely, if $\cL$ is ample, then $\cL^n$ is very ample for some $n$, so $H^0(C, \cL^n) \neq 0$ and therefore $\deg \cL > 0$.
+\end{proof}
+\begin{proposition}
+	Let $C$ be a smooth projective curve over a field $k$ of genus $g(C) = 0$.
+	Then $C \isom \P^1_k$ iff $C(k) \neq \emptyset$.
+\end{proposition}
+\begin{proof}
+	TODO
+\end{proof}
+\begin{definition}
+	Given two smooth projective curves $C$, $C'$ over the same field $k$ and a finite surjective morphism $\phi\colon C \to C'$, we obtain a morphism
+	\begin{align*}
+		\phi^*\colon \Div(C') &\to \Div(C) \\
+		y &\mapsto \sum_{\substack{x \in C \setminus \{\eta\} \\ \phi(x) = y}} \nu_x(t) \cdot x
+	\end{align*}
+	where $y \in C'$ is any prime divisor and $t$ is the image of a choice of uniformizer $f \in \cO_{C', y}$ under the induced map $\cO_{C', y} \to \cO_{C, x}$.
+\end{definition}
+\begin{proposition}
+	The square
+	\begin{equation*}
+		\begin{tikzcd}
+			\Div(C')
+					\ar[r, "\phi^*"]
+					\ar[d, two heads]
+				& \Div(C)
+					\ar[d, two heads]
+			\\
+			\Pic(C')
+					\ar[r, "\phi^*"]
+				& \Pic(C)
+		\end{tikzcd}
+	\end{equation*}
+	commutes.
+\end{proposition}
+\begin{proof}
+	TODO
+\end{proof}
+\begin{proposition}
+	Any finite surjective morphism $\phi\colon C \to C'$ between smooth projective curves over a field $k$ satisfies 
+	\begin{equation*}
+		\deg \phi^* \cL = \deg \cL \cdot \deg \phi
+	\end{equation*}
+	for all line bundles $\cL \in \Pic(C')$ where $\deg \phi \coloneq [K(C) : K(C')]$ is the \defineterm[degree!of map between curves]{degree} of $\phi$ (note that $\phi$ induces a map $K(C') \incl K(C)$).
+\end{proposition}
+\begin{proof}
+	TODO
+\end{proof}
+\begin{corollary}
+	Assume there exists an $f \in K(C)^\mlt$ such that $\deg (f)_0 = 1$ (which is the case iff $\deg (f)_\infty = 1$).
+	Then $C \isom \P^1_k$.
+\end{corollary}
+\begin{proof}
+	The element $f$ corresponds to a map $\phi\colon C \to \P^1_k$ with $\phi^* [0 : 1] = (f)_0$, $\phi^* [1 : 0] = (f)_\infty$.
+	Applying the preceding Proposition, we find that 
+	\begin{equation*}
+		1 = \deg (f)_0 = \deg \phi^* [0 : 1] = \deg [0 : 1] \cdot \deg \phi = \deg \phi
+	\end{equation*}
+	% TODO why does this follow?
+	so $\deg \phi = 1$, so $\phi$ must be an isomorphism.
+\end{proof}
 
 \printindex
 \printbibliography
